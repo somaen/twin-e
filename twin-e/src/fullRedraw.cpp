@@ -192,13 +192,13 @@ void fullRedraw(int param) {
 	do { // process extras (like key, hearts,...)
 		if (extraList[counter2].field_0 != -1) {
 			if (extraList[counter2].field_14 & 0x400) {
-				if (lba_time - extraList[counter2].time > 35) {
-					extraList[counter2].time = lba_time;
+				if (lba_time - extraList[counter2]._time > 35) {
+					extraList[counter2]._time = lba_time;
 					extraList[counter2].field_14 &= 0xFBFF;
 					HQ_3D_MixSample(11, 0x1000, 1, extraList[counter2].X, extraList[counter2].Z, extraList[counter2].Y);
 				}
 			} else {
-				if ((extraList[counter2].field_14 & 1) || (extraList[counter2].field_14 & 0x40) || (extraList[counter2].field_1C + extraList[counter2].time - 150 < lba_time) || (!((lba_time + extraList[counter2].time) & 8))) {
+				if ((extraList[counter2].field_14 & 1) || (extraList[counter2].field_14 & 0x40) || (extraList[counter2].field_1C + extraList[counter2]._time - 150 < lba_time) || (!((lba_time + extraList[counter2]._time) & 8))) {
 					projectPositionOnScreen(extraList[counter2].X - cameraX, extraList[counter2].Z - cameraZ, extraList[counter2].Y - cameraY);
 
 					if (projectedPositionX > -50 && projectedPositionX < 680 && projectedPositionY > -30 && projectedPositionY < 580) {
@@ -249,7 +249,7 @@ void fullRedraw(int param) {
 			if (flags < 0xC00) { // actor
 				if (!flags) {
 					if (lactor->previousAnimIndex != -1) // TODO: this shouldn't be required but crash when drawing the soldier getting out of the yellow moto. To investigate...
-						SetInterAnimObjet(lactor->animPosition, (char *)HQR_Get(HQR_Anims, lactor->previousAnimIndex), (char *)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
+						SetInterAnimObjet(lactor->animPosition, (char *)HQR_Get(HQR_Anims, lactor->previousAnimIndex), (char *)bodyPtrTab[lactor->costumeIndex], &lactor->_animTimerData);
 
 					if (!AffObjetIso(lactor->X - cameraX, lactor->Y - cameraZ, lactor->Z - cameraY, 0, lactor->angle, 0, bodyPtrTab[lactor->costumeIndex])) {
 						if (renderLeft < 0)
@@ -894,7 +894,7 @@ int projectPositionOnScreen(int coX, int coZ, int coY) {
 	return (-1);
 }
 
-int HQ_3D_MixSample(int param0/*, int param1, int param2, int param3, int param4, int param5 */) {
+int HQ_3D_MixSample(int param0, int param1, int param2, int param3, int param4, int param5) {
 	playSample(param0, /*1, */1/*, 10, 10*/);
 	return (0);
 }

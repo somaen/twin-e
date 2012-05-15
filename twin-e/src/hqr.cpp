@@ -46,8 +46,8 @@ hqr_entry *HQR_Init_Ressource(char *fileName, int sizeOfBuffer, int numOfEntries
 	}
 	streamReader_close(&fileReader);
 
-	hqr_ptr = malloc(numOfEntriesInBuffer * sizeof(subHqr) + sizeof(hqr_entry));
-	dataPtr = malloc(sizeOfBuffer + 500); /* TODO: why 500 ? */
+	hqr_ptr = (hqr_entry*)malloc(numOfEntriesInBuffer * sizeof(subHqr) + sizeof(hqr_entry));
+	dataPtr = (unsigned char*)malloc(sizeOfBuffer + 500); /* TODO: why 500 ? */
 
 	if (!hqr_ptr || !dataPtr)
 		return NULL;
@@ -100,7 +100,7 @@ int Load_HQR(char *resourceName, unsigned char *ptr, int imageNumber) {
 	} else if (mode == 1) {
 		unsigned char *compressedDataPtr;
 
-		compressedDataPtr = malloc(compressedSize + 500);
+		compressedDataPtr = (unsigned char*)malloc(compressedSize + 500);
 
 		streamReader_get(&fileReader, compressedDataPtr, compressedSize);
 		HQR_Expand(dataSize, ptr, compressedDataPtr);
@@ -242,7 +242,7 @@ unsigned char *HQR_GetCopy(hqr_entry *hqrPtr, short int arg_4) {
 	unsigned char *newPtr;
 
 	if (hqrPtr->preloadedResource) {
-		newPtr = malloc(hqrPtr->sizeArray[arg_4]);
+		newPtr = (unsigned char*)malloc(hqrPtr->sizeArray[arg_4]);
 		memcpy(newPtr, hqrPtr->ptrArray[arg_4], hqrPtr->sizeArray[arg_4]);
 		return newPtr;
 	}
@@ -326,7 +326,7 @@ int HQRM_Load(char *fileName, short int arg_4, unsigned char **ptr) {  // rechec
 	streamReader_get(&fileReader, &mode , 2);
 	mode = convertWFromLE(mode);
 
-	(*ptr) = malloc(dataSize);
+	(*ptr) = (unsigned char*)malloc(dataSize);
 
 	if (!(*ptr)) {
 		streamReader_close(&fileReader);
@@ -336,7 +336,7 @@ int HQRM_Load(char *fileName, short int arg_4, unsigned char **ptr) {  // rechec
 	if (mode == 0) {
 		streamReader_get(&fileReader, (*ptr), dataSize);
 	} else if (mode == 1) {
-		temp = malloc(compressedSize);
+		temp = (unsigned char*)malloc(compressedSize);
 
 		streamReader_get(&fileReader, temp, compressedSize);
 		HQR_Expand(dataSize, *ptr, temp);

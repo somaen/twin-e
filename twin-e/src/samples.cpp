@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #if USE_SDL_MIXER == 1
 
-#include <SDL_mixer.h>
+#include <SDL/SDL_mixer.h>
 
 Mix_Chunk *sample = NULL;
 
@@ -36,7 +36,7 @@ void playSample(int sampleNum, int repeat) {
 	printf("Playing sample %d\n", sampleNum);
 
 	sz = Size_HQR("samples.hqr", sampleNum);
-	ptr = malloc(sizeof(unsigned char) * sz);
+	ptr = (unsigned char*)malloc(sizeof(unsigned char) * sz);
 
 	Load_HQR("samples.hqr", ptr, sampleNum);
 
@@ -59,7 +59,7 @@ void playSampleFla(int sampleNum, int repeat) {
 	printf("Playing sample %d\n", sampleNum);
 
 	sz = Size_HQR("fla/flasamp.hqr", sampleNum);
-	ptr = malloc(sizeof(unsigned char) * sz);
+	ptr = (unsigned char*)malloc(sizeof(unsigned char) * sz);
 
 	Load_HQR("fla/flasamp.hqr", ptr, sampleNum);
 

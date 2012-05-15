@@ -40,7 +40,7 @@ void initActor(short int id) {
 
 		initSprite(lactor->field_8, id);
 
-		setActorAngleSafe(0, 0, 0, &lactor->time);
+		setActorAngleSafe(0, 0, 0, &lactor->_time);
 
 		if (lactor->staticFlagsBF.isUsingClipping) {
 			lactor->lastX = lactor->X;
@@ -58,7 +58,7 @@ void initActor(short int id) {
 		if (lactor->costumeIndex != -1)
 			InitAnim(lactor->anim, 0, 255, id);
 
-		setActorAngleSafe(lactor->angle, lactor->angle, 0, &lactor->time);
+		setActorAngleSafe(lactor->angle, lactor->angle, 0, &lactor->_time);
 	}
 
 	lactor->positionInMoveScript = -1;
@@ -111,7 +111,7 @@ void resetActor(short int id) {
 	localActor->field_78 = 0;
 	localActor->animPosition = 0;
 
-	setActorAngleSafe(0, 0, 0, &localActor->time);
+	setActorAngleSafe(0, 0, 0, &localActor->_time);
 
 	localActor->positionInMoveScript = -1;
 	localActor->positionInActorScript = 0;

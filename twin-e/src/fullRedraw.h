@@ -58,7 +58,7 @@ void zbufferSub2(int y, int z, int x);
 unsigned char *zbufferSub1(int var);
 void AffGraph(int num, int var1, int var2, unsigned char *localBufferBrick);
 int projectPositionOnScreen(int arg_0, int arg_4, int arg_8);
-int HQ_3D_MixSample(/* int param0, int param1, int param2, int param3, int param4, int param5 */);
+int HQ_3D_MixSample( int param0, int param1, int param2, int param3, int param4, int param5 );
 void GetDxDyGraph(int arg_0, int *arg_4, int *arg_8, unsigned char *ptr);
 void AddPhysBox(int left, int top, int right, int bottom);
 void FlipBoxes(void);

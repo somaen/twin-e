@@ -190,7 +190,7 @@ void HQ_StopSample(void) {
 	// todo: implement this
 }
 
-int chooseSave(/*int param*/) {
+int chooseSave(int param) {
 	FILE *fHandle;
 
 	fHandle = fopen("SAVE.LBA", "rb");
@@ -429,7 +429,7 @@ char *my_itoa(int nb) {
 		i++;
 	}
 
-	text = malloc(sizeof(char) * i);
+	text = (char*)malloc(sizeof(char) * i);
 	sprintf(text, "%d", nb);
 	return text;
 }

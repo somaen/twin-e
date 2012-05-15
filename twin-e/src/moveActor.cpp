@@ -45,7 +45,7 @@ void DoTrack(int actorNumber) {
 
 	lactor = &actors[actorNumber];
 	continueMove = 1;
-	timePtr = &lactor->time;
+	timePtr = &lactor->_time;
 
 	do {
 		positionInScript = lactor->positionInMoveScript;
@@ -84,7 +84,7 @@ void DoTrack(int actorNumber) {
 			if (lactor->staticFlagsBF.isSpriteActor) {
 				lactor->angle = newAngle;
 			} else {
-				ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->time);
+				ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->_time);
 			}
 
 			if (DoTrackVar1 > 500) {
@@ -107,7 +107,7 @@ void DoTrack(int actorNumber) {
 			lactor->positionInMoveScript += 2;
 			if (!(lactor->staticFlagsBF.isSpriteActor)) {
 				manipActorResult = READ_LE_S16(scriptPtr);
-				if (lactor->time.numOfStep == 0) {
+				if (lactor->_time.numOfStep == 0) {
 					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, timePtr);
 				}
 
@@ -165,7 +165,7 @@ void DoTrack(int actorNumber) {
 			if (lactor->staticFlagsBF.isSpriteActor) {
 				lactor->angle = newAngle;
 			} else {
-				ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->time);
+				ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->_time);
 			}
 
 			if (DoTrackVar1 > 500) {
@@ -352,9 +352,9 @@ void DoTrack(int actorNumber) {
 			lactor->positionInMoveScript += 2;
 			if (!(lactor->staticFlagsBF.isSpriteActor)) {
 				manipActorResult = READ_LE_S16(scriptPtr);
-				if (manipActorResult == -1 && lactor->time.numOfStep == 0) {
+				if (manipActorResult == -1 && lactor->_time.numOfStep == 0) {
 					manipActorResult = GetAngle(lactor->X, lactor->Z, twinsen->X, twinsen->Z);
-					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
+					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->_time);
 					WRITE_LE_S16(scriptPtr, manipActorResult);
 				}
 
@@ -375,7 +375,7 @@ void DoTrack(int actorNumber) {
 			if (!(lactor->staticFlagsBF.isSpriteActor)) {
 				manipActorResult = READ_LE_S16(scriptPtr + 2);
 
-				if (manipActorResult == -1  && lactor->time.numOfStep == 0) {
+				if (manipActorResult == -1  && lactor->_time.numOfStep == 0) {
 					if (rand() & 1) {
 						manipActorResult = READ_LE_S16(scriptPtr);
 						var_10 = lactor->angle + 0x100 + (abs(manipActorResult) >> 1);
@@ -388,7 +388,7 @@ void DoTrack(int actorNumber) {
 						manipActorResult = (var_10 - (rand() % manipActorResult)) & 0x3FF;
 					}
 
-					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
+					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->_time);
 					WRITE_LE_S16(scriptPtr + 2, manipActorResult);
 				}
 

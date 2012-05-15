@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-typedef struct {
+struct extraListStruct {
 	short int field_0;
 	short int X;
 	short int Y;
@@ -33,11 +33,11 @@ typedef struct {
 	short int field_12;
 	short int field_14;
 	short int field_16;
-	int time;
+	int _time;
 	short int field_1C;
 	short int field_1E;
 	short int field_20;
-} extraListStruct;
+};
 
 void reinitExtraObjectList(void);
 int FullWorldColBrick(int currentX, int currentZ, int currentY, int oldX, int oldZ, int oldY);

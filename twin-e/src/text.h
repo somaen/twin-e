@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void processTextLine(void);
 void printTextFullScreen(int textIndex);
-int printText7(/*int var*/);
+int printText7(int var);
 int initText(int var);
 void InitDialWindow(void);
 int printText10(void);
@@ -27,7 +27,7 @@ void saveTextWindow(void);
 void UnSetClip(void);
 int printText4(FILE *var1);
 void loadSavedTextWindow(void);
-int printText6(/*int var*/);
+int printText6(int var);
 void InitDial(int index);
 int findString(int index);
 void drawLetter2(int x, int y, int c);

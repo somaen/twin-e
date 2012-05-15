@@ -1,6 +1,7 @@
 CC=gcc
 CFLAGS=-g -Wall -Wextra -Wdeclaration-after-statement -DUNIX -I/usr/include/SDL -I/usr/include
 LDFLAGS=-g -lSDL -lSDL_mixer
+CC=g++
 OBJ=actors.o \
 	actorScript.o \
 	angle.o \

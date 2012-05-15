@@ -19,17 +19,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef ANIM_H
 #define ANIM_H
 
-typedef struct {
+struct time {
 	short int from;
 	short int to;
 	short int numOfStep;
 	int timeOfChange;
-} time;
+};
 
-typedef struct {
+struct animTimerData {
 	char *ptr;
-	int time;
-} animTimerData;
+	int _time;
+};
 
 int InitAnim(char costume, short int arg_4, unsigned char arg_8, short int actorNum);
 void loadGfxSub(unsigned char *ptr);

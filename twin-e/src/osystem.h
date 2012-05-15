@@ -19,11 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "config.h"
 
 #ifdef USE_SDL
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "mainSDL.h"
 #endif
 
-int os_init();
+int os_init(int argc, char *argv[]);
 
 void os_mainLoop(void);
 void os_quit(void);
@@ -33,8 +33,8 @@ void os_initBuffer(char *buffer, int width, int height);
 void os_initVideoBuffer(char *buffer, int width, int height);
 void os_setPalette(byte *palette);
 void os_setPalette320x200(byte *palette);
-void os_flip();
-void os_draw320x200BufferToScreen();
+void os_flip(unsigned char*);
+void os_draw320x200BufferToScreen(unsigned char *);
 void os_copyBlockPhys(int left, int top, int right, int bottom);
 
 void os_fullScreen();

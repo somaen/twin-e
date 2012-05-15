@@ -58,8 +58,8 @@ static void init(void) {
 	openCD();
 	soundInit();
 
-	frontVideoBuffer = malloc(sizeof(byte) * /*307200*/311040); /* TODO: check */
-	workVideoBuffer = malloc(sizeof(byte) * /*307700*/311040);
+	frontVideoBuffer = (unsigned char*)malloc(sizeof(byte) * /*307200*/311040); /* TODO: check */
+	workVideoBuffer = (byte*)malloc(sizeof(byte) * /*307700*/311040);
 
 	os_initBuffer((char *) frontVideoBuffer, 640, 480);
 	os_initVideoBuffer(flaBuffer, 320, 200);
@@ -73,13 +73,13 @@ static void init(void) {
 	AdelineLogo();
 #endif
 
-	bufSpeak = malloc(BUF_SPEAK_SIZE);
-	bufMemoSeek = malloc(BUF_MEMOSEEK_SIZE);
-	bufText = malloc(BUF_TEXT_SIZE);
-	bufOrder = malloc(BUF_ORDER_SIZE);
-	bufAni1 = bufAni2 = malloc(BUF_ANIM_SIZE);
+	bufSpeak = (byte*)malloc(BUF_SPEAK_SIZE);
+	bufMemoSeek = (byte*)malloc(BUF_MEMOSEEK_SIZE);
+	bufText = (char*)malloc(BUF_TEXT_SIZE);
+	bufOrder = (char*)malloc(BUF_ORDER_SIZE);
+	bufAni1 = bufAni2 = (byte*)malloc(BUF_ANIM_SIZE);
 
-	bufCube = malloc(204800);  // 204800 = 64*64*25*2
+	bufCube = (byte*)malloc(204800);  // 204800 = 64*64*25*2
 
 	HQRM_Load("ress.hqr", 0, (unsigned char **)&menuPal);
 	HQRM_Load("ress.hqr", 1, (unsigned char **)&lbaFont);

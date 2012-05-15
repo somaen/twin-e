@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-int chooseSave(/* int param */);
+int chooseSave(int param);
 void MainGameMenu(void);
 void DrawCadre(int left, int top, int right, int bottom);
 void optionMenu2(void);

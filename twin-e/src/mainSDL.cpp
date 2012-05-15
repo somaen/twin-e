@@ -16,11 +16,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "lba.h"
 
 #if USE_SDL_MIXER == 1
-#include <SDL_mixer.h>
+#include <SDL/SDL_mixer.h>
 #endif
 
 #include "mainLoop.h"
@@ -80,7 +80,7 @@ void os_delay(int time) {
 	SDL_Delay(time);
 }
 
-int os_init() {
+int os_init(int argc, char *argv[]) {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_CDROM | (USE_SDL_MIXER ? SDL_INIT_AUDIO : 0)) < 0) {
 		fprintf(stderr, "Couldn't initialize SDL: %s\n", SDL_GetError());
 		exit(1);
@@ -123,12 +123,12 @@ void os_setPalette320x200(byte *palette) {
 }
 
 
-void os_flip() {
+void os_flip(unsigned char* buf) {
 	SDL_BlitSurface(sdl_buffer, NULL, sdl_screen, NULL);
 	SDL_UpdateRect(sdl_screen, 0, 0, 0, 0);
 }
 
-void os_draw320x200BufferToScreen() {
+void os_draw320x200BufferToScreen(unsigned char*) {
 	SDL_BlitSurface(sdl_buffer320x200, NULL, sdl_screen, NULL);
 	SDL_UpdateRect(sdl_screen, 0, 0, 0, 0);
 }

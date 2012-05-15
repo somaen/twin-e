@@ -57,7 +57,7 @@ typedef struct {
 
 	int angle;  // rotation ?
 	int speed;
-	time time;
+	time _time;
 	int comportement;
 	int positionInMoveScript;
 	int positionInActorScript;
@@ -128,7 +128,7 @@ typedef struct {
 	unsigned char *moveScript;
 	unsigned char *actorScript;
 
-	animTimerData animTimerData; // new
+	animTimerData _animTimerData; // new
 } actor;
 
 void initActor(short int id);

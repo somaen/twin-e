@@ -121,7 +121,7 @@ static void RestartPerso(void) {
 	twinsen->positionInActorScript = 0;
 	twinsen->zone = -1;
 	twinsen->angle = startupAngleInCube;
-	setActorAngleSafe(twinsen->angle, twinsen->angle, 0, &twinsen->time);
+	setActorAngleSafe(twinsen->angle, twinsen->angle, 0, &twinsen->_time);
 	SetComportement(startupComportementHeroInCube);
 }
 

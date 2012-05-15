@@ -259,13 +259,13 @@ void loadSavedTextWindow(void) {
 	textWindowBottom = textWindowBottomSave;
 }
 
-int printText6(/* int var */) {
+int printText6(int var) {
 	// todo: implement this
 	// sound function
 	return (0);
 }
 
-int printText7(/*int var*/) {
+int printText7(int var) {
 	// todo: implement this
 	// sound function
 	return (0);

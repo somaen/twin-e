@@ -77,7 +77,7 @@ int setAnimAtKeyFrame(int keyframeIdx, unsigned char *anim, unsigned char *body,
 	ptrToBodyData = (char *)(body + 14);
 
 	animTimerDataPtr->ptr = ptrToData;
-	animTimerDataPtr->time = lba_time;
+	animTimerDataPtr->_time = lba_time;
 
 	ptrToBodyData = ptrToBodyData + READ_LE_S16(ptrToBodyData) + 2; // Skip ?
 
@@ -155,7 +155,7 @@ int SetInterAnimObjet(int animState, char *animData, char *body, animTimerData *
 	edi = body + 16;
 
 	ebx = animTimerDataPtr->ptr;
-	ebp = animTimerDataPtr->time;
+	ebp = animTimerDataPtr->_time;
 
 	if (!ebx) {
 		ebx = keyFramePtr;
@@ -196,7 +196,7 @@ int SetInterAnimObjet(int animState, char *animData, char *body, animTimerData *
 		} while (--numOfPointInAnim);
 
 		animTimerDataPtr->ptr = keyFramePtr;
-		animTimerDataPtr->time = lba_time;
+		animTimerDataPtr->_time = lba_time;
 
 		currentX = READ_LE_S16(keyFramePtr + 2);
 		currentZ = READ_LE_S16(keyFramePtr + 4);
@@ -344,9 +344,9 @@ int InitAnim(char newAnim, short int arg_4, unsigned char arg_8, short int actor
 		arg_4 = 2;
 
 	if (lactor->previousAnimIndex == -1) {  // if no previous animation
-		setAnimAtKeyFrame(0, HQR_Get(HQR_Anims, animIndex), bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);  // set animation directly to first keyFrame
+		setAnimAtKeyFrame(0, HQR_Get(HQR_Anims, animIndex), bodyPtrTab[lactor->costumeIndex], &lactor->_animTimerData);  // set animation directly to first keyFrame
 	} else { // interpolation between animations
-		bufAni2 += StockInterAnim((char *) bufAni2, (char *) bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
+		bufAni2 += StockInterAnim((char *) bufAni2, (char *) bodyPtrTab[lactor->costumeIndex], &lactor->_animTimerData);
 		if (bufAni1 + 4488 > bufAni2)
 			bufAni2 = bufAni1;
 	}
@@ -391,7 +391,7 @@ int StockInterAnim(char *lBufAnim, char *lBody, animTimerData *animTimerDataPtr)
 	if (temp & 2) {
 		ptr = (lBody + 0x10);
 
-		animTimerDataPtr->time = lba_time;
+		animTimerDataPtr->_time = lba_time;
 		animTimerDataPtr->ptr = lBufAnim;
 
 		var0 = READ_LE_S16(ptr - 2);
@@ -526,7 +526,7 @@ int SetInterDepObjet(int position, char *anim, char *body, animTimerData *animTi
 		edi = body + 16;
 
 		ebx = animTimerDataPtr->ptr;
-		ebp = animTimerDataPtr->time;
+		ebp = animTimerDataPtr->_time;
 
 		if (!ebx) {
 			ebx = keyFramePtr;
@@ -541,7 +541,7 @@ int SetInterDepObjet(int position, char *anim, char *body, animTimerData *animTi
 
 		if (eax >= keyFrameLength) {
 			animTimerDataPtr->ptr = keyFramePtr;
-			animTimerDataPtr->time = lba_time;
+			animTimerDataPtr->_time = lba_time;
 
 			currentX = READ_LE_S16(keyFramePtr + 2);
 			currentZ = READ_LE_S16(keyFramePtr + 4);

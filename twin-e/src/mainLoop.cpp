@@ -739,12 +739,12 @@ void DoDir(int actorNum) {
 		if (os_isPressed(KEY_CHAR_RIGHT))
 			tempAngle = -0x100;
 
-		ManualRealAngle(lactor->angle, lactor->angle + tempAngle, lactor->speed, &lactor->time);
+		ManualRealAngle(lactor->angle, lactor->angle + tempAngle, lactor->speed, &lactor->_time);
 	} else {
 		/* If it's not a sprite */
 		if (!lactor->staticFlagsBF.isSpriteActor)
 			if (lactor->comportement != ATHLETIC)
-				lactor->angle = getRealAngle(&lactor->time);
+				lactor->angle = getRealAngle(&lactor->_time);
 
 		switch (lactor->comportement) {
 			/* Doesn't move */
@@ -778,7 +778,7 @@ void DoDir(int actorNum) {
 						if (autoAgressivity) {
 							twinsenMoved = 1;
 
-							lactor->angle = getRealAngle(&lactor->time);
+							lactor->angle = getRealAngle(&lactor->_time);
 
 							/* If twinsen is not already doing something */
 							if (lactor->anim == ANIM_static) {
@@ -827,7 +827,7 @@ void DoDir(int actorNum) {
 						InitAnim(ANIM_swordAttack, 1, 0, actorNum);
 
 						twinsenMoved = 1;
-						lactor->angle = getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->_time);
 					}
 					/* Else, if he has the magic ball */
 					else if (vars[ball]) {
@@ -836,7 +836,7 @@ void DoDir(int actorNum) {
 							InitAnim(ANIM_throwBall, 1, 0, actorNum);
 
 						twinsenMoved = 1;
-						lactor->angle = getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->_time);
 					}
 				}
 
@@ -878,7 +878,7 @@ void DoDir(int actorNum) {
 					if (!twinsenWalked)
 						InitAnim(ANIM_turnLeft, 0, 255, actorNum);
 					else if (!lactor->dynamicFlagsBF.isRotationByAnim)
-						lactor->angle = getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->_time);
 					tempAngle = 0x100;
 					twinsenMoved = 1;
 					twinsenKey = KEY_CHAR_LEFT;
@@ -889,14 +889,14 @@ void DoDir(int actorNum) {
 					if (!twinsenWalked)
 						InitAnim(ANIM_turnRight, 0, 255, actorNum);
 					else if (!lactor->dynamicFlagsBF.isRotationByAnim)
-						lactor->angle = getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->_time);
 					tempAngle = -0x100;
 					twinsenMoved = 1;
 					twinsenKey = KEY_CHAR_RIGHT;
 				}
 
 				ManualRealAngle(lactor->angle, lactor->angle + tempAngle,
-				                lactor->speed, &lactor->time);
+				                lactor->speed, &lactor->_time);
 			}
 			break;
 			/* Follows an other actor */
@@ -914,7 +914,7 @@ void DoDir(int actorNum) {
 				lactor->angle = tempAngle;
 			/* Else, use ManualRealAngle */
 			else
-				ManualRealAngle(lactor->angle, tempAngle, lactor->speed, &lactor->time);
+				ManualRealAngle(lactor->angle, tempAngle, lactor->speed, &lactor->_time);
 			break;
 		}
 
@@ -940,18 +940,18 @@ void DoDir(int actorNum) {
 			printf("!!!! MOVE_RANDOM\n");
 			if (!lactor->dynamicFlagsBF.isRotationByAnim) {
 				if (lactor->field_3 & 0x80) {
-					ManualRealAngle(lactor->angle, (((rand() & 0x100) + (lactor->angle - 0x100)) & 0x3FF), lactor ->speed, &lactor->time);
+					ManualRealAngle(lactor->angle, (((rand() & 0x100) + (lactor->angle - 0x100)) & 0x3FF), lactor ->speed, &lactor->_time);
 
 					lactor->cropLeft = rand() % 300 + lba_time + 300;
 
 					InitAnim(0, 0, 0xFF, actorNum);
 				}
 
-				if (lactor->time.numOfStep == 0) {
+				if (lactor->_time.numOfStep == 0) {
 					InitAnim(1, 0, 0xFF, actorNum);
 
 					if (lba_time > lactor->cropLeft) {
-						ManualRealAngle(lactor->angle, (((rand() & 0x100) + (lactor->angle - 0x100)) & 0x3FF) , lactor->speed, &lactor->time);
+						ManualRealAngle(lactor->angle, (((rand() & 0x100) + (lactor->angle - 0x100)) & 0x3FF) , lactor->speed, &lactor->_time);
 
 						lactor->cropLeft = rand() % 300 + lba_time + 300;
 					}
@@ -999,10 +999,10 @@ void DoAnim(int actorNum) {
 			if (lactor->speed) {
 				int dx;
 
-				dx = getRealValue(&lactor->time);
+				dx = getRealValue(&lactor->_time);
 
 				if (!dx) {
-					if (lactor->time.to > 0) {
+					if (lactor->_time.to > 0) {
 						dx = 1;
 					} else {
 						dx = -1;
@@ -1018,7 +1018,7 @@ void DoAnim(int actorNum) {
 				processActorX = lactor->X + destX;
 				processActorY = lactor->Z + destZ;
 
-				setActorAngle(0, lactor->speed, 50, &lactor->time);
+				setActorAngle(0, lactor->speed, 50, &lactor->_time);
 
 				if (lactor->dynamicFlagsBF.isMoving) {
 					if (lactor->doorStatus) { // is oppening
@@ -1088,7 +1088,7 @@ void DoAnim(int actorNum) {
 			int keyFramePassed;
 			animPtr = (char *) HQR_Get(HQR_Anims, lactor->previousAnimIndex);
 
-			keyFramePassed = SetInterDepObjet(lactor->animPosition, animPtr, (char *)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
+			keyFramePassed = SetInterDepObjet(lactor->animPosition, animPtr, (char *)bodyPtrTab[lactor->costumeIndex], &lactor->_animTimerData);
 
 			if (processActorVar5)
 				lactor->dynamicFlagsBF.isRotationByAnim = 1;
@@ -1981,7 +1981,7 @@ void HitObj(int actorAttacking, int actorAttacked, int param, int angle) {
 			pActorAttacked->animPosition = temp;
 		} else {
 			if (angle != -1) {
-				setActorAngleSafe(angle, angle, 0, &pActorAttacked->time); // force angle without transition
+				setActorAngleSafe(angle, angle, 0, &pActorAttacked->_time); // force angle without transition
 			}
 
 			if (rand() & 1) {
