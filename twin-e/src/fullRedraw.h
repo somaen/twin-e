@@ -16,8 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-typedef struct
-{
+typedef struct {
 	short int y;
 	short int z;
 	short int x;
@@ -26,16 +25,14 @@ typedef struct
 	short int spriteNum;
 } zbufferDataStruct;
 
-typedef struct
-{
+typedef struct {
 	unsigned short int left;
 	unsigned short int top;
 	unsigned short int right;
 	unsigned short int bottom;
 } currentDirtyBoxListStruct;
 
-typedef struct
-{
+typedef struct {
 	short int field_0;
 	unsigned short int field_2;
 	unsigned short int X;
@@ -50,7 +47,7 @@ typedef struct
 void SmallSort(drawListStruct *list, int listSize/*, int param*/);
 void DrawOverBrick3(int X, int Z, int Y);
 void DrawOverBrick(int X, int Z, int Y);
-void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte * buffer);
+void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte *buffer);
 void fullRedraw(int param);
 void blitBackgroundOnDirtyBoxes(void);
 void fullRedrawSub5(void);

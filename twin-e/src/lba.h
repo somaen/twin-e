@@ -67,16 +67,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 # define convertWFromLE(x) (x)
 #endif
 
-typedef struct
-{
+typedef struct {
 	int left;
 	int right;
 	int X;
 	int Y;
 } mouseStatus;
 
-typedef struct
-{
+typedef struct {
 	int actorNum;
 	int left;
 	int right;
@@ -144,36 +142,35 @@ typedef struct
 // lba2 48 = use switch
 // lba2 49 = crawl
 
-typedef enum
-{
-	holomap,
-	ball,
-	saber,
-	horn,
-	tunic,
-	book,
-	medaillon,
-	water,
-	redCard,
-	blueCard,
-	idCard,
-	pass,
-	protopack,
-	snowboard,
-	penguin,
-	gas,
-	flag,
-	flute,
-	guitar,
-	dryer,
-	key,
-	syrupBottle,
-	emptyBottle,
-	ticket,
-	keypad,
-	coffee,
-	bonusesList,
-	clover
+typedef enum {
+    holomap,
+    ball,
+    saber,
+    horn,
+    tunic,
+    book,
+    medaillon,
+    water,
+    redCard,
+    blueCard,
+    idCard,
+    pass,
+    protopack,
+    snowboard,
+    penguin,
+    gas,
+    flag,
+    flute,
+    guitar,
+    dryer,
+    key,
+    syrupBottle,
+    emptyBottle,
+    ticket,
+    keypad,
+    coffee,
+    bonusesList,
+    clover
 } inventory;
 
 #define SPRITE_coin 3

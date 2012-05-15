@@ -19,15 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define NUM_MAX_FLAGS 200
 #define NUM_MAX_ZONES 100
 
-typedef struct
-{
+typedef struct {
 	short int x;
 	short int z;
 	short int y;
 } flagDataStruct;
 
-typedef struct
-{
+typedef struct {
 	short int field_0;
 	short int field_2;
 	short int field_4;

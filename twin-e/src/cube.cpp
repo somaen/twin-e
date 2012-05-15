@@ -28,8 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 unsigned char *currentGrid;
 unsigned char *currentBll;
 
-void initGrid(short int roomNumber)
-{
+void initGrid(short int roomNumber) {
 	int gridSize;
 	int bllSize;
 	int brickDataSize;
@@ -39,7 +38,7 @@ void initGrid(short int roomNumber)
 	Load_HQR("lba_gri.hqr", currentGrid, roomNumber);
 
 	bllSize = Size_HQR("lba_bll.hqr", roomNumber);
-    currentBll = malloc(bllSize + 1000);
+	currentBll = malloc(bllSize + 1000);
 	Load_HQR("lba_bll.hqr", currentBll, roomNumber);
 
 	brickDataSize = loadBrk(gridSize);
@@ -48,21 +47,21 @@ void initGrid(short int roomNumber)
 	createCube();
 }
 
-void MixteMapToCube(byte* gridPtr) {
+void MixteMapToCube(byte *gridPtr) {
 	int var_8 = 0;
 	int var_4 = 0;
 
 	int i;
 	int j;
-	char* ptr;
+	char *ptr;
 
-	for (i = 0;i < 64;i++) {
+	for (i = 0; i < 64; i++) {
 		int posInBufCube = var_4;
-		ptr = (char*)gridPtr + var_8;
+		ptr = (char *)gridPtr + var_8;
 
 
-		for (j = 0;j < 64;j++) {
-			unsigned char* ptr2 = (unsigned char*)(gridPtr + READ_LE_S16(ptr));
+		for (j = 0; j < 64; j++) {
+			unsigned char *ptr2 = (unsigned char *)(gridPtr + READ_LE_S16(ptr));
 			ptr += 2;
 			MixteColonne(ptr2, bufCube + posInBufCube);
 			posInBufCube += 50;
@@ -114,9 +113,9 @@ void MixteColonne(unsigned char *gridEntry, unsigned char *dest) {
 }
 
 void IncrustGrm(int gridNumber) {
-	byte* gridPtr;
+	byte *gridPtr;
 
-	HQRM_Load("lba_gri.hqr", gridNumber + 120, (unsigned char**)&gridPtr);
+	HQRM_Load("lba_gri.hqr", gridNumber + 120, (unsigned char **)&gridPtr);
 
 	if (!gridPtr) {
 		printf("arg grm not found in lba_gri\n");
@@ -137,11 +136,11 @@ void createCube(void) {
 	int i;
 	int j;
 
-	for (j = 0;j < 64;j++) {
+	for (j = 0; j < 64; j++) {
 		ptr1 = var2;
 		ptr2 = j << 6;
 
-		for (i = 0;i < 64;i++) {
+		for (i = 0; i < 64; i++) {
 			addCubeEntry(currentGrid +  READ_LE_U16(currentGrid + 2 * (i + ptr2)), bufCube + ptr1);
 			ptr1 += 50;
 		}

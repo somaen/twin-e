@@ -57,8 +57,7 @@ void os_mainLoop(void) {
 
 	breakMainLoop = 0;
 
-	while (!breakMainLoop)
-	{
+	while (!breakMainLoop) {
 		while (SDL_PollEvent(&event))
 			if (event.type == SDL_QUIT)
 				breakMainLoop = 1;
@@ -78,12 +77,11 @@ void os_quit(void) {
 }
 
 void os_delay(int time) {
-   SDL_Delay(time);
+	SDL_Delay(time);
 }
 
-int os_init()
-{
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_CDROM | (USE_SDL_MIXER ? SDL_INIT_AUDIO:0)) < 0) {
+int os_init() {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_CDROM | (USE_SDL_MIXER ? SDL_INIT_AUDIO : 0)) < 0) {
 		fprintf(stderr, "Couldn't initialize SDL: %s\n", SDL_GetError());
 		exit(1);
 	}
@@ -113,28 +111,24 @@ int os_init()
 	return 0;
 }
 
-void os_setPalette(byte * palette)
-{
+void os_setPalette(byte *palette) {
 	SDL_SetColors(sdl_buffer, (SDL_Color *)palette, 0, 256);
 
 	SDL_BlitSurface(sdl_buffer, NULL, sdl_screen, NULL);
 	SDL_UpdateRect(sdl_screen, 0, 0, 0, 0);
 }
 
-void os_setPalette320x200(byte * palette)
-{
+void os_setPalette320x200(byte *palette) {
 	SDL_SetColors(sdl_buffer320x200, (SDL_Color *)palette, 0, 256);
 }
 
 
-void os_flip()
-{
+void os_flip() {
 	SDL_BlitSurface(sdl_buffer, NULL, sdl_screen, NULL);
 	SDL_UpdateRect(sdl_screen, 0, 0, 0, 0);
 }
 
-void os_draw320x200BufferToScreen()
-{
+void os_draw320x200BufferToScreen() {
 	SDL_BlitSurface(sdl_buffer320x200, NULL, sdl_screen, NULL);
 	SDL_UpdateRect(sdl_screen, 0, 0, 0, 0);
 }
@@ -163,7 +157,7 @@ void os_initBuffer(char *buffer, int width, int height) {
 void os_crossFade(char *buffer, char *palette) {
 	int i;
 	SDL_Surface *fadeSurface
-		= SDL_CreateRGBSurfaceFrom(buffer, 640, 480, 8, 640, 0, 0, 0, 0);
+	    = SDL_CreateRGBSurfaceFrom(buffer, 640, 480, 8, 640, 0, 0, 0, 0);
 	SDL_SetColors(fadeSurface, (SDL_Color *) palette, 0, 256);
 
 	for (i = 0; i < 7; i++) {
@@ -176,19 +170,17 @@ void os_crossFade(char *buffer, char *palette) {
 	SDL_FreeSurface(fadeSurface);
 }
 
-void os_fullScreen()
-{
+void os_fullScreen() {
 	fullscreen ^= 1;
 
-	sdl_screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE | (fullscreen ? SDL_FULLSCREEN:0));
-	SDL_SetColors(sdl_screen, (SDL_Color*)palette, 0, 256);
+	sdl_screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE | (fullscreen ? SDL_FULLSCREEN : 0));
+	SDL_SetColors(sdl_screen, (SDL_Color *)palette, 0, 256);
 	SDL_ShowCursor(!fullscreen);
 
 	requestBackgroundRedraw = 1;
 }
 
-char os_isPressed(int key)
-{
+char os_isPressed(int key) {
 	Uint8 *keystates;
 
 	SDL_PumpEvents();
@@ -196,8 +188,7 @@ char os_isPressed(int key)
 	return keystates[key];
 }
 
-unsigned int os_getTicks()
-{
+unsigned int os_getTicks() {
 	return SDL_GetTicks();
 }
 

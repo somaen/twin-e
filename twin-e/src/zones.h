@@ -57,12 +57,12 @@ typedef struct {
 			short int data3;
 			short int data4;
 		} generic;
-	}data;
+	} data;
 	short int dummy;
 } ZONE_Box;
 
-void ZoneGiveExtraBonus(ZONE_Box* pZone);
-void CheckZoneSce(actor * lactor, int actorNumber);
+void ZoneGiveExtraBonus(ZONE_Box *pZone);
+void CheckZoneSce(actor *lactor, int actorNumber);
 
 extern int climbing;
 

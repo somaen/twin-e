@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define vertexDebug(id) {}
 /*#define vertexDebug(id) if (id[0] == 'U') printf(id "Got polyTab[%d + %d] => %ld\n", temp2, videoHeight, ptr3 - polyTab); \
-								   else printf(id "Got polyTab[%d] => %ld\n", temp2, ptr3 - polyTab);*/
+                                   else printf(id "Got polyTab[%d] => %ld\n", temp2, ptr3 - polyTab);*/
 
 pointTab _projectedPointTable[800];
 pointTab _flattenPointTable[800];
@@ -257,13 +257,12 @@ int renderAnimatedModel(unsigned char *costumePtr) {
 		_currentMatrixTableEntry = (unsigned char *) & _matrixTable[9];
 
 		do {
-			int boneType = READ_LE_U16(((unsigned char*)ptEntryPtr) + 8);
+			int boneType = READ_LE_U16(((unsigned char *)ptEntryPtr) + 8);
 			if (boneType == 0) {
 				loadPart(ptEntryPtr->rotateX, ptEntryPtr->rotateY, ptEntryPtr->rotateZ, (unsigned char *) ptEntryPtr);  // rotation
-			} else
-				if (boneType == 1) {
-					TranslateGroupe(ptEntryPtr->rotateX, ptEntryPtr->rotateY, ptEntryPtr->rotateZ, ptEntryPtr); // translation
-				}
+			} else if (boneType == 1) {
+				TranslateGroupe(ptEntryPtr->rotateX, ptEntryPtr->rotateY, ptEntryPtr->rotateZ, ptEntryPtr); // translation
+			}
 
 			_currentMatrixTableEntry += 36;
 			_partsPtr += 38;
@@ -331,7 +330,7 @@ int renderAnimatedModel(unsigned char *costumePtr) {
 
 			if (pointPtrDest->x > renderRight)
 				renderRight = pointPtrDest->x;
-			
+
 
 			/* Y */
 			coY = (-coY * cameraVar3) / coZ + cameraPosZ;
@@ -430,7 +429,7 @@ int renderAnimatedModel(unsigned char *costumePtr) {
 	return (finishRender((unsigned char *) _shadePtr));
 }
 
-void loadPart(int edx, int ecx, int ebx, unsigned char * ptr) {
+void loadPart(int edx, int ecx, int ebx, unsigned char *ptr) {
 	int *ebp;
 	short int var;
 
@@ -472,7 +471,7 @@ void loadPart(int edx, int ecx, int ebx, unsigned char * ptr) {
 	RotList(_pointsPtr + rs1v1, rs1v2, &_projectedPointTable[rs1v1 / 6], (int *) _currentMatrixTableEntry); // rotation des elements du model
 }
 
-void RotList(unsigned char *esi, int ecx, pointTab * dest, int *eax) {
+void RotList(unsigned char *esi, int ecx, pointTab *dest, int *eax) {
 	short int param1;
 	short int param2;
 	short int param3;
@@ -497,8 +496,8 @@ void RotList(unsigned char *esi, int ecx, pointTab * dest, int *eax) {
 
 void RotMatIndex2(int *eax, int *ebp) {
 	int angle;
-	int angleVar1;	// esi
-	int angleVar2;	// ecx
+	int angleVar1;  // esi
+	int angleVar2;  // ecx
 
 	int matrix1[9];
 	int matrix2[9];
@@ -590,7 +589,7 @@ void RotMatIndex2(int *eax, int *ebp) {
 	}
 }
 
-void TranslateGroupe(int edx, int ecx, int ebx, pointEntry * esi) {
+void TranslateGroupe(int edx, int ecx, int ebx, pointEntry *esi) {
 	int *dest;
 	int *source;
 
@@ -636,7 +635,7 @@ void TranslateGroupe(int edx, int ecx, int ebx, pointEntry * esi) {
 	TransRotList(_pointsPtr + esi->data1, esi->data2, &_projectedPointTable[esi->data1 / 6], (int *) _currentMatrixTableEntry);
 }
 
-void TransRotList(unsigned char *esi, int ecx, pointTab * dest, int *eax) {
+void TransRotList(unsigned char *esi, int ecx, pointTab *dest, int *eax) {
 	short int param1;
 	short int param2;
 	short int param3;
@@ -736,7 +735,7 @@ int finishRender(unsigned char *esi) {
 	if (temp) {   // if there is polygones
 		primitiveCounter = temp;  // the number of primitives = the number of polygones
 
-		do {	// loop that load all the polygones
+		do {    // loop that load all the polygones
 			render23 = edi;
 			currentPolyHeader = (polyHeader *) esi;
 			ecx = READ_LE_S32(esi);
@@ -945,12 +944,12 @@ int finishRender(unsigned char *esi) {
 			short int center = READ_LE_U16(esi + 6);
 			short int size = READ_LE_U16(esi + 4);
 
-			*(unsigned char*)edi = color;
-			WRITE_LE_S16(edi + 1, _flattenPointTable[center/6].x);
-			WRITE_LE_S16(edi + 3, _flattenPointTable[center/6].y);
+			*(unsigned char *)edi = color;
+			WRITE_LE_S16(edi + 1, _flattenPointTable[center / 6].x);
+			WRITE_LE_S16(edi + 3, _flattenPointTable[center / 6].y);
 			WRITE_LE_S16(edi + 5, size);
 
-			renderTabEntryPtr->depth = _flattenPointTable[center/6].z;
+			renderTabEntryPtr->depth = _flattenPointTable[center / 6].z;
 			renderTabEntryPtr->renderType = 2;
 			renderTabEntryPtr->dataPtr = edi;
 			renderTabEntryPtr++;
@@ -988,90 +987,90 @@ int finishRender(unsigned char *esi) {
 			renderV19 += 8;
 
 			switch (type) {
-				case 0: { // draw a line
+			case 0: { // draw a line
 
-							unsigned int x1;
-							unsigned int y1;
-							unsigned int x2;
-							unsigned int y2;
+				unsigned int x1;
+				unsigned int y1;
+				unsigned int x2;
+				unsigned int y2;
 
 #ifndef PCLIKE
-							break;
+				break;
 #endif
-							lineCoordinatesPtr = (lineCoordinates *) esi;
-							color = (READ_LE_S32(&lineCoordinatesPtr->data) & 0xFF00) >> 8;
+				lineCoordinatesPtr = (lineCoordinates *) esi;
+				color = (READ_LE_S32(&lineCoordinatesPtr->data) & 0xFF00) >> 8;
 
-							x1 = READ_LE_S16((unsigned short int*) & lineCoordinatesPtr->x1);
-							y1 = READ_LE_S16((unsigned short int*) & lineCoordinatesPtr->y1);
-							x2 = READ_LE_S16((unsigned short int*) & lineCoordinatesPtr->x2);
-							y2 = READ_LE_S16((unsigned short int*) & lineCoordinatesPtr->y2);
+				x1 = READ_LE_S16((unsigned short int *) & lineCoordinatesPtr->x1);
+				y1 = READ_LE_S16((unsigned short int *) & lineCoordinatesPtr->y1);
+				x2 = READ_LE_S16((unsigned short int *) & lineCoordinatesPtr->x2);
+				y2 = READ_LE_S16((unsigned short int *) & lineCoordinatesPtr->y2);
 
-							drawLine(x1, y1, x2, y2, color);
+				drawLine(x1, y1, x2, y2, color);
 
-							break;
-						}
+				break;
+			}
 #ifndef MACOSX
-				case 1: { // draw a polygon
-							short int drawType = *(esi++);
-							int numOfVertex = *(esi++);
-							color = READ_LE_S16(esi);
-							esi += 2;
+			case 1: { // draw a polygon
+				short int drawType = *(esi++);
+				int numOfVertex = *(esi++);
+				color = READ_LE_S16(esi);
+				esi += 2;
 
-							destPtr = (unsigned char *) vertexCoordinates;
+				destPtr = (unsigned char *) vertexCoordinates;
 
-							for (i = 0; i < (numOfVertex * 3); i++) {
-								WRITE_LE_S16(destPtr, READ_LE_S16(esi));
-								destPtr += 2;
-								esi += 2;
-							}
+				for (i = 0; i < (numOfVertex * 3); i++) {
+					WRITE_LE_S16(destPtr, READ_LE_S16(esi));
+					destPtr += 2;
+					esi += 2;
+				}
 
-							drawVertices(numOfVertex, drawType);
-							fillVertices(color, drawType); /* TODO: find out why color is limited */
+				drawVertices(numOfVertex, drawType);
+				fillVertices(color, drawType); /* TODO: find out why color is limited */
 
-							break;
-						}
+				break;
+			}
 #endif
-				case 2: { // draw a circle
-							int circleParam1;
-							int circleParam3;
-							int circleParam4;
-							int circleParam5;
+			case 2: { // draw a circle
+				int circleParam1;
+				int circleParam3;
+				int circleParam4;
+				int circleParam5;
 
-							eax = *(int*) esi;
+				eax = *(int *) esi;
 
-							circleParam1 = *(unsigned char*)esi;
-							circleParam4 = READ_LE_S16(esi + 1);
-							circleParam5 = READ_LE_S16(esi + 3);
-							circleParam3 = READ_LE_S16(esi + 5);
+				circleParam1 = *(unsigned char *)esi;
+				circleParam4 = READ_LE_S16(esi + 1);
+				circleParam5 = READ_LE_S16(esi + 3);
+				circleParam3 = READ_LE_S16(esi + 5);
 
-							if (!isUsingOrhoProjection) {
-								circleParam3 = (circleParam3 * cameraVar2) / (cameraVar1 + *(short int*)esi);
-							} else {
-								circleParam3 = (circleParam3 * 34) >> 9;
-							}
+				if (!isUsingOrhoProjection) {
+					circleParam3 = (circleParam3 * cameraVar2) / (cameraVar1 + * (short int *)esi);
+				} else {
+					circleParam3 = (circleParam3 * 34) >> 9;
+				}
 
-							circleParam3 += 3;
+				circleParam3 += 3;
 
-							if (circleParam4 + circleParam3 > renderRight)
-								renderRight = circleParam4 + circleParam3;
+				if (circleParam4 + circleParam3 > renderRight)
+					renderRight = circleParam4 + circleParam3;
 
-							if (circleParam4 - circleParam3 < renderLeft)
-								renderLeft = circleParam4 - circleParam3;
+				if (circleParam4 - circleParam3 < renderLeft)
+					renderLeft = circleParam4 - circleParam3;
 
-							if (circleParam5 + circleParam3 > renderBottom)
-								renderBottom = circleParam5 + circleParam3;
+				if (circleParam5 + circleParam3 > renderBottom)
+					renderBottom = circleParam5 + circleParam3;
 
-							if (circleParam5 - circleParam3 < renderTop)
-								renderTop = circleParam5 - circleParam3;
+				if (circleParam5 - circleParam3 < renderTop)
+					renderTop = circleParam5 - circleParam3;
 
-							circleParam3 -= 3;
+				circleParam3 -= 3;
 
-							circle_fill(circleParam4, circleParam5, circleParam3, circleParam1);
-						}
-						break;
+				circle_fill(circleParam4, circleParam5, circleParam3, circleParam1);
+			}
+			break;
 
-				default:
-						break;
+			default:
+				break;
 			}
 
 			esi = renderV19;
@@ -1090,7 +1089,7 @@ int finishRender(unsigned char *esi) {
 
 void fillFlat(unsigned char *out, short int *posPtr, short int *colorPtr, int color) {
 	int i;
-	for (i = posPtr[0]; i < posPtr[videoHeight]+1; i++)
+	for (i = posPtr[0]; i < posPtr[videoHeight] + 1; i++)
 		if (i >= 0 && i < videoWidth)
 			out[i] = color;
 }
@@ -1103,7 +1102,7 @@ void fillCopper(unsigned char *out, short int *posPtr, short int *colorPtr, int 
 	dx = (unsigned char)color;
 	dx |= 0x300;
 
-	for (i = posPtr[0]; i < posPtr[videoHeight]+1; i++) {
+	for (i = posPtr[0]; i < posPtr[videoHeight] + 1; i++) {
 		start += mask;
 		start = (start & 0xFF00) | ((start & 0xFF) & (unsigned char)(dx >> 8)) ;
 		start = (start & 0xFF00) | ((start & 0xFF) + (dx & 0xFF));
@@ -1117,7 +1116,7 @@ void fillCopper(unsigned char *out, short int *posPtr, short int *colorPtr, int 
 /* TODO: buggy ? */
 void fillBopper(unsigned char *out, short int *posPtr, short int *colorPtr, int color) {
 	int i;
-	for (i = posPtr[0]; i < posPtr[videoHeight]+1; i++)
+	for (i = posPtr[0]; i < posPtr[videoHeight] + 1; i++)
 		if (i >= 0 && i < videoWidth && i % 2)
 			out[i] = color;
 }
@@ -1147,7 +1146,7 @@ void fillTrame(unsigned char *out, short int *posPtr, short int *colorPtr, int c
 	if (hsize > 1) {
 		unsigned short int ax;
 		bh ^= 1;
-		ax = (unsigned short int)*(int*) out2;
+		ax = (unsigned short int) * (int *) out2;
 		ax &= 1;
 		if (ax ^ bh)
 			out2++;
@@ -1344,7 +1343,7 @@ void drawVertices(int numOfVertex, short int drawType) {
 			oldVertexX = oldVertexY;
 
 			/* Add all the points */
-			for (i = 0; i < oldVertexY+1; i++) { /* TODO: why +1 ? */
+			for (i = 0; i < oldVertexY + 1; i++) { /* TODO: why +1 ? */
 				if ((polyPtr - polyTab) < 960 && (polyPtr - polyTab) >= 0)
 					*polyPtr = (short int) startX;
 				polyPtr += dir;
@@ -1364,7 +1363,7 @@ void drawVertices(int numOfVertex, short int drawType) {
 				startColor = (oldColor << 8) | 0xFF; /* starts with the old vertex */
 
 				/* Add all the colors */
-				for (i = 0; i < oldVertexX+1; i++) {
+				for (i = 0; i < oldVertexX + 1; i++) {
 					if ((polyPtr - polyTab2) < 960 && (polyPtr - polyTab2) >= 0)
 						*polyPtr = startColor;
 					polyPtr += dir;
@@ -1389,7 +1388,7 @@ void drawLine(int a, int b, int c, int d, int e) {
 	short int xchg;
 	int currentLineColor = e;
 
-	if (a > c) {	// pour toujours dessiner de gauche à droite
+	if (a > c) {    // pour toujours dessiner de gauche à droite
 		temp = c;
 		c = a;
 		a = temp;
@@ -1435,7 +1434,7 @@ void drawLine(int a, int b, int c, int d, int e) {
 
 // implementer la suite
 
-	flag2 = videoWidth;	// esi
+	flag2 = videoWidth; // esi
 	c -= a;
 	d -= b;
 	if (d < 0) {
@@ -1443,10 +1442,10 @@ void drawLine(int a, int b, int c, int d, int e) {
 		d = -d;
 	}
 
-	out = frontVideoBuffer + WINDOW_X*b + a;
+	out = frontVideoBuffer + WINDOW_X * b + a;
 
 	color = currentLineColor;
-	if (c < d) {	// pente importante
+	if (c < d) {    // pente importante
 		xchg = c;
 		c = d;
 		d = xchg;

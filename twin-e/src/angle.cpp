@@ -20,36 +20,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "hqr.h"
 
-void clearRealAngle(actor * ptr) {
+void clearRealAngle(actor *ptr) {
 	setActorAngleSafe(ptr->angle, ptr->angle, 0, &ptr->time);
 }
 
-void setActorAngle(short int from, short int to, short int numOfStep, time *ptr)
-{
+void setActorAngle(short int from, short int to, short int numOfStep, time *ptr) {
 	ptr->from = from;
 	ptr->to = to;
 	ptr->numOfStep = numOfStep;
 	ptr->timeOfChange = lba_time;
 }
 
-void setActorAngleSafe(short int arg_0, short int arg_4, short int arg_8, time *timePtr)
-{
+void setActorAngleSafe(short int arg_0, short int arg_4, short int arg_8, time *timePtr) {
 	timePtr->from = arg_0 & 0x3FF;
 	timePtr->to = arg_4 & 0x3FF;
 	timePtr->numOfStep = arg_8 & 0x3FF;
 	timePtr->timeOfChange = lba_time;
 }
 
-int getRealAngle(time *angleData)
-{
+int getRealAngle(time *angleData) {
 	int timePassed;
 	int remainingAngle;
 
-	if (angleData->numOfStep)
-	{
+	if (angleData->numOfStep) {
 		timePassed = lba_time - angleData->timeOfChange;
 
-		if (timePassed >= angleData->numOfStep) {	// rotation is finished
+		if (timePassed >= angleData->numOfStep) {   // rotation is finished
 			angleData->numOfStep = 0;
 			return angleData->to;
 		}
@@ -71,8 +67,7 @@ int getRealAngle(time *angleData)
 	return angleData->to;
 }
 
-int getRealValue(time *angleData)
-{
+int getRealValue(time *angleData) {
 	int tempAngle;
 
 	if (!angleData->numOfStep)

@@ -31,15 +31,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <SDL/SDL_mixer.h>
 SDL_CD *cdrom;
 
-void openCD(void)
-{
+void openCD(void) {
 	cdrom = NULL;
 	if (SDL_CDNumDrives() > 0)
 		cdrom = SDL_CDOpen(0);
 }
 
-void closeCD(void)
-{
+void closeCD(void) {
 	SDL_CDClose(cdrom);
 }
 
@@ -56,15 +54,13 @@ char playCDtrack(int trackNumber) {
 
 	Mix_FadeOutMusic(500);
 
-	if (cdrom != NULL)
-	{
+	if (cdrom != NULL) {
 		if (SDL_CDStatus(cdrom) == CD_PLAYING)
 			SDL_CDStop(cdrom);
 		if (CD_INDRIVE(SDL_CDStatus(cdrom)))
 			SDL_CDPlayTracks(cdrom, trackNumber, 0, 1, 0);
 		return 1;
-	}
-	else
+	} else
 		return 0;
 
 	unfreezeTime();

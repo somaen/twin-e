@@ -43,19 +43,19 @@ void AdelineLogo(void) {
 #endif
 }
 
-void fadeIn(byte * palette) {
+void fadeIn(byte *palette) {
 	int i = 100;
 
 	for (i = 0; i < 100; i += 3)
 		adjustPalette(255, 255, 255, palette, i);
 }
 
-void adjustPalette(byte R, byte G, byte B, byte * palette, int intensity) {
+void adjustPalette(byte R, byte G, byte B, byte *palette, int intensity) {
 	byte localPalette[1024];
 
 	int i;
 
-	for (i = 0; i < 256*4; i += 4) {
+	for (i = 0; i < 256 * 4; i += 4) {
 		localPalette[i] = RegleTrois32(R, palette[i], 100, intensity);
 		localPalette[i + 1] = RegleTrois32(G, palette[i + 1], 100, intensity);
 		localPalette[i + 2] = RegleTrois32(B, palette[i + 2], 100, intensity);
@@ -105,26 +105,23 @@ void FadeToPal(char *palette) {
 	for (i = 0; i <= 100; i += 3)
 		adjustPalette(0, 0, 0, (byte *) palette, i);
 
-	os_setPalette((byte*)palette);
+	os_setPalette((byte *)palette);
 
 	palReseted = 0;
 
 }
 
-void blackToWhite(void)
-{
+void blackToWhite(void) {
 	byte palette[1024];
 	int i;
 
-	for (i = 255; i >= 0; i -= 3)
-	{
+	for (i = 255; i >= 0; i -= 3) {
 		memset(palette, i, 1024);
 		os_setPalette(palette);
 	}
 }
 
-void SetBackPal(void)
-{
+void SetBackPal(void) {
 	memset(palette, 0, 768);
 	memset(paletteRGBA, 0, 1024);
 
@@ -133,7 +130,7 @@ void SetBackPal(void)
 	palReseted = 1;
 }
 
-void convertPalToRGBA(byte * palSource, byte * palDest) {
+void convertPalToRGBA(byte *palSource, byte *palDest) {
 	int i;
 
 	for (i = 0; i < 256; i++) {

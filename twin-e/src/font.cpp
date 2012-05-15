@@ -27,7 +27,7 @@ int spaceLenght;
 int textColor;
 int stringLenght;
 
-void SetFont(byte * font, int param2, int param1) {
+void SetFont(byte *font, int param2, int param1) {
 	fntFont = font;
 	interCharSpace = param2;
 	spaceLenght = param1;
@@ -65,7 +65,7 @@ void drawCharacter(int X, int Y, unsigned char caractere) {
 
 	usedColor = textColor;
 
-	screen = frontVideoBuffer + WINDOW_X*Y + X;
+	screen = frontVideoBuffer + WINDOW_X * Y + X;
 
 	tempX = X;
 	tempY = Y;
@@ -91,7 +91,7 @@ void drawCharacter(int X, int Y, unsigned char caractere) {
 				number = *(data++);
 				for (i = 0; i < number; i++) {
 					if (tempX >= textWindowLeft && tempX < textWindowRight && tempY >= textWindowTop && tempY < textWindowBottom)
-						frontVideoBuffer[640*tempY + tempX] = usedColor;
+						frontVideoBuffer[640 * tempY + tempX] = usedColor;
 
 					screen++;
 					tempX++;
@@ -118,7 +118,7 @@ void Font(int X, int Y, char *string) {
 	if (fntFont == 0)   // if the font is defined
 		return;
 
-	for (character = -1; character != 0; character = (unsigned char)*(string++)) {
+	for (character = -1; character != 0; character = (unsigned char) * (string++)) {
 		if (character == 0x20) {
 			X += spaceLenght;
 		} else {

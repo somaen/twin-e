@@ -39,8 +39,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define NUM_MAX_BRICKS 9000
 
-unsigned char* brickTable[NUM_MAX_BRICKS];
-unsigned char* brickMaskTable[NUM_MAX_BRICKS];
+unsigned char *brickTable[NUM_MAX_BRICKS];
+unsigned char *brickMaskTable[NUM_MAX_BRICKS];
 unsigned int brickSizeTable[NUM_MAX_BRICKS];
 unsigned char brickUsageTable[NUM_MAX_BRICKS];
 
@@ -250,7 +250,7 @@ void LoadScene(int sceneNumber) {
 
 	/* TODO: make the loading error handling */
 
-	temp = (unsigned char*)scenePtr;
+	temp = (unsigned char *)scenePtr;
 
 	currentTextBank = READ_LE_BYTE(temp);
 	temp++;
@@ -599,7 +599,7 @@ void SetComportement(int newComportement) {
 int loadBrk(int gridSize) {
 	unsigned int firstBrick = 60000; // should be MAX_UINT
 	unsigned int lastBrick = 0; // should be MIN_UINT
-	unsigned char* ptrToBllBits;
+	unsigned char *ptrToBllBits;
 	unsigned int i;
 	unsigned int j;
 	unsigned int numUsedBricks;
@@ -612,13 +612,13 @@ int loadBrk(int gridSize) {
 	ptrToBllBits = currentGrid + (gridSize - 32);
 
 	// build up a map of all used bricks in the room
-	for (i = 1;i < 256;i++) {
+	for (i = 1; i < 256; i++) {
 		unsigned char currentBitByte = *(ptrToBllBits + (i / 8));
 		unsigned char currentBitMask = 1 << (7 - (i & 7));
 
 		if (currentBitByte & currentBitMask) {
 			unsigned int currentBllOffset = READ_LE_U32(currentBll + currentBllEntryIdx);
-			unsigned char* currentBllPtr = currentBll + currentBllOffset;
+			unsigned char *currentBllPtr = currentBll + currentBllOffset;
 
 			unsigned int bllSizeX = currentBllPtr[0];
 			unsigned int bllSizeY = currentBllPtr[1];
@@ -626,9 +626,9 @@ int loadBrk(int gridSize) {
 
 			unsigned int bllSize = bllSizeX * bllSizeY * bllSizeZ;
 
-			unsigned char* bllDataPtr = currentBllPtr + 5;
+			unsigned char *bllDataPtr = currentBllPtr + 5;
 
-			for (j = 0;j < bllSize;j++) {
+			for (j = 0; j < bllSize; j++) {
 				unsigned int brickIdx = READ_LE_U16(bllDataPtr);
 
 				if (brickIdx) {
@@ -650,14 +650,14 @@ int loadBrk(int gridSize) {
 
 	// compute the number of bricks to load
 	numUsedBricks = 0;
-	for (i = firstBrick;i <= lastBrick;i++)
+	for (i = firstBrick; i <= lastBrick; i++)
 		if (brickUsageTable[i]) // was brick noted as used ?
 			numUsedBricks++;
 
-	for (i = firstBrick;i <= lastBrick;i++) {
+	for (i = firstBrick; i <= lastBrick; i++) {
 		if (brickUsageTable[i]) {
 			brickSizeTable[i] = Size_HQR("LBA_BRK.HQR", i);
-			brickTable[i] = (unsigned char*)malloc(brickSizeTable[i]);
+			brickTable[i] = (unsigned char *)malloc(brickSizeTable[i]);
 			Load_HQR("LBA_BRK.HQR", brickTable[i], i);
 		}
 	}
@@ -668,13 +668,13 @@ int loadBrk(int gridSize) {
 int CreateMaskGph() {
 	int i;
 
-	for (i = 0;i < NUM_MAX_BRICKS;i++) {
+	for (i = 0; i < NUM_MAX_BRICKS; i++) {
 		if (brickUsageTable[i]) {
-			brickMaskTable[i] = (unsigned char*)malloc(brickSizeTable[i]);
+			brickMaskTable[i] = (unsigned char *)malloc(brickSizeTable[i]);
 
 			CalcGraphMsk(brickTable[i], brickMaskTable[i]);
 		}
 	}
-    return 1;
+	return 1;
 }
 

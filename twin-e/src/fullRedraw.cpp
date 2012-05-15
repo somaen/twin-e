@@ -38,8 +38,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "fullRedraw.h"
 
-extern unsigned char* brickTable[];
-extern unsigned char* brickMaskTable[];
+extern unsigned char *brickTable[];
+extern unsigned char *brickMaskTable[];
 
 int zbufferVar1;
 int zbufferVar2;
@@ -123,7 +123,7 @@ void fullRedraw(int param) {
 		lactor = &actors[arg_1A];
 		lactor->dynamicFlagsBF.wasDrawn = 0;  // recheck -> reinit the draw flags for the current objects
 
-		if ((useAnotherGrm == -1) || (lactor->Y <= READ_LE_S16((currentGrid2) * 24 + (char*)zoneData + 8))) { // eject characters hidden when using another GRM
+		if ((useAnotherGrm == -1) || (lactor->Y <= READ_LE_S16((currentGrid2) * 24 + (char *)zoneData + 8))) { // eject characters hidden when using another GRM
 
 			if (lactor->staticFlagsBF.isBackgrounded && param == 0) {  // background actor, no redraw required
 				// calculate the actor position on screen
@@ -138,7 +138,7 @@ void fullRedraw(int param) {
 					projectPositionOnScreen(lactor->X - cameraX, lactor->Y - cameraZ, lactor->Z - cameraY);
 
 					if (((lactor->staticFlagsBF.isUsingClipping) && projectedPositionX > -112 && projectedPositionX < 752 && projectedPositionY > -50 && projectedPositionY < 651)
-							|| ((!(lactor->staticFlagsBF.isUsingClipping)) && projectedPositionX > -50 && projectedPositionX < 680 && projectedPositionY > -30 && projectedPositionY < 580)) {
+					        || ((!(lactor->staticFlagsBF.isUsingClipping)) && projectedPositionX > -50 && projectedPositionX < 680 && projectedPositionY > -30 && projectedPositionY < 580)) {
 						temp3 = lactor->Z + lactor->X - cameraX - cameraY;
 
 						if (lactor->standOn != -1) // if actor is on another actor
@@ -249,7 +249,7 @@ void fullRedraw(int param) {
 			if (flags < 0xC00) { // actor
 				if (!flags) {
 					if (lactor->previousAnimIndex != -1) // TODO: this shouldn't be required but crash when drawing the soldier getting out of the yellow moto. To investigate...
-						SetInterAnimObjet(lactor->animPosition, (char*)HQR_Get(HQR_Anims, lactor->previousAnimIndex), (char*)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
+						SetInterAnimObjet(lactor->animPosition, (char *)HQR_Get(HQR_Anims, lactor->previousAnimIndex), (char *)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
 
 					if (!AffObjetIso(lactor->X - cameraX, lactor->Y - cameraZ, lactor->Z - cameraY, 0, lactor->angle, 0, bodyPtrTab[lactor->costumeIndex])) {
 						if (renderLeft < 0)
@@ -308,7 +308,7 @@ void fullRedraw(int param) {
 				AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
 			} else if (flags < 0x1000) {
 				printf("Draw actor <0x1000 %d\n",
-					   drawList[arg_1E].field_2 & 0x3FF);
+				       drawList[arg_1E].field_2 & 0x3FF);
 			} else if (flags == 0x1000) { // sprite actor
 				projectPositionOnScreen(lactor->X - cameraX, lactor->Y - cameraZ, lactor->Z - cameraY);
 				GetDxDyGraph(0, &spriteWidth, &spriteHeight, HQR_Get(HQR_Sprites, lactor->costumeIndex));
@@ -350,7 +350,7 @@ void fullRedraw(int param) {
 				}
 			} else if (flags == 0x1800) { // extras
 				int extraFlag;
-				extraListStruct* extraEntry = &extraList[actorNumber];
+				extraListStruct *extraEntry = &extraList[actorNumber];
 
 				projectPositionOnScreen(extraEntry->X - cameraX, extraEntry->Z - cameraZ, extraEntry->Y - cameraY);
 
@@ -361,8 +361,8 @@ void fullRedraw(int param) {
 				} else {
 					GetDxDyGraph(0, &spriteWidth, &spriteHeight, HQR_Get(HQR_Sprites, extraEntry->field_0));
 
-					renderLeft = (*(short int*)(((extraEntry->field_0 * 8) * 2) + spriteActorData)) + projectedPositionX;
-					renderTop = (*(short int*)(((extraEntry->field_0 * 8) * 2) + spriteActorData) + 2) + projectedPositionY;
+					renderLeft = (*(short int *)(((extraEntry->field_0 * 8) * 2) + spriteActorData)) + projectedPositionX;
+					renderTop = (*(short int *)(((extraEntry->field_0 * 8) * 2) + spriteActorData) + 2) + projectedPositionY;
 
 					renderRight = renderLeft + spriteWidth;
 					renderBottom = renderTop + spriteHeight;
@@ -385,172 +385,172 @@ void fullRedraw(int param) {
 
 	counter2 = 0;
 
-	for (i = 0;i < 10;i++) {
+	for (i = 0; i < 10; i++) {
 		if (overlayObjectList[i].field_0 != -1) {
 			switch (overlayObjectList[i].positionType) {
 			case 0: { // normal
-					if (lba_time >= overlayObjectList[i].timeToDie) {
-						overlayObjectList[i].field_0 = -1;
-						continue;
-					}
-					break;
+				if (lba_time >= overlayObjectList[i].timeToDie) {
+					overlayObjectList[i].field_0 = -1;
+					continue;
 				}
+				break;
+			}
 			case 1: { // follow actor
-					projectPositionOnScreen(actors[overlayObjectList[i].followedActor].X - cameraX, actors[overlayObjectList[i].followedActor].boudingBox.Y.topRight - cameraZ, actors[overlayObjectList[i].followedActor].Z - cameraY);
+				projectPositionOnScreen(actors[overlayObjectList[i].followedActor].X - cameraX, actors[overlayObjectList[i].followedActor].boudingBox.Y.topRight - cameraZ, actors[overlayObjectList[i].followedActor].Z - cameraY);
 
-					overlayObjectList[i].X = projectedPositionX;
-					overlayObjectList[i].Y = projectedPositionY;
+				overlayObjectList[i].X = projectedPositionX;
+				overlayObjectList[i].Y = projectedPositionY;
 
-					if (lba_time >= overlayObjectList[i].timeToDie) {
-						overlayObjectList[i].field_0 = -1;
-						continue;
-					}
-
-					break;
+				if (lba_time >= overlayObjectList[i].timeToDie) {
+					overlayObjectList[i].field_0 = -1;
+					continue;
 				}
+
+				break;
+			}
 			}
 
 			switch (overlayObjectList[i].type) {
 			case 0: { // sprite
-					unsigned char* pSprite;
+				unsigned char *pSprite;
 
-					pSprite = HQR_Get(HQR_Sprites, overlayObjectList[i].field_0);
+				pSprite = HQR_Get(HQR_Sprites, overlayObjectList[i].field_0);
 
-					GetDxDyGraph(0, &spriteWidth, &spriteHeight, pSprite);
+				GetDxDyGraph(0, &spriteWidth, &spriteHeight, pSprite);
 
-					renderLeft = (*(short int*)(((overlayObjectList[i].field_0 * 8) * 2) + spriteActorData)) + overlayObjectList[i].X;
-					renderTop = (*(short int*)(((overlayObjectList[i].field_0 * 8) * 2) + spriteActorData) + 2) + overlayObjectList[i].Y;
+				renderLeft = (*(short int *)(((overlayObjectList[i].field_0 * 8) * 2) + spriteActorData)) + overlayObjectList[i].X;
+				renderTop = (*(short int *)(((overlayObjectList[i].field_0 * 8) * 2) + spriteActorData) + 2) + overlayObjectList[i].Y;
 
-					renderRight = renderLeft + spriteWidth;
-					renderBottom = renderTop + spriteHeight;
+				renderRight = renderLeft + spriteWidth;
+				renderBottom = renderTop + spriteHeight;
 
-					AffGraph(0, renderLeft, renderTop, pSprite);
+				AffGraph(0, renderLeft, renderTop, pSprite);
 
-					if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
-						AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
+				if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
+					AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
 
-					break;
-				}
+				break;
+			}
 			case 1: { // number
-					char tempString[10];
+				char tempString[10];
 
-					sprintf(tempString, "%d", overlayObjectList[i].field_0);
+				sprintf(tempString, "%d", overlayObjectList[i].field_0);
 
-					spriteWidth = SizeFont(tempString);
-					spriteHeight = 48;
+				spriteWidth = SizeFont(tempString);
+				spriteHeight = 48;
 
-					renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
-					renderRight = overlayObjectList[i].X + (spriteWidth / 2);
-					renderTop = overlayObjectList[i].Y - 24;
-					renderBottom = overlayObjectList[i].Y + spriteHeight;
+				renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
+				renderRight = overlayObjectList[i].X + (spriteWidth / 2);
+				renderTop = overlayObjectList[i].Y - 24;
+				renderBottom = overlayObjectList[i].Y + spriteHeight;
 
-					SetClip(renderLeft, renderTop, renderRight, renderBottom);
+				SetClip(renderLeft, renderTop, renderRight, renderBottom);
 
-					CoulFont(overlayObjectList[i].followedActor);
+				CoulFont(overlayObjectList[i].followedActor);
 
-					Font(renderLeft, renderTop, tempString);
+				Font(renderLeft, renderTop, tempString);
 
-					if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
-						AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
+				if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
+					AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
 
-					break;
-				}
+				break;
+			}
 			case 2: { // number range
-					char tempString[10];
+				char tempString[10];
 
-					sprintf(tempString, "%d", BoundRegleTrois(overlayObjectList[i].followedActor, overlayObjectList[i].field_0, 100, (overlayObjectList[i].timeToDie - lba_time - 50)));
+				sprintf(tempString, "%d", BoundRegleTrois(overlayObjectList[i].followedActor, overlayObjectList[i].field_0, 100, (overlayObjectList[i].timeToDie - lba_time - 50)));
 
-					spriteWidth = SizeFont(tempString);
-					spriteHeight = 48;
+				spriteWidth = SizeFont(tempString);
+				spriteHeight = 48;
 
-					renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
-					renderRight = overlayObjectList[i].X + (spriteWidth / 2);
-					renderTop = overlayObjectList[i].Y - 24;
-					renderBottom = overlayObjectList[i].Y + spriteHeight;
+				renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
+				renderRight = overlayObjectList[i].X + (spriteWidth / 2);
+				renderTop = overlayObjectList[i].Y - 24;
+				renderBottom = overlayObjectList[i].Y + spriteHeight;
 
-					SetClip(renderLeft, renderTop, renderRight, renderBottom);
+				SetClip(renderLeft, renderTop, renderRight, renderBottom);
 
-					CoulFont(155);
+				CoulFont(155);
 
-					Font(renderLeft, renderTop, tempString);
+				Font(renderLeft, renderTop, tempString);
 
-					if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
-						AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
+				if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
+					AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
 
-					break;
-				}
+				break;
+			}
 			case 3: { // 3d object
-					unsigned char* pObject;
+				unsigned char *pObject;
 
-					Box(10, 10, 69, 69, 0);
-					SetClip(10, 10, 69, 69);
+				Box(10, 10, 69, 69, 0);
+				SetClip(10, 10, 69, 69);
 
-					pObject = HQR_Get(HQR_Inventory, overlayObjectList[i].field_0);
+				pObject = HQR_Get(HQR_Inventory, overlayObjectList[i].field_0);
 
-					if (HQR_Flag) {
-						loadGfxSub(pObject);
-					}
-
-					setCameraPosition(40, 40, 128, 200, 200);
-					setCameraAngle(0, 0, 0, 60, 0, 0, 16000);
-
-					overlay3dObect += 8;
-
-					AffObjetIso(0, 0, 0, 0, overlay3dObect, 0, pObject);
-
-					if (renderLeft < 0)
-						renderLeft = 0;
-
-					if (renderTop < 0)
-						renderTop = 0;
-
-					if (renderRight >= 640)
-						renderRight = 639;
-
-					if (renderBottom >= 480)
-						renderBottom = 479;
-
-					DrawCadre(10, 10, 69, 69);
-					AddPhysBox(10, 10, 69, 69);
-
-					reinitAll1();
-					break;
+				if (HQR_Flag) {
+					loadGfxSub(pObject);
 				}
+
+				setCameraPosition(40, 40, 128, 200, 200);
+				setCameraAngle(0, 0, 0, 60, 0, 0, 16000);
+
+				overlay3dObect += 8;
+
+				AffObjetIso(0, 0, 0, 0, overlay3dObect, 0, pObject);
+
+				if (renderLeft < 0)
+					renderLeft = 0;
+
+				if (renderTop < 0)
+					renderTop = 0;
+
+				if (renderRight >= 640)
+					renderRight = 639;
+
+				if (renderBottom >= 480)
+					renderBottom = 479;
+
+				DrawCadre(10, 10, 69, 69);
+				AddPhysBox(10, 10, 69, 69);
+
+				reinitAll1();
+				break;
+			}
 			case 4: { // text
-					char tempString[256];
-					GetMultiText(overlayObjectList[i].field_0, tempString);
+				char tempString[256];
+				GetMultiText(overlayObjectList[i].field_0, tempString);
 
-					spriteWidth = SizeFont(tempString);
-					spriteHeight = 48;
+				spriteWidth = SizeFont(tempString);
+				spriteHeight = 48;
 
-					renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
-					renderRight = overlayObjectList[i].X + (spriteWidth / 2);
-					renderTop = overlayObjectList[i].Y - 24;
-					renderBottom = overlayObjectList[i].Y + spriteHeight;
+				renderLeft = overlayObjectList[i].X - (spriteWidth / 2);
+				renderRight = overlayObjectList[i].X + (spriteWidth / 2);
+				renderTop = overlayObjectList[i].Y - 24;
+				renderBottom = overlayObjectList[i].Y + spriteHeight;
 
-					if (renderLeft < 0)
-						renderLeft = 0;
+				if (renderLeft < 0)
+					renderLeft = 0;
 
-					if (renderTop < 0)
-						renderTop = 0;
+				if (renderTop < 0)
+					renderTop = 0;
 
-					if (renderRight > 639)
-						renderRight = 639;
+				if (renderRight > 639)
+					renderRight = 639;
 
-					if (renderBottom > 479)
-						renderBottom = 479;
+				if (renderBottom > 479)
+					renderBottom = 479;
 
-					SetClip(renderLeft, renderTop, renderRight, renderBottom);
+				SetClip(renderLeft, renderTop, renderRight, renderBottom);
 
-					CoulFont(actors[overlayObjectList[i].followedActor].talkColor);
+				CoulFont(actors[overlayObjectList[i].followedActor].talkColor);
 
-					Font(renderLeft, renderTop, tempString);
+				Font(renderLeft, renderTop, tempString);
 
-					if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
-						AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
+				if ((textWindowLeft <= textWindowRight) && (textWindowTop <= textWindowBottom))
+					AddPhysBox(textWindowLeft, textWindowTop, renderRight, renderBottom);
 
-					break;
-				}
+				break;
+			}
 			}
 		}
 	}
@@ -592,7 +592,7 @@ void fullRedraw(int param) {
 
 void blitBackgroundOnDirtyBoxes(void) {
 	int i;
-	currentDirtyBoxListStruct* currentBox;
+	currentDirtyBoxListStruct *currentBox;
 
 	currentBox = currentDirtyBoxList;
 
@@ -679,7 +679,7 @@ void redrawCube(void) {
 	int i;
 	int x, y, z;
 	unsigned char val;
-	cubeType* cube = (cubeType*)bufCube;
+	cubeType *cube = (cubeType *)bufCube;
 
 	cameraX = newCameraX << 9;
 	cameraZ = newCameraZ << 8;
@@ -736,7 +736,7 @@ void zbuffer(int var1, int var2, int x, int z, int y) {
 		return;
 
 	/* Draws the cubes */
-	AffGraph(bx - 1, zbufferVar1, zbufferVar2, (unsigned char*)brickTable);
+	AffGraph(bx - 1, zbufferVar1, zbufferVar2, (unsigned char *)brickTable);
 
 	zbufferIndex = (zbufferVar1 + 24) / 24;
 
@@ -791,7 +791,7 @@ void AffGraph(int num, int var1, int var2, unsigned char *localBufferBrick) {
 	assert(textWindowTop >= 0);
 	assert(textWindowBottom <= 479);
 
-	if (localBufferBrick != (unsigned char*)brickTable) {
+	if (localBufferBrick != (unsigned char *)brickTable) {
 		ptr = localBufferBrick + READ_LE_U32(localBufferBrick + num * 4);
 	} else {
 		ptr = brickTable[num];
@@ -810,7 +810,7 @@ void AffGraph(int num, int var1, int var2, unsigned char *localBufferBrick) {
 	right++;
 	bottom++;
 
-	outPtr = frontVideoBuffer + WINDOW_X*top + left;
+	outPtr = frontVideoBuffer + WINDOW_X * top + left;
 
 	offset = -((right - left) - WINDOW_X);
 
@@ -828,17 +828,17 @@ void AffGraph(int num, int var1, int var2, unsigned char *localBufferBrick) {
 				if (!(temp & 0x40)) {
 					temp = *(ptr++);
 					for (i = 0; i < iteration; i++) {
-						if (x >= textWindowLeft && x<textWindowRight && y >= textWindowTop && y < textWindowBottom)
-							frontVideoBuffer[y*640+x] = temp;
+						if (x >= textWindowLeft && x < textWindowRight && y >= textWindowTop && y < textWindowBottom)
+							frontVideoBuffer[y * 640 + x] = temp;
 
 						x++;
 						outPtr++;
 					}
-				/* Not the same color */
+					/* Not the same color */
 				} else {
 					for (i = 0; i < iteration; i++) {
-						if (x >= textWindowLeft && x<textWindowRight && y >= textWindowTop && y < textWindowBottom)
-							frontVideoBuffer[y*640+x] = *ptr;
+						if (x >= textWindowLeft && x < textWindowRight && y >= textWindowTop && y < textWindowBottom)
+							frontVideoBuffer[y * 640 + x] = *ptr;
 
 						x++;
 						ptr++;
@@ -916,10 +916,8 @@ void DrawOverBrick(int X, int Z, int Y) {
 	CopyBlockPhysLeft = ((textWindowLeft + 24) / 24) - 1;
 	CopyBlockPhysRight = ((textWindowRight + 24) / 24);
 
-	for (j = CopyBlockPhysLeft; j <= CopyBlockPhysRight; j++)
-	{
-		for (i = 0; i < zbufferTab[j]; i++)
-		{
+	for (j = CopyBlockPhysLeft; j <= CopyBlockPhysRight; j++) {
+		for (i = 0; i < zbufferTab[j]; i++) {
 			currentZbufferData = &zbufferData[j][i];
 
 			if (currentZbufferData->drawY + 38 > textWindowTop && currentZbufferData->drawY <= textWindowBottom && currentZbufferData->z >= Z)
@@ -956,8 +954,7 @@ void DrawOverBrick(int X, int Z, int Y) {
 	}
 }
 
-void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte * buffer)
-{
+void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte *buffer) {
 	unsigned char *ptr;
 	int top;
 	int bottom;
@@ -1037,8 +1034,8 @@ void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte * b
 			return;
 	}
 
-	outPtr = frontVideoBuffer + WINDOW_X*absY + left;
-	inPtr = buffer + WINDOW_X*absY + left;
+	outPtr = frontVideoBuffer + WINDOW_X * absY + left;
+	inPtr = buffer + WINDOW_X * absY + left;
 
 	do {
 		vc3 = *(ptr++);
@@ -1056,7 +1053,7 @@ void CopyMask(int spriteNum, int x, int y, /*byte * localBufferBrick, */byte * b
 
 			temp = *(ptr++); // copy size
 
-			for (j = 0;j < temp;j++) {
+			for (j = 0; j < temp; j++) {
 				if (absX >= textWindowLeft && absX <= textWindowRight)
 					*outPtr = *inPtr;
 
@@ -1100,18 +1097,17 @@ void AddPhysBox(int left, int top, int right, int bottom) {
 
 //sort character list using bubble-sort
 //TODO: make real use of stepSize to tell the scructure size
-void SmallSort(drawListStruct *list, int listSize/* , int stepSize*/)
-{
+void SmallSort(drawListStruct *list, int listSize/* , int stepSize*/) {
 	int i;
 	int j;
 
 	drawListStruct tempStruct;
 
-	for (i = 0;i < listSize - 1;i++) {
-		for (j = 0;j < listSize - 1 - i;j++) {
-			if (list[j+1].field_0 < list[j].field_0) {
-				memcpy(&tempStruct, &list[j+1], sizeof(drawListStruct));
-				memcpy(&list[j+1], &list[j], sizeof(drawListStruct));
+	for (i = 0; i < listSize - 1; i++) {
+		for (j = 0; j < listSize - 1 - i; j++) {
+			if (list[j + 1].field_0 < list[j].field_0) {
+				memcpy(&tempStruct, &list[j + 1], sizeof(drawListStruct));
+				memcpy(&list[j + 1], &list[j], sizeof(drawListStruct));
 				memcpy(&list[j], &tempStruct, sizeof(drawListStruct));
 			}
 		}

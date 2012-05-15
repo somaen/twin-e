@@ -38,8 +38,7 @@ short int loadCostumeVar6;
 
 void LoadFicPerso(void) {
 	unsigned short int i;
-	for (i = 0; i < 5; i++)
-	{
+	for (i = 0; i < 5; i++) {
 		HQRM_Load("file3d.hqr", i, &file3D[i]);
 		twinsen->entityDataPtr = file3D[i];
 		TCos[i] = getAnimIndexForBody(0, 0);
@@ -66,7 +65,7 @@ void InitBody(char bodyNum, short int actorNumber) {
 	if (lactor->staticFlagsBF.isSpriteActor)
 		return;
 
-	if (actorNumber == 0 && comportementHero == 4 && lactor->field_14 != 0 && lactor->field_14 != 1) {	// Si c'est twinsen qu'on load
+	if (actorNumber == 0 && comportementHero == 4 && lactor->field_14 != 0 && lactor->field_14 != 1) {  // Si c'est twinsen qu'on load
 		SetComportement(0);
 	}
 
@@ -160,10 +159,10 @@ void CopyInterAnim(unsigned char *arg_0, unsigned char *arg_4) {
 	short int ax;
 	int i;
 
-	if (!(READ_LE_S16(arg_0)&2))
+	if (!(READ_LE_S16(arg_0) & 2))
 		return;
 
-	if (!(READ_LE_S16(arg_4)&2))
+	if (!(READ_LE_S16(arg_4) & 2))
 		return;
 
 	arg_0 += 16;
@@ -186,7 +185,7 @@ void CopyInterAnim(unsigned char *arg_0, unsigned char *arg_4) {
 	arg_0 += 10;
 	arg_4 += 10;
 
-	for (i = 0;i < cx;i++) {
+	for (i = 0; i < cx; i++) {
 		WRITE_LE_U32(arg_4, READ_LE_U32(arg_0));
 		WRITE_LE_U32(arg_4 + 4, READ_LE_U32(arg_0 + 4));
 

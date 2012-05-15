@@ -32,8 +32,7 @@ int getAnimIndexForBody(byte anim, short int actorNumber) {
 	act = &actors[actorNumber];
 	bodyPtr = act->entityDataPtr;
 
-	for (;;)
-    {
+	for (;;) {
 		type = *(bodyPtr++);
 
 		if (type == -1) {
@@ -43,8 +42,7 @@ int getAnimIndexForBody(byte anim, short int actorNumber) {
 
 		ptr = (bodyPtr + 1);
 
-		if (type == 3 && anim == *bodyPtr)
-        {
+		if (type == 3 && anim == *bodyPtr) {
 			ptr++;
 			var1 = READ_LE_S16(ptr);
 			ptr += 2;

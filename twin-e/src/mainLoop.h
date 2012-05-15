@@ -29,7 +29,7 @@ void reinitAll3(void);
 void reinitVars(void);
 void Box(int a, int b, int c, int d, unsigned char e);
 void DrawObj3D(short int arg_0, short int arg_4, short int arg_8, short int arg_C,
-			   short int arg_10, short int arg_14, unsigned char *arg_18);
+               short int arg_10, short int arg_14, unsigned char *arg_18);
 void SetClip(int left, int top, int right, int bottom);
 void DoDir(int actorNum);
 void DoAnim(int actorNum);

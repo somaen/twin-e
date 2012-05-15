@@ -27,14 +27,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 actor actors[100];
 actor *twinsen = &actors[0];
 
-void initActor(short int id)
-{
+void initActor(short int id) {
 	actor *lactor;
 
 	lactor = &actors[id];
 
-	if (lactor->staticFlagsBF.isSpriteActor) // if sprite actor
-	{
+	if (lactor->staticFlagsBF.isSpriteActor) { // if sprite actor
 		if (lactor->field_66 != 0)
 			lactor->dynamicFlagsBF.bUnk0002 = 1;
 
@@ -44,15 +42,12 @@ void initActor(short int id)
 
 		setActorAngleSafe(0, 0, 0, &lactor->time);
 
-		if (lactor->staticFlagsBF.isUsingClipping)
-		{
+		if (lactor->staticFlagsBF.isUsingClipping) {
 			lactor->lastX = lactor->X;
 			lactor->lastZ = lactor->Y;
 			lactor->lastY = lactor->Z;
 		}
-	}
-	else
-	{
+	} else {
 		lactor->costumeIndex = -1;
 
 		InitBody(lactor->body, id);
@@ -71,8 +66,7 @@ void initActor(short int id)
 	lactor->positionInActorScript = 0;
 }
 
-void resetActor(short int id)
-{
+void resetActor(short int id) {
 	actor *localActor;
 
 	localActor = &actors[id];
@@ -123,12 +117,10 @@ void resetActor(short int id)
 	localActor->positionInActorScript = 0;
 }
 
-void initSprite(int imageId, short int actorId)
-{
+void initSprite(int imageId, short int actorId) {
 	actor *lactor = &actors[actorId];
 
-	if (lactor->staticFlagsBF.isSpriteActor && imageId != -1 && lactor->costumeIndex != imageId)
-	{
+	if (lactor->staticFlagsBF.isSpriteActor && imageId != -1 && lactor->costumeIndex != imageId) {
 		short int *ptr;
 
 		lactor->costumeIndex = imageId;
@@ -144,8 +136,7 @@ void initSprite(int imageId, short int actorId)
 	}
 }
 
-void checkCarrier(short int id)
-{
+void checkCarrier(short int id) {
 	short int i;
 
 	if (actors[id].staticFlagsBF.isCarrier)

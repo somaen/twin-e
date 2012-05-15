@@ -54,8 +54,7 @@ byte *lbaFont;
 
 byte *bufCube;
 
-static void init(void)
-{
+static void init(void) {
 	openCD();
 	soundInit();
 
@@ -66,8 +65,8 @@ static void init(void)
 	os_initVideoBuffer(flaBuffer, 320, 200);
 
 #if USE_SDL_MIXER == 1
-    printf("Sound activated\n");
-	HQR_Midi = HQR_Init_Ressource("midi_mi_win.hqr",32000,2);
+	printf("Sound activated\n");
+	HQR_Midi = HQR_Init_Ressource("midi_mi_win.hqr", 32000, 2);
 #endif
 
 #ifndef FASTDEBUG
@@ -80,12 +79,12 @@ static void init(void)
 	bufOrder = malloc(BUF_ORDER_SIZE);
 	bufAni1 = bufAni2 = malloc(BUF_ANIM_SIZE);
 
-    bufCube = malloc(204800);  // 204800 = 64*64*25*2
+	bufCube = malloc(204800);  // 204800 = 64*64*25*2
 
-    HQRM_Load("ress.hqr", 0, (unsigned char**)&menuPal);
-    HQRM_Load("ress.hqr", 1, (unsigned char**)&lbaFont);
-    HQRM_Load("ress.hqr", 3, (unsigned char**)&spriteActorData);
-    HQRM_Load("ress.hqr", 4, (unsigned char**)&shadowSprite);
+	HQRM_Load("ress.hqr", 0, (unsigned char **)&menuPal);
+	HQRM_Load("ress.hqr", 1, (unsigned char **)&lbaFont);
+	HQRM_Load("ress.hqr", 3, (unsigned char **)&spriteActorData);
+	HQRM_Load("ress.hqr", 4, (unsigned char **)&shadowSprite);
 
 	convertPalToRGBA(menuPal, menuPalRGBA);
 
@@ -139,8 +138,7 @@ static void init(void)
 }
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	os_init(argc, argv);
 
 	init();
@@ -150,8 +148,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void newGame(void)
-{
+void newGame(void) {
 	int flagDisplayTextSave;
 #ifndef FASTDEBUG
 	int screen;
@@ -174,11 +171,10 @@ void newGame(void)
 	newGame2();
 	TestCoulDial(15);
 
-	for (screen = 0; screen < 3 && !os_isPressed(KEY_SKIP); screen++)
-	{
-		Load_HQR("ress.hqr", workVideoBuffer, 15 + screen*2);
+	for (screen = 0; screen < 3 && !os_isPressed(KEY_SKIP); screen++) {
+		Load_HQR("ress.hqr", workVideoBuffer, 15 + screen * 2);
 		CopyScreen(workVideoBuffer, frontVideoBuffer);
-		Load_HQR("ress.hqr", palette, 16 + screen*2);
+		Load_HQR("ress.hqr", palette, 16 + screen * 2);
 		convertPalToRGBA(palette, paletteRGBA);
 
 		os_crossFade((char *) frontVideoBuffer, (char *) paletteRGBA);

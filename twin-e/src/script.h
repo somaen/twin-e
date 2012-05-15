@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 } scriptOpcodes;*/
 
 void runActorScript(short int actorNumber);
-void manipActor(actor * lactor);
+void manipActor(actor *lactor);
 int doCalc(void);
 
 extern short int chapter;

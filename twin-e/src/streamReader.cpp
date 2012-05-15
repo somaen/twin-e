@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/types.h>
 #include <dirent.h>
 
-char ** split(char * s, char t) {
-	static char * p[100];
+char **split(char *s, char t) {
+	static char *p[100];
 	int i;
 
 	for (i = 1, p[0] = s; *s; s++) {
@@ -41,9 +41,9 @@ char ** split(char * s, char t) {
 	return p;
 }
 
-FILE * ifopen(const char * path, const char * mode) {
-	char * duppath = strdup(path), upath[1024], ** tab;
-	FILE * f = 0;
+FILE *ifopen(const char *path, const char *mode) {
+	char *duppath = strdup(path), upath[1024], ** tab;
+	FILE *f = 0;
 	int opened = 0;
 
 	tab = split(duppath, '/');
@@ -58,9 +58,9 @@ FILE * ifopen(const char * path, const char * mode) {
 	}
 
 	while (1) {
-		DIR * d;
+		DIR *d;
 		int found = 0;
-		struct dirent * entry;
+		struct dirent *entry;
 
 		if (!(d = opendir(upath))) {
 			break;
@@ -97,8 +97,7 @@ FILE * ifopen(const char * path, const char * mode) {
 }
 #endif
 
-char streamReader_open(streamReader* pThis, const char* fileName, int fatal)
-{
+char streamReader_open(streamReader *pThis, const char *fileName, int fatal) {
 #ifndef DREAMCAST
 #ifdef USE_IFOPEN
 	pThis->fileHandle = ifopen(fileName, "rb");
@@ -109,14 +108,11 @@ char streamReader_open(streamReader* pThis, const char* fileName, int fatal)
 	pThis->fileHandle = gdFsOpen(fileName, NULL);
 #endif
 
-	if (pThis->fileHandle)
-    {
+	if (pThis->fileHandle) {
 		pThis->currentSector = 0;
 		streamReader_feedBuffer(pThis);
 		return 1;
-	}
-    else
-    {
+	} else {
 		if (fatal) {
 			printf("FATAL: Can't find %s\n", fileName);
 			exit(-1);
@@ -125,7 +121,7 @@ char streamReader_open(streamReader* pThis, const char* fileName, int fatal)
 	}
 }
 
-void streamReader_feedBuffer(streamReader* pThis) {
+void streamReader_feedBuffer(streamReader *pThis) {
 #ifndef DREAMCAST
 	fread(pThis->buffer, BUFFER_SIZE, 1, pThis->fileHandle);
 #else
@@ -134,13 +130,13 @@ void streamReader_feedBuffer(streamReader* pThis) {
 	pThis->positionInBuffer = 0;
 }
 
-void streamReader_get(streamReader* pThis, void* destPtr, uint32 size) {
+void streamReader_get(streamReader *pThis, void *destPtr, uint32 size) {
 	if (BUFFER_SIZE - pThis->positionInBuffer >= size) {
 		memcpy(destPtr, &pThis->buffer[pThis->positionInBuffer], size);
 		pThis->positionInBuffer += size;
 	} else {
 		// buffer isn't filled enough...
-		char* tempPtr = (char*)destPtr;
+		char *tempPtr = (char *)destPtr;
 
 		// feed what we can:
 		memcpy(tempPtr, &pThis->buffer[pThis->positionInBuffer], BUFFER_SIZE - pThis->positionInBuffer);
@@ -165,7 +161,7 @@ void streamReader_get(streamReader* pThis, void* destPtr, uint32 size) {
 	}
 }
 
-void streamReader_seek(streamReader* pThis, uint32 seekPosition) {
+void streamReader_seek(streamReader *pThis, uint32 seekPosition) {
 	uint32 sectorToSeek;
 
 	sectorToSeek = seekPosition / 2048;
@@ -181,7 +177,7 @@ void streamReader_seek(streamReader* pThis, uint32 seekPosition) {
 	pThis->positionInBuffer = (seekPosition - (sectorToSeek * 2048));
 }
 
-void streamReader_close(streamReader* pThis) {
+void streamReader_close(streamReader *pThis) {
 	if (pThis->fileHandle) {
 #ifndef DREAMCAST
 		fclose(pThis->fileHandle);

@@ -161,7 +161,7 @@ void printTextFullScreen(int textIndex) {
 	while (!temp3) {      // debut de la boucle d'affichage du text+sons
 		waitRetrace();
 		isVoxSet = temp2 = printText10(); // on doit player le son ?
-		
+
 		printText4(voxFileHandle);
 
 		if (isVoxSet == 2) {
@@ -221,7 +221,7 @@ void UnSetClip(void) {
 	textWindowBottom = WINDOW_Y - 1;
 }
 
-int printText4(FILE * fileHandle) {
+int printText4(FILE *fileHandle) {
 	int result;
 
 	if (!languageCD1)
@@ -242,7 +242,7 @@ int printText4(FILE * fileHandle) {
 	return (1);
 }
 
-void readBufferSpeak(FILE * fileHandle) {
+void readBufferSpeak(FILE *fileHandle) {
 	int a, b, c;
 
 	fread(&b, sizeof(int), 1, fileHandle);
@@ -453,7 +453,7 @@ void drawDoubleLetter(int a, int b, int c, int d) {
 	os_copyBlockPhys(left, top, right, bottom);
 }
 
-void TEXT_GetLetterSize(byte character, int *pLetterWidth, int *pLetterHeight, byte * pFont) {
+void TEXT_GetLetterSize(byte character, int *pLetterWidth, int *pLetterHeight, byte *pFont) {
 	byte *temp;
 
 	temp = pFont + convertWFromLE(*((short int *)(pFont + character * 4)));
@@ -470,8 +470,8 @@ void printText8Sub4(short int a, short int b, short int c) {
 	if (printText8Var3 < 32) {
 		temp = printText8Var3 * 3;
 		pt8s4[temp] = c;
-		pt8s4[temp+1] = a;
-		pt8s4[temp+2] = b;
+		pt8s4[temp + 1] = a;
+		pt8s4[temp + 2] = b;
 
 		printText8Var3++;
 	} else {
@@ -479,8 +479,8 @@ void printText8Sub4(short int a, short int b, short int c) {
 			var1 = (counter2 + 1) * 3;
 			var2 = counter2 * 3;
 			pt8s4[var2] = pt8s4[var1];
-			pt8s4[var2+1] = pt8s4[var1+1];
-			pt8s4[var2+2] = pt8s4[var1+2];
+			pt8s4[var2 + 1] = pt8s4[var1 + 1];
+			pt8s4[var2 + 2] = pt8s4[var1 + 2];
 			counter2++;
 		};
 		pt8s4[93] = c;
@@ -579,8 +579,7 @@ void processTextLine(void) {
 	printText8PrepareBufferVar2 = 0;
 	buf2[0] = 0;
 
-	for (;;)
-	{
+	for (;;) {
 		if (*buffer == 0x20) {
 			buffer++;
 			continue;

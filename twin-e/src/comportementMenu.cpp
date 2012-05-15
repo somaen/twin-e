@@ -208,15 +208,13 @@ void processComportementMenu(void) {
 
 	savedComportement = comportementHero;
 
-	while (os_isPressed(KEY_CHBEHAVIOR))
-    {
+	while (os_isPressed(KEY_CHBEHAVIOR)) {
 		drawMenuWin();
 
 		if (os_isPressed(KEY_CHBEHAVIOR_RIGHT) && canPress) {
 			comportementHero++;
 			canPress = 0;
-		}
-		else if (os_isPressed(KEY_CHBEHAVIOR_LEFT) && canPress) {
+		} else if (os_isPressed(KEY_CHBEHAVIOR_LEFT) && canPress) {
 			comportementHero--;
 			canPress = 0;
 		}

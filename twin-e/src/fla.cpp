@@ -30,19 +30,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 streamReader fla_streamReader;
 frameData fla_frameData;
 FLAheader flaHeaderData;
-char flaBuffer[320*200];
-char flaPalette[256*3];
-char flaPaletteRGBA[256*4];
+char flaBuffer[320 * 200];
+char flaPalette[256 * 3];
+char flaPaletteRGBA[256 * 4];
 
 int flaSampleTable[100];
-byte* workVideoBufferCopy;
+byte *workVideoBufferCopy;
 
-void playFla(char *flaName)
-{
+void playFla(char *flaName) {
 	unsigned int i;
 	int currentFrame;
 	int syncTime;
-    int oldSyncTime;
+	int oldSyncTime;
 	char buffer[256];
 
 #ifndef PCLIKE
@@ -67,29 +66,27 @@ void playFla(char *flaName)
 
 	strcat(buffer, ".fla");
 
-	if (initFla(buffer) && strcmp(flaHeaderData.version, "V1.3") == 0)
-    {
+	if (initFla(buffer) && strcmp(flaHeaderData.version, "V1.3") == 0) {
 		SetBackPal();
-        currentFrame = 0;
-        oldSyncTime = 0;
+		currentFrame = 0;
+		oldSyncTime = 0;
 
-        for (;;)
-        {
+		for (;;) {
 			if (os_isPressed(KEY_SKIP))
 				break;
 
-            syncTime = os_getTicks();
-            if (syncTime - oldSyncTime <= 1000.0f/(flaHeaderData.speed+1))
-                continue;
+			syncTime = os_getTicks();
+			if (syncTime - oldSyncTime <= 1000.0f / (flaHeaderData.speed + 1))
+				continue;
 
 			drawNextFrameFla();
 
-		    os_draw320x200BufferToScreen((unsigned char*)flaBuffer);
+			os_draw320x200BufferToScreen((unsigned char *)flaBuffer);
 
-            oldSyncTime = syncTime;
-    	    currentFrame++;
-    		if (currentFrame == flaHeaderData.numOfFrames)
-	    		break;
+			oldSyncTime = syncTime;
+			currentFrame++;
+			if (currentFrame == flaHeaderData.numOfFrames)
+				break;
 		}
 
 		stopSampleFla();
@@ -100,8 +97,7 @@ void playFla(char *flaName)
 	}
 }
 
-int initFla(char* file)
-{
+int initFla(char *file) {
 	int i;
 	int samplesInFla;
 
@@ -115,15 +111,14 @@ int initFla(char* file)
 	streamReader_get(&fla_streamReader, &flaHeaderData.var1, 1);
 	streamReader_get(&fla_streamReader, &flaHeaderData.var2, 2);
 	streamReader_get(&fla_streamReader, &flaHeaderData.var3, 2);
- 
+
 	streamReader_get(&fla_streamReader, &samplesInFla, 4);
 	samplesInFla &= 0xFFFF;
 
 	printf("%d frames\n", flaHeaderData.numOfFrames);
 	printf("%d samples\n", samplesInFla);
 
-	for (i = 0; i < samplesInFla; i++)
-	{
+	for (i = 0; i < samplesInFla; i++) {
 		short int var0;
 		short int var1;
 
@@ -136,9 +131,8 @@ int initFla(char* file)
 	return 1;
 }
 
-void drawNextFrameFla()
-{
-	char* ptr;
+void drawNextFrameFla() {
+	char *ptr;
 	unsigned int currentOpcodeGlob;
 	unsigned char currentOpcode;
 
@@ -148,49 +142,48 @@ void drawNextFrameFla()
 	streamReader_get(&fla_streamReader, &fla_frameData.frameVar0, 4);
 	streamReader_get(&fla_streamReader, workVideoBufferCopy, fla_frameData.frameVar0);
 
-	ptr = (char*)workVideoBufferCopy;
+	ptr = (char *)workVideoBufferCopy;
 
-	for (var_C = 0; var_C < fla_frameData.videoSize; var_C++)
-	{
-		currentOpcode = *(unsigned char*)ptr;
+	for (var_C = 0; var_C < fla_frameData.videoSize; var_C++) {
+		currentOpcode = *(unsigned char *)ptr;
 		ptr += 2;
-		currentOpcodeGlob = *(unsigned short int*)ptr;
+		currentOpcodeGlob = *(unsigned short int *)ptr;
 		ptr += 2;
 
 		switch (currentOpcode - 1) {
 		case 0: { // load palette
-				short int numOfColor = READ_LE_S16(ptr);
-				short int startColor = READ_LE_S16((ptr + 2));
+			short int numOfColor = READ_LE_S16(ptr);
+			short int startColor = READ_LE_S16((ptr + 2));
 
-				copyStringToString(ptr + 4, flaPalette + startColor*3, numOfColor*3);
+			copyStringToString(ptr + 4, flaPalette + startColor * 3, numOfColor * 3);
 
-				convertPalToRGBA((byte*)flaPalette, (byte*)flaPaletteRGBA);
-				os_setPalette320x200((byte*)flaPaletteRGBA);
+			convertPalToRGBA((byte *)flaPalette, (byte *)flaPaletteRGBA);
+			os_setPalette320x200((byte *)flaPaletteRGBA);
 
-				break;
-			}
+			break;
+		}
 		case 1: {
-				printf("Fade/music opcode in fla\n");
-				break;
-			}
+			printf("Fade/music opcode in fla\n");
+			break;
+		}
 		case 2: { // play sample
-				flaSample header;
-				memcpy(&header, ptr, sizeof(flaSample));
-				playSampleFla(header.sampleNum, /* header.freq, */header.repeat/*, header.x, header.y*/);
-				break;
-			}
+			flaSample header;
+			memcpy(&header, ptr, sizeof(flaSample));
+			playSampleFla(header.sampleNum, /* header.freq, */header.repeat/*, header.x, header.y*/);
+			break;
+		}
 		case 4: { // stop sample
-				stopSampleFla();
-				break;
-			}
+			stopSampleFla();
+			break;
+		}
 		case 5: { // draw delat frame
-				updateFrame(ptr, 320);
-				break;
-			}
+			updateFrame(ptr, 320);
+			break;
+		}
 		case 7: { // draw key frame
-				drawFrame(ptr, 320, flaHeaderData.var3);
-				break;
-			}
+			drawFrame(ptr, 320, flaHeaderData.var3);
+			break;
+		}
 		default:
 			printf("Unhandled fla opcode %d!\n", currentOpcode - 1);
 			break;
@@ -201,29 +194,25 @@ void drawNextFrameFla()
 
 }
 
-void drawFrame(char* ptr, int width, int height)
-{
-	char* destPtr = (char*)flaBuffer;
-	char* startOfLine = destPtr;
+void drawFrame(char *ptr, int width, int height) {
+	char *destPtr = (char *)flaBuffer;
+	char *startOfLine = destPtr;
 
 	char fill;
-    char loop;
+	char loop;
 
 	int i;
 	int j;
 
-	while (height-- > 0)
-    {
-        loop = *(ptr++);
-		for (i = 0; i < loop; i++)
-        {
+	while (height-- > 0) {
+		loop = *(ptr++);
+		for (i = 0; i < loop; i++) {
 			fill = *(ptr++);
 
 			if (fill < 0) /* copy all pixels */
 				for (j = 0; j < -fill; j++)
 					*(destPtr++) = *(ptr++);
-			else
-            {
+			else {
 				for (j = 0; j < fill; j++)
 					*(destPtr++) = *ptr;
 				ptr++;
@@ -234,41 +223,37 @@ void drawFrame(char* ptr, int width, int height)
 	}
 }
 
-void updateFrame(char* ptr, int width)
-{
+void updateFrame(char *ptr, int width) {
 	unsigned short int skip;
-	char* destPtr;
-	char* startOfLine;
+	char *destPtr;
+	char *startOfLine;
 	int height;
 
 	char fill;
-    char loop;
+	char loop;
 
 	int i, j;
 
-    skip = READ_LE_U16(ptr);
+	skip = READ_LE_U16(ptr);
 	ptr += 2;
 	skip *= width;
-	startOfLine = destPtr = (char*)flaBuffer + skip;
-    height = READ_LE_S16(ptr);;
+	startOfLine = destPtr = (char *)flaBuffer + skip;
+	height = READ_LE_S16(ptr);;
 	ptr += 2;
 
-	while (height-- > 0)
-    {
-        loop = *(ptr++);
-		for (i = 0; i < loop; i++)
-        {
-			destPtr += (unsigned char) *(ptr++);
+	while (height-- > 0) {
+		loop = *(ptr++);
+		for (i = 0; i < loop; i++) {
+			destPtr += (unsigned char) * (ptr++);
 			fill = *(ptr++);
 
 			if (fill > 0) /* copy all pixels */
 				for (j = 0; j < fill; j++)
 					*(destPtr++) = *(ptr++);
-			else /* same color for all the line */
-			{
+			else { /* same color for all the line */
 				for (j = 0; j < -fill; j++)
 					*(destPtr++) = *ptr;
-                ptr++;
+				ptr++;
 			}
 		}
 

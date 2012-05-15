@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 unsigned char *bodyPtrTab[200];
 int currentPositionInBodyPtrTab;
 
-int SearchBody(int bodyNum, int actorNum) {	// should be something like initBody
+int SearchBody(int bodyNum, int actorNum) { // should be something like initBody
 	actor *lactor;
 	unsigned char *bodyPtr;
 	unsigned char var1;
@@ -40,8 +40,7 @@ int SearchBody(int bodyNum, int actorNum) {	// should be something like initBody
 	lactor = &actors[actorNum];
 	bodyPtr = lactor->entityDataPtr;
 
-	for (;;)
-    {
+	for (;;) {
 		var1 = *(bodyPtr++);
 
 		if (var1 == 0xFF)
@@ -49,23 +48,20 @@ int SearchBody(int bodyNum, int actorNum) {	// should be something like initBody
 
 		bodyPtr2 = bodyPtr + 1;
 
-		if (var1 == 1)
-        {
+		if (var1 == 1) {
 			var2 = *(bodyPtr);
 
 			if (var2 == bodyNum) {
 				bodyPtr3 = bodyPtr2 + 1;
 				flag = READ_LE_U16(bodyPtr3);
 
-				if (!(flag & 0x8000))
-                {
+				if (!(flag & 0x8000)) {
 					HQRM_Load("body.hqr", flag & 0xFFFF, &bodyPtrTab[currentPositionInBodyPtrTab]);
 					loadGfxSub(bodyPtrTab[currentPositionInBodyPtrTab]);
 					WRITE_LE_U16(bodyPtr3, currentPositionInBodyPtrTab + 0x8000);
 					index = currentPositionInBodyPtrTab;
 					currentPositionInBodyPtrTab++;
-				}
-                else {
+				} else {
 					flag &= 0x7FFF;
 					index = flag;
 				}
@@ -88,18 +84,18 @@ int SearchBody(int bodyNum, int actorNum) {	// should be something like initBody
 				bodyPtr5 = (short int *) bodyPtr3;
 
 				loadCostumeVar = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//X1 bottomLeft
+				bodyPtr3 += 2;  //X1 bottomLeft
 				loadCostumeVar2 = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//Z1
+				bodyPtr3 += 2;  //Z1
 				loadCostumeVar3 = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//Y1
+				bodyPtr3 += 2;  //Y1
 
 				loadCostumeVar4 = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//X2 topRight
+				bodyPtr3 += 2;  //X2 topRight
 				loadCostumeVar5 = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//Z2
+				bodyPtr3 += 2;  //Z2
 				loadCostumeVar6 = READ_LE_U16(bodyPtr3);
-				bodyPtr3 += 2;	//Y2
+				bodyPtr3 += 2;  //Y2
 
 				return index;
 
@@ -107,6 +103,6 @@ int SearchBody(int bodyNum, int actorNum) {	// should be something like initBody
 		}
 
 		bodyPtr = *bodyPtr2 + bodyPtr2;
-    }
+	}
 }
 

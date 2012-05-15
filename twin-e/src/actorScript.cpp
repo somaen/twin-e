@@ -69,7 +69,7 @@ int GetAngle(int X1, int Y1, int X2, int Y2) {
 	difX = ebp = X2 - X1;
 	newX = ebp * ebp;
 
-	if (newX < newY) {	// exchange X and Y
+	if (newX < newY) {  // exchange X and Y
 		tempExchange = difX;
 		difX = difY;
 		difY = tempExchange;
@@ -103,11 +103,11 @@ int GetAngle(int X1, int Y1, int X2, int Y2) {
 
 	finalAngle = 128 + startAngle;
 
-	if (difX <= 0) {	// if we are going left
+	if (difX <= 0) {    // if we are going left
 		finalAngle = -finalAngle;
 	}
 
-	if (flag & 1) {	// X and Y are exchanged -> 90 degree rotation needed
+	if (flag & 1) { // X and Y are exchanged -> 90 degree rotation needed
 		finalAngle = -finalAngle + 0x100;
 	}
 
@@ -125,9 +125,9 @@ void processInGameMenu(int index) {
 	choiceTab[2] = 0;
 	choiceTab[3] = currentTextBank + 3;
 
-	for (i = 0;i < numOfOptionsInChoice;i++) {
-		choiceTab[i*2+4] = 0;
-		choiceTab[i*2+5] = inGameMenuData[i];
+	for (i = 0; i < numOfOptionsInChoice; i++) {
+		choiceTab[i * 2 + 4] = 0;
+		choiceTab[i * 2 + 5] = inGameMenuData[i];
 	}
 
 	MyDial(index);
@@ -154,8 +154,7 @@ void MyDial(int index) {
 		textStatus = printText10();
 		printText4(voxFileHandle);
 
-		if (textStatus == 2)
-		{
+		if (textStatus == 2) {
 			printf("ahem\n");
 			while (os_isPressed(KEY_CONTTEXT))
 				printText4(voxFileHandle);
@@ -199,9 +198,9 @@ void foundObject(int objectNumber) {
 	int textDisplayState;
 	char closeWindow;
 
-	unsigned char* twinsenAnim;
+	unsigned char *twinsenAnim;
 
-	unsigned char* objectPtr;
+	unsigned char *objectPtr;
 
 	int twinsenAnimKeyframe;
 
@@ -281,7 +280,7 @@ void foundObject(int objectNumber) {
 
 	twinsenAnim = HQR_Get(HQR_Anims, getAnimIndexForBody(ANIM_findObject, 0));
 
-	bufAni2 += StockInterAnim((char*)bufAni2, (char*)bodyPtrTab[twinsen->costumeIndex], &twinsen->animTimerData);
+	bufAni2 += StockInterAnim((char *)bufAni2, (char *)bodyPtrTab[twinsen->costumeIndex], &twinsen->animTimerData);
 	if (bufAni1 + 4488 > bufAni2)
 		bufAni2 = bufAni1;
 
@@ -304,17 +303,17 @@ void foundObject(int objectNumber) {
 
 		objectRotation[objectNumber] += 8;
 
-		Draw3dObject(projectedPositionX, projectedPositionY, (char*)objectPtr, objectRotation[objectNumber], 10000);
+		Draw3dObject(projectedPositionX, projectedPositionY, (char *)objectPtr, objectRotation[objectNumber], 10000);
 
 		DrawCadre(boxTopLeftX, boxTopLeftY, boxBottomRightX, boxBottomRightY);
 		AddPhysBox(boxTopLeftX, boxTopLeftY, boxBottomRightX, boxBottomRightY);
 		UnSetClip();
 		reinitAll1();
 
-		if (SetInterAnimObjet(twinsenAnimKeyframe, (char*)twinsenAnim, (char*)bodyPtrTab[twinsen->costumeIndex], &twinsen->animTimerData)) {
+		if (SetInterAnimObjet(twinsenAnimKeyframe, (char *)twinsenAnim, (char *)bodyPtrTab[twinsen->costumeIndex], &twinsen->animTimerData)) {
 			twinsenAnimKeyframe++;
-			if (twinsenAnimKeyframe == GetNbFramesAnim((char*)twinsenAnim)) {
-				twinsenAnimKeyframe = GetBouclageAnim((char*)twinsenAnim);
+			if (twinsenAnimKeyframe == GetNbFramesAnim((char *)twinsenAnim)) {
+				twinsenAnimKeyframe = GetBouclageAnim((char *)twinsenAnim);
 			}
 		}
 
@@ -350,9 +349,9 @@ void foundObject(int objectNumber) {
 
 	/*
 	if (!voxNotFound)
-		while (closeFoundVox())
-			if (os_isPressed(KEY_SKIP))
-				break;
+	    while (closeFoundVox())
+	        if (os_isPressed(KEY_SKIP))
+	            break;
 	else*/
 	{
 		while (printText11())
@@ -373,9 +372,9 @@ void OpenDial(int textNumber) {
 	InitDialWindow();
 }
 
-void Draw3dObject(int X, int Y, char* objectPtr, int rotation, int param) {
+void Draw3dObject(int X, int Y, char *objectPtr, int rotation, int param) {
 	setCameraPosition(X, Y, 128, 200, 200);
 	setCameraAngle(0, 0, 0, 60, 0, 0, param);
 
-	AffObjetIso(0, 0, 0, 0, rotation, 0, (unsigned char*)objectPtr);
+	AffObjetIso(0, 0, 0, 0, rotation, 0, (unsigned char *)objectPtr);
 }

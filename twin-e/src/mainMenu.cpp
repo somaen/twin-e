@@ -107,97 +107,91 @@ short int buttonDrawVar1 = 550;
 short int shadowMode = 2;
 short int autoAgressivity = 1;
 
-void rungame(void)
-{
-    int shadowtemp, langtemp;
-    shadowtemp = shadowMode;
-    langtemp = languageCD1;
-    languageCD1 = 0;
-    shadowMode = 0;
-    reinitAll(1);
-    currentRoom = 119;
-    needChangeRoom = 119;
-    mainLoop();
-                   
-    languageCD1 = langtemp;
-    shadowMode = shadowtemp;
+void rungame(void) {
+	int shadowtemp, langtemp;
+	shadowtemp = shadowMode;
+	langtemp = languageCD1;
+	languageCD1 = 0;
+	shadowMode = 0;
+	reinitAll(1);
+	currentRoom = 119;
+	needChangeRoom = 119;
+	mainLoop();
 
-    Cls();
-    os_flip(frontVideoBuffer);
-    playFla("The_end");
-    Cls();
-    os_flip(frontVideoBuffer);
-    os_setPalette(menuPalRGBA);
+	languageCD1 = langtemp;
+	shadowMode = shadowtemp;
+
+	Cls();
+	os_flip(frontVideoBuffer);
+	playFla("The_end");
+	Cls();
+	os_flip(frontVideoBuffer);
+	os_setPalette(menuPalRGBA);
 }
 
 void MainGameMenu(void) {
 	int nmenu;
-    int cont = 1;
+	int cont = 1;
 
 	HQ_StopSample();
 	CopyScreen(frontVideoBuffer, workVideoBuffer);
 
-	while (cont)
-    {
+	while (cont) {
 		InitDial(0);
 		playMusic(9);
 		HQ_StopSample();
 		GetMultiText(49, mainMenuVar1);
 		nmenu = processMenu(mainMenuData);
-        os_delay(100);
+		os_delay(100);
 
-        switch(nmenu)
-        {
-        case 20: /* new game */
-			if (enterPlayerName(42))
-            {
+		switch (nmenu) {
+		case 20: /* new game */
+			if (enterPlayerName(42)) {
 				reinitAll(1);
 				newGame();
 
 				mainLoop();
 			}
-            break;
+			break;
 
-        case 21: /* continue game */
-			if (chooseSave(21))
-            {
+		case 21: /* continue game */
+			if (chooseSave(21)) {
 				reinitAll(-1);
 
 				mainLoop();
 			}
-            break;
+			break;
 
-        case 22: /* quit */
+		case 22: /* quit */
 			printf("\nLBA/Relentless TwinEngine < %s / %s >\n\nOK.\n", __DATE__, __TIME__);
-            cont = 0;
-            break;
+			cont = 0;
+			break;
 
-        case 23: /* options */
+		case 23: /* options */
 			CopyScreen(workVideoBuffer, frontVideoBuffer);
 			os_flip(frontVideoBuffer);
 			soundMenuData[5] = 26;
 			optionMenu();
-            break;
+			break;
 
-        case 9999: /* ?? */
+		case 9999: /* ?? */
 			Load_HQR("ress.hqr", workVideoBuffer, 14);
 			CopyScreen(workVideoBuffer, frontVideoBuffer);
 
 			SetBackPal();
 			os_flip(frontVideoBuffer);
 			FadeToPal((char *) menuPalRGBA);
-            break;
-        }
-    }
+			break;
+		}
+	}
 }
 
 void HQ_StopSample(void) {
 	// todo: implement this
 }
 
-int chooseSave(/*int param*/)
-{
-	FILE* fHandle;
+int chooseSave(/*int param*/) {
+	FILE *fHandle;
 
 	fHandle = fopen("SAVE.LBA", "rb");
 	if (!fHandle) {
@@ -277,20 +271,19 @@ int processMenu(short int *menuData) {
 
 	do {
 		/*if (localData == mainMenuData) { // si on est dans le menu principal
-			if (lba_time - localTime <= 11650) {
-				if (skipIntro == 46)
-					if (key1 != 32)
-						return (9999);
-			} else {
-				return (9999);
-			}
+		    if (lba_time - localTime <= 11650) {
+		        if (skipIntro == 46)
+		            if (key1 != 32)
+		                return (9999);
+		    } else {
+		        return (9999);
+		    }
 		} TODO: WTF is this ??? */
 
 		if (!os_isPressed(KEY_MENU_UP) && !os_isPressed(KEY_MENU_DOWN))
 			buttonReleased = 1;
 
-		if (buttonReleased)
-		{
+		if (buttonReleased) {
 			if (os_isPressed(KEY_MENU_DOWN)) { // on passe au bouton d'en dessous
 				currentButton++;
 				if (currentButton == numEntry) {
@@ -314,15 +307,15 @@ int processMenu(short int *menuData) {
 			if (temp3 <= 5) { // si c'est un bouton de volume
 				switch (temp3) {
 				case 1: {
-					}
+				}
 				case 2: {
-					}
+				}
 				case 3: {
-					}
+				}
 				case 4: {
-					}
+				}
 				case 5: {
-					}
+				}
 				}
 			}
 		}
@@ -399,8 +392,7 @@ void drawSelectableLetter(int x, int y, int arg) {
 
 }
 
-int enterPlayerName(short int param)
-{
+int enterPlayerName(short int param) {
 	char buffer[256];
 
 	short int a, b, c, e;
@@ -427,15 +419,15 @@ int enterPlayerName(short int param)
 	return 1;
 }
 
-char* my_itoa(int nb) {
-    int i, j;
-	char* text;
+char *my_itoa(int nb) {
+	int i, j;
+	char *text;
 
-    j = nb;
-    while (j >= 10) {
-        j /= 10;
-        i++;
-    }
+	j = nb;
+	while (j >= 10) {
+		j /= 10;
+		i++;
+	}
 
 	text = malloc(sizeof(char) * i);
 	sprintf(text, "%d", nb);
@@ -446,7 +438,7 @@ void drawButton(short int *data, int a) {
 	int buttonNumber;
 	int maxButton;
 
-	unsigned short int *localData = (unsigned short int*)data;
+	unsigned short int *localData = (unsigned short int *)data;
 	int temp;
 	unsigned char temp2;
 	unsigned short temp3;
@@ -518,38 +510,33 @@ void drawButtonGFX(int largeur, int posY, int c, int d, int mode) {
 	top = posY - 25;
 	bottom = bottom2 = posY + 25;
 
-	if (mode != 0)
-	{
-		if (c <= 5 && c >= 1)
-		{
+	if (mode != 0) {
+		if (c <= 5 && c >= 1) {
 			switch (c) {
 			case 1: {
-					// musicVolumeRemaped=RegleTrois32(left,right,255,musicVolume);
-				}
+				// musicVolumeRemaped=RegleTrois32(left,right,255,musicVolume);
+			}
 			case 2: {
-					// waveVolumeRemaped=RegleTrois32(left,right,255,waveVolume);
+				// waveVolumeRemaped=RegleTrois32(left,right,255,waveVolume);
 
-				}
+			}
 			case 3: {
-					// CDVolumeRemaped=RegleTrois32(left,right,255,CDVolume);
-				}
+				// CDVolumeRemaped=RegleTrois32(left,right,255,CDVolume);
+			}
 			case 4: {
-					// lineVolume=RegleTrois32(left,right,255,lineVolume);
-				}
+				// lineVolume=RegleTrois32(left,right,255,lineVolume);
+			}
 			case 5:
 
-				{
-					// masterVolume=RegleTrois32(left,right,255,masterVolume);
-				}
+			{
+				// masterVolume=RegleTrois32(left,right,255,masterVolume);
+			}
 			};
-		}
-		else
+		} else
 			makeFireEffect(top, 64);
-	}
-	else
-	{
+	} else {
 		blitRectangle(left, top, right, bottom, (char *) workVideoBuffer, left, top,
-					  (char *) frontVideoBuffer);
+		              (char *) frontVideoBuffer);
 
 		drawBoxInsideTrans(left, top, right, bottom2, 4);
 	}
@@ -583,8 +570,8 @@ void blitRectangle(int left, int top, int right, int bottom, char *source, int l
 	assert(top >= 0);
 	assert(bottom < 480);
 
-	s = WINDOW_X*top + source + left;
-	d = WINDOW_X*topDest + dest + leftDest;
+	s = WINDOW_X * top + source + left;
+	d = WINDOW_X * topDest + dest + leftDest;
 
 	largeur = right - left + 1;
 
@@ -636,7 +623,7 @@ void drawBoxInsideTrans(int left, int top, int right, int bottom, int mode) {
 	if (bottom > textWindowBottom)
 		bottom = textWindowBottom;
 
-	pos = WINDOW_X*top + frontVideoBuffer + left;
+	pos = WINDOW_X * top + frontVideoBuffer + left;
 	hauteur2 = hauteur = bottom - top;
 	hauteur2++;
 
@@ -675,13 +662,12 @@ int SizeFont(char *string) {
 	unsigned char caractere;
 	stringLenght = 0;
 
-	for (;;)
-    {
+	for (;;) {
 		caractere = (unsigned char) * (string++);
 
 		if (caractere == 0)
 			break;
-        else if (caractere == 0x20)
+		else if (caractere == 0x20)
 			stringLenght += spaceLenght;
 		else {
 			stringLenght += interCharSpace; // space inter-letters
@@ -700,7 +686,7 @@ void copyStringToString(char *a, char *b, int c) {
 }
 
 int optionMenu(void) { // Options menu
-    byte temp;
+	byte temp;
 	byte temp2 = 0;
 
 	CopyScreen(frontVideoBuffer, workVideoBuffer);
@@ -740,53 +726,51 @@ void optionMenu2(void) { // Advanced Options
 	byte quit = 0;
 
 	CopyScreen(frontVideoBuffer, workVideoBuffer);
-    
-    while (!quit)
-    {
-        switch (processMenu(subMenuData))
-        {
-            case 33: // No Scenery Zoom
-                subMenuData[13] = 233;
-                // zoomMode = 0;
-                break;
-            case 231:
-                subMenuData[9] = 31;
-                break;
-            case 232: // Shadows for all animated objects
-    			subMenuData[11] = 32;
-    			shadowMode = 2;
-                break;
-            case 233: // Scenery Zoom On
-    			subMenuData[13] = 33;
-    			// zoomMode = 1;
-                break;
-            case 131:
-    			subMenuData[9] = 231;
-                break;
-            case 132: // No Shadows
-    			subMenuData[11] = 232;
-    			shadowMode = 0;
-                break;
-            case 26: // Back to previous menu
-                quit = 1;
-                break;
-            case 31:
-    			subMenuData[9] = 131;
-                break;
-            case 32: // Character shadows
-    			subMenuData[11] = 132;
-    			shadowMode = 1;
-                break;
-            case 2: // Agressive Manual
-    			subMenuData[7] = 4;
-    			autoAgressivity = 0;
-                break;
-            case 4: // Agressize Auto
-    			subMenuData[7] = 2;
-    			autoAgressivity = 1;
-                break;
-    	}
-    }
+
+	while (!quit) {
+		switch (processMenu(subMenuData)) {
+		case 33: // No Scenery Zoom
+			subMenuData[13] = 233;
+			// zoomMode = 0;
+			break;
+		case 231:
+			subMenuData[9] = 31;
+			break;
+		case 232: // Shadows for all animated objects
+			subMenuData[11] = 32;
+			shadowMode = 2;
+			break;
+		case 233: // Scenery Zoom On
+			subMenuData[13] = 33;
+			// zoomMode = 1;
+			break;
+		case 131:
+			subMenuData[9] = 231;
+			break;
+		case 132: // No Shadows
+			subMenuData[11] = 232;
+			shadowMode = 0;
+			break;
+		case 26: // Back to previous menu
+			quit = 1;
+			break;
+		case 31:
+			subMenuData[9] = 131;
+			break;
+		case 32: // Character shadows
+			subMenuData[11] = 132;
+			shadowMode = 1;
+			break;
+		case 2: // Agressive Manual
+			subMenuData[7] = 4;
+			autoAgressivity = 0;
+			break;
+		case 4: // Agressize Auto
+			subMenuData[7] = 2;
+			autoAgressivity = 1;
+			break;
+		}
+	}
 
 	// todo: implement internal process
 

@@ -58,36 +58,32 @@ short int currentlyFollowedActor;
 byte cubeFlags[80];
 byte itemUsed[28];
 
-int getCOL(actor* ptrActor) {
+int getCOL(actor *ptrActor) {
 	if (ptrActor->life <= 0)
 		return(-1);
 	else
 		return(ptrActor->collision);
 }
 
-int getDISTANCE(actor* ptrActor1, actor* ptrActor2) {
+int getDISTANCE(actor *ptrActor1, actor *ptrActor2) {
 	int computedDistance;
 
-	if (!ptrActor2->dynamicFlagsBF.isDead)
-    {
+	if (!ptrActor2->dynamicFlagsBF.isDead) {
 		// clamp for major height difference
 		if (abs(ptrActor2->Y - ptrActor1->Y) >= 1500)
 			computedDistance = 32000;
-		else
-        {
+		else {
 			computedDistance = distance2d(ptrActor1->X, ptrActor1->Z, ptrActor2->X, ptrActor2->Z);
 			if (computedDistance > 32000) // clamp distance to 32000
 				computedDistance = 32000;
 		}
-	}
-    else
+	} else
 		computedDistance = 32000;
 
 	return computedDistance;
 }
 
-void runActorScript(short int actorNumber)
-{
+void runActorScript(short int actorNumber) {
 	char string[256];
 	short int OPbreak;
 	actor *lactor;
@@ -101,895 +97,894 @@ void runActorScript(short int actorNumber)
 
 	actorScriptPtr = lactor->positionInActorScript + lactor->actorScript;
 
-	while (OPbreak != -1)
-	{
+	while (OPbreak != -1) {
 		opcodePtr = actorScriptPtr++;
 		opcode = *(opcodePtr);
 		switch (opcode) {
 		case 0:
-				OPbreak = -1;
-				lactor->positionInActorScript = -1;
-				break;
+			OPbreak = -1;
+			lactor->positionInActorScript = -1;
+			break;
 
 		case 2:
-				manipActor(lactor);
-				if (!doCalc())
-					*opcodePtr = 13;
-				actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				break;
+			manipActor(lactor);
+			if (!doCalc())
+				*opcodePtr = 13;
+			actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			break;
 
 		case 3:
-				actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				break;
+			actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			break;
 
 		case 4:
-				manipActor(lactor);
-				doCalc();
-				actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				break;
+			manipActor(lactor);
+			doCalc();
+			actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			break;
 
 		case 10:
-				actorScriptPtr++;
-				break;
+			actorScriptPtr++;
+			break;
 
 		case 11:
-				OPbreak = -1;
-				break;
+			OPbreak = -1;
+			break;
 
 		case 12:
-				manipActor(lactor);
-				if (!doCalc())
-					actorScriptPtr =
-						lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				else
-					actorScriptPtr += 2;
-				break;
+			manipActor(lactor);
+			if (!doCalc())
+				actorScriptPtr =
+				    lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			else
+				actorScriptPtr += 2;
+			break;
 
 		case 13:
-				manipActor(lactor);
-				if (!doCalc())
-					actorScriptPtr =
-						lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				else {
-					actorScriptPtr += 2;
-					*opcodePtr = 2;
-				}
-				break;
+			manipActor(lactor);
+			if (!doCalc())
+				actorScriptPtr =
+				    lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			else {
+				actorScriptPtr += 2;
+				*opcodePtr = 2;
+			}
+			break;
 
 		case 14:
-				manipActor(lactor);
-				if (!doCalc())
-					actorScriptPtr =
-						lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				else {
-					actorScriptPtr += 2;
-					*opcodePtr = 4;  // le met en always branch
-				}
-				break;
+			manipActor(lactor);
+			if (!doCalc())
+				actorScriptPtr =
+				    lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			else {
+				actorScriptPtr += 2;
+				*opcodePtr = 4;  // le met en always branch
+			}
+			break;
 
 		case 15:
-				actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				break;
+			actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			break;
 
 		case 17: // loadCostume
-				InitBody(*(actorScriptPtr++), actorNumber);
-				break;
+			InitBody(*(actorScriptPtr++), actorNumber);
+			break;
 
 		case 18: { // loadCostumeAnother
-				int param1;
-				int param2;
+			int param1;
+			int param2;
 
-				param1 = *(actorScriptPtr++);
-				param2 = *(actorScriptPtr++);
+			param1 = *(actorScriptPtr++);
+			param2 = *(actorScriptPtr++);
 
-				InitBody(param2, param1);
-				break;
+			InitBody(param2, param1);
+			break;
 		}
 
 		case 19: // InitAnim
-				InitAnim(*(actorScriptPtr++), 0, 0, actorNumber);
-				break;
+			InitAnim(*(actorScriptPtr++), 0, 0, actorNumber);
+			break;
 
 		case 20: // playAnimAnother
-				InitAnim(*(actorScriptPtr + 1), 0, 0, *actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
+			InitAnim(*(actorScriptPtr + 1), 0, 0, *actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
 
 		case 21:
-				lactor->positionInActorScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
+			lactor->positionInActorScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
 
 		case 22: {
-				actor *tempActor;
+			actor *tempActor;
 
-				tempActor = &actors[*(actorScriptPtr++)];
+			tempActor = &actors[*(actorScriptPtr++)];
 
-				tempActor->positionInActorScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
+			tempActor->positionInActorScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
 		}
 
 		case 23: // SET_TRACK
-				lactor->positionInMoveScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
+			lactor->positionInMoveScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
 
 		case 24: { // setTrackAnother
-				int actorNumTemp;
+			int actorNumTemp;
 
-				actorNumTemp = *(actorScriptPtr++);
-				actors[actorNumTemp].positionInMoveScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
+			actorNumTemp = *(actorScriptPtr++);
+			actors[actorNumTemp].positionInMoveScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
 		}
 
 		case 25:
-				freezeTime();
-				TestRestoreModeSVGA(1);
-				TestCoulDial(lactor->talkColor);
-				printTextFullScreen(READ_LE_S16(actorScriptPtr));
-				actorScriptPtr += 2;
-				unfreezeTime();
-				fullRedraw(1);
-				break;
+			freezeTime();
+			TestRestoreModeSVGA(1);
+			TestCoulDial(lactor->talkColor);
+			printTextFullScreen(READ_LE_S16(actorScriptPtr));
+			actorScriptPtr += 2;
+			unfreezeTime();
+			fullRedraw(1);
+			break;
 
 		case 26: { // LM_FALLABLE
-				int ltemp = *(actorScriptPtr++);
+			int ltemp = *(actorScriptPtr++);
 
-				lactor->staticFlagsBF.isFallable = ltemp & 1;
-				break;
+			lactor->staticFlagsBF.isFallable = ltemp & 1;
+			break;
 		}
 
 		case 27: { // SET_COMPORTEMENT
 			temp = *(actorScriptPtr++);
 			lactor->comportement = temp;
 			if (temp == 2) {
-					lactor->followedActor = *(actorScriptPtr++);
-				}
-				break;
+				lactor->followedActor = *(actorScriptPtr++);
 			}
+			break;
+		}
 
 		case 28: {
-				actor *tempActor;
+			actor *tempActor;
 
-				tempActor = &actors[*(actorScriptPtr++)];
-				temp = *(actorScriptPtr++);
-				tempActor->comportement = temp;
+			tempActor = &actors[*(actorScriptPtr++)];
+			temp = *(actorScriptPtr++);
+			tempActor->comportement = temp;
 
-				if (temp == 2) {
-					tempActor->followedActor = *(actorScriptPtr++);
-				}
-
-				break;
+			if (temp == 2) {
+				tempActor->followedActor = *(actorScriptPtr++);
 			}
+
+			break;
+		}
 
 		case 29: { // setCameraActor
-				int newActorToFollow;
+			int newActorToFollow;
 
-				newActorToFollow = *(actorScriptPtr++);
+			newActorToFollow = *(actorScriptPtr++);
 
-				if (currentlyFollowedActor != newActorToFollow) {
-					newCameraX = (actors[newActorToFollow].X >> 9);
-					newCameraZ = (actors[newActorToFollow].Y >> 8);
-					newCameraY = (actors[newActorToFollow].Z >> 9);
+			if (currentlyFollowedActor != newActorToFollow) {
+				newCameraX = (actors[newActorToFollow].X >> 9);
+				newCameraZ = (actors[newActorToFollow].Y >> 8);
+				newCameraY = (actors[newActorToFollow].Z >> 9);
 
-					currentlyFollowedActor = newActorToFollow;
-					requestBackgroundRedraw = 1;
-				}
-
-				break;
+				currentlyFollowedActor = newActorToFollow;
+				requestBackgroundRedraw = 1;
 			}
+
+			break;
+		}
 
 		case 30: {
-				InitAnim(ANIM_static, 0, 255, 0);
-				SetComportement(*(actorScriptPtr++));
-				break;
-			}
+			InitAnim(ANIM_static, 0, 255, 0);
+			SetComportement(*(actorScriptPtr++));
+			break;
+		}
 
 		case 31: {
-				unsigned char temp1;
-				unsigned char temp2;
+			unsigned char temp1;
+			unsigned char temp2;
 
-				temp1 = *(actorScriptPtr++);
-				temp2 = *(actorScriptPtr++);
+			temp1 = *(actorScriptPtr++);
+			temp2 = *(actorScriptPtr++);
 
-				cubeFlags[temp1] = temp2;
-				break;
-			}
+			cubeFlags[temp1] = temp2;
+			break;
+		}
 
 		case 32: {
-				actorScriptPtr++;
-				break;
-			}
+			actorScriptPtr++;
+			break;
+		}
 
 		case 33: {
-				lactor->positionInActorScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
-			}
+			lactor->positionInActorScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
+		}
 
 		case 34: {
-				int tempActorNum;
+			int tempActorNum;
 
-				tempActorNum = *(actorScriptPtr++);
-				actors[tempActorNum].positionInActorScript = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
-			}
+			tempActorNum = *(actorScriptPtr++);
+			actors[tempActorNum].positionInActorScript = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
+		}
 
 		case 35: {
-				OPbreak = -1;
-				break;
-			}
+			OPbreak = -1;
+			break;
+		}
 
 		case 36: { // SET_VAR_GAME
-				unsigned char temp1;
-				char temp2;
+			unsigned char temp1;
+			char temp2;
 
-				temp1 = *(actorScriptPtr++);
-				temp2 = *(actorScriptPtr++);
+			temp1 = *(actorScriptPtr++);
+			temp2 = *(actorScriptPtr++);
 
-				vars[temp1] = temp2;
-				break;
-			}
+			vars[temp1] = temp2;
+			break;
+		}
 		case 37: {
-				int temp;
+			int temp;
 
-				temp = *(actorScriptPtr++);
+			temp = *(actorScriptPtr++);
 
-				checkCarrier(temp);
+			checkCarrier(temp);
 
-				actors[temp].dynamicFlagsBF.isDead = 1;
-				actors[temp].costumeIndex = -1;
-				actors[temp].zone = -1;
-				actors[temp].life = 0;
+			actors[temp].dynamicFlagsBF.isDead = 1;
+			actors[temp].costumeIndex = -1;
+			actors[temp].zone = -1;
+			actors[temp].life = 0;
 
-				break;
-			}
+			break;
+		}
 
 		case 38: {
-				checkCarrier(actorNumber);
-				lactor->dynamicFlagsBF.isDead = 1;
-				lactor->costumeIndex = -1;
-				lactor->zone = -1;
-				lactor->life = 0;
-				break;
-			}
+			checkCarrier(actorNumber);
+			lactor->dynamicFlagsBF.isDead = 1;
+			lactor->costumeIndex = -1;
+			lactor->zone = -1;
+			lactor->life = 0;
+			break;
+		}
 
 		case 39: {
-				numKey--;
+			numKey--;
 
-				if (numKey < 0)
-					numKey = 0;
+			if (numKey < 0)
+				numKey = 0;
 
-				addOverlayObject(0, 6, 0, 0, 0, 1, 1);
-				break;
-			}
+			addOverlayObject(0, 6, 0, 0, 0, 1, 1);
+			break;
+		}
 		case 40: {
-				int eax;
-				int ecx;
-				overlayObjectListStruct *edi;
-				int oldNumCoin;
-
-				short int cost;
-
-				cost = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-
-				oldNumCoin = numCoin;
-				numCoin -= cost;
-				if (numCoin < 0)
-					numCoin = 0;
-
-				addOverlayObject(0, 3, 10, 30, 0, 0, 3); // display the coin
-
-				eax = 0;
-				ecx = 0;
-				edi = overlayObjectList;
-
-				while (eax < 10) {
-					if (edi->field_0 != -1 && edi->type == 2) {
-						edi->field_0 = BoundRegleTrois(edi->followedActor, edi->field_0, 100, edi->timeToDie - lba_time - 50);
-						edi->followedActor = numCoin;
-						edi->timeToDie = lba_time + 150;
-						ecx = 1;
-						break;
-					}
-					edi++;
-					eax++;
-				}
-
-				if (!ecx) {
-					addOverlayObject(2, oldNumCoin, 60, 40, numCoin, ecx, 3);
-				}
-
-				break;
-
-			}
-		case 41: {
-				OPbreak = -1;
-				lactor->positionInActorScript = -1;
-				break;
-			}
-		case 42: { // stopTrack
-				lactor->pausedTrackPtr = lactor->currentLabelPtr;
-				lactor->positionInMoveScript = -1;
-				break;
-			}
-		case 43: { // resumeTrack
-				lactor->positionInMoveScript = lactor->pausedTrackPtr;
-				break;
-			}
-		case 44: {
-				int temp;
-				int textNum;
-
-				freezeTime();
-				TestRestoreModeSVGA(1);
-
-				temp = *(actorScriptPtr++);
-
-				/*
-				   if(showTalkVar)
-				   {
-				   DrawBulle(temp);
-				   }
-				 */
-
-				TestCoulDial(actors[temp].talkColor);
-
-				textNum = READ_LE_S16(actorScriptPtr);
-
-				printTextFullScreen(textNum);
-
-				actorScriptPtr += 2;
-
-				unfreezeTime();
-
-				fullRedraw(1);
-
-				//                             waitForKey();
-
-				break;
-			}
-
-		case 45: {
-				chapter++;
-				break;
-			}
-		case 46: {
-				int temp;
-
-				freezeTime();
-				TestRestoreModeSVGA(1);
-
-				temp = *(actorScriptPtr++);
-				foundObject(temp);
-
-				unfreezeTime();
-				fullRedraw(1);
-				break;
-			}
-		case 47: {
-				lactor->angle = 0x300;
-				lactor->X = lactor->lastX - READ_LE_S16(actorScriptPtr);
-				lactor->dynamicFlagsBF.isMoving = 0;
-				lactor->speed = 0;
-				actorScriptPtr += 2;
-				break;
-			}
-		case 48: {
-				lactor->angle = 0x100;
-				lactor->X = lactor->lastX + READ_LE_S16(actorScriptPtr);
-				lactor->dynamicFlagsBF.isMoving = 0;
-				lactor->speed = 0;
-				actorScriptPtr += 2;
-				break;
-			}
-		case 49: {
-				lactor->angle = 0x200;
-				lactor->Z = lactor->lastY - READ_LE_S16(actorScriptPtr);
-				lactor->dynamicFlagsBF.isMoving = 0;
-				lactor->speed = 0;
-				actorScriptPtr += 2;
-				break;
-			}
-		case 50: {
-				lactor->angle = 0;
-				lactor->Z = lactor->lastY + READ_LE_S16(actorScriptPtr);
-				lactor->dynamicFlagsBF.isMoving = 0;
-				lactor->speed = 0;
-				actorScriptPtr += 2;
-				break;
-			}
-		case 51: {
-				char temp;
-
-				if (lactor->canGiveBonus)
-					giveBonus(lactor);
-
-				temp = *(actorScriptPtr++);
-
-				if (temp != 0)
-					lactor->gaveBonus = 1;
-
-				break;
-			}
-		case 52: {
-				twinsenPositionModeInNewCube = 2;
-				needChangeRoom = *(actorScriptPtr++);
-				break;
-			}
-		case 53: { // OBJ_COL
-				if (*(actorScriptPtr++) != 0) {
-					lactor->staticFlagsBF.computeCollisionWithObj = 1;
-				} else {
-					lactor->staticFlagsBF.computeCollisionWithObj = 0;
-				}
-				break;
-			}
-		case 54: { // BRICK_COL
-				char temp;
-
-				temp = *(actorScriptPtr++);
-
-				lactor->staticFlagsBF.computeCollisionWithBricks = 0;
-				lactor->staticFlagsBF.isDead = 0;
-
-				if (temp == 1) {
-					lactor->staticFlagsBF.computeCollisionWithBricks = 1;
-				} else if (temp == 2) {
-					lactor->staticFlagsBF.computeCollisionWithBricks = 1;
-					lactor->staticFlagsBF.isDead = 1;
-				}
-				break;
-			}
-		case 55: {
-				manipActor(lactor);
-				if (doCalc()) {
-					actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
-				} else {
-					actorScriptPtr += 2;
-				}
-				break;
-			}
-		case 56: { // INVISIBLE
-				lactor->staticFlagsBF.noDisplay = *(actorScriptPtr++);
-				break;
-			}
-		case 57: {
-				char temp;
-
-				temp = *(actorScriptPtr++);
-
-				if (temp != 0) {
-					printf("Enter zoom\n");
-					if (drawInGameTransBox == 0) {
-						/*
-						   if(zoomMode!=0)
-						   {
-						   FadeToBlack(menuPal);
-						   SetBackPal();
-						   lockPalette=1;
-						   }
-						 */
-					}
-				} else {
-					printf("Exit zoom\n");
-					if (drawInGameTransBox != 0) {
-						//                                                      FadeToBlack(menuPal);
-						SetBackPal();
-						lockPalette = 1;
-						requestBackgroundRedraw = 1;
-					}
-				}
-				break;
-			}
-		case 58: {
-				manipActorResult = *(actorScriptPtr++);  // position flag number
-
-				destX = flagData[manipActorResult].x;
-				destZ = flagData[manipActorResult].z;
-				destY = flagData[manipActorResult].y;
-
-				lactor->X = destX;
-				lactor->Z = destZ;
-				lactor->Y = destY;
-				break;
-			}
-		case 59: {
-				magicLevel = *(actorScriptPtr++);
-				magicPoint = magicLevel * 20;
-				break;
-			}
-		case 60: {
-				magicPoint = *(actorScriptPtr++);
-				if (magicPoint < 0)
-					magicPoint = 0;
-
-				break;
-			}
-		case 61: {
-				unsigned char temp1;
-				char temp2;
-
-				temp1 = *(actorScriptPtr++);
-				temp2 = *(actorScriptPtr++);
-
-				actors[temp1].life = temp2;
-				break;
-			}
-		case 62: { // LM_SUB_LIFE_POINT_OBJ
-				unsigned char localActorNumber;
-				char subLife;
-
-				localActorNumber = *(actorScriptPtr++);
-				subLife = *(actorScriptPtr++);
-
-				actors[localActorNumber].life -= subLife;
-
-				if (actors[localActorNumber].life < 0)
-					actors[localActorNumber].life = 0;
-
-			}
-		case 63: { //LM_HIT_OBJ
-				unsigned char tempActorNumber;
-				char temp;
-
-				tempActorNumber = *(actorScriptPtr++);
-				temp = *(actorScriptPtr++);
-				HitObj(actorNumber, tempActorNumber, temp, actors[tempActorNumber].angle);
-				break;
-			}
-		case 64: { //LM_PLAY_FLA
-				int length = strlen((char*)actorScriptPtr);
-				playFla((char*)actorScriptPtr);
-				actorScriptPtr += length + 1;
-				break;
-			}
-		case 65: { //LM_PLAY_MIDI
-				playMusic(*(actorScriptPtr++));
-				break;
-			}
-		case 66: { //LM_INC_CLOVER_BOX
-				if (numCloverBox < 10)
-					numCloverBox++;
-
-				break;
-			}
-		case 67: { //LM_SET_USED_INVENTORY
-				int entryTemp;
-
-				entryTemp = *(actorScriptPtr++);
-
-				if (entryTemp < 24)
-					itemUsed[entryTemp] = 1;
-
-				break;
-			}
-		case 68: { //LM_ADD_CHOICE
-				inGameMenuData[numOfOptionsInChoice++] = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				break;
-			}
-		case 69: { //LM_ASK_CHOICE
-				short int choiceNum;
-
-				freezeTime();
-				TestRestoreModeSVGA(1);
-
-				if (showTalkVar) {
-					//DrawBulle(actorNumber);
-				}
-
-				TestCoulDial(lactor->talkColor);
-
-				choiceNum = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-
-				processInGameMenu(choiceNum);
-
-				numOfOptionsInChoice = 0;
-
-				unfreezeTime();
-
-				fullRedraw(1);
-
-				//waitForKey();
-				break;
-			}
-		case 70: { //LM_BIG_MESSAGE
-				int textNumber;
-
-				freezeTime();
-				TestRestoreModeSVGA(1);
-				newGame2();
-
-				/*
-				 * if(showTalkVar) { DrawBulle(actorNumber); }
-				 */
-
-				TestCoulDial(lactor->talkColor);
-
-				textNumber = READ_LE_S16(actorScriptPtr);
-
-				printTextFullScreen(textNumber);
-
-				actorScriptPtr += 2;
-
-				newGame4();
-
-				fullRedraw(1);
-
-				unfreezeTime();
-
-				// waitForKey();
-				break;
-			}
-
-		case 71: { //LM_INIT_PINGOUIN
-				byte newActor;
-				newActor = *(actorScriptPtr++);
-				actors[newActor].dynamicFlagsBF.isDead = 1;
-				currentPingouin = newActor;
-				actors[newActor].costumeIndex = -1;
-				actors[newActor].zone = -1;
-				break;
-			}
-		case 72: { //LM_SET_HOLO_POS
-				char position;
-
-				position = *(actorScriptPtr++);
-
-				//setHolomapPosition(*(actorScriptPtr++));
-
-				if (vars[0]) {
-					addOverlayObject(3, 0, 0, 0, 0, 0, 3);
-				}
-
-				break;
-			}
-		case 73: { //LM_CLR_HOLO_POS
-				char position;
-
-				position = *(actorScriptPtr++);
-
-				printf("Clear holomap position %d\n", position);
-				break;
-			}
-		case 74: { //LM_ADD_FUEL
-				fuel += *(actorScriptPtr++);
-				if (fuel > 100) {
-					fuel = 100;
-				}
-				break;
-			}
-		case 75: { //LM_SUB_FUEL
-				fuel -= *(actorScriptPtr++);
-				if (fuel < 0) {
-					fuel = 0;
-				}
-				break;
-			}
-		case 76: { //LM_SET_GRM
-				currentGrid2 = *(actorScriptPtr++);
-				IncrustGrm(currentGrid2);
-				break;
-			}
-		case 77: { //LM_SAY_MESSAGE
-				short int messageNumber;
-
-				messageNumber = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-
-				addOverlayObject(4, messageNumber, 0, 0, actorNumber, 1, 2);
-
-				freezeTime();
-				setVoxFileAtDigit(messageNumber);
-				unfreezeTime();
-
-				break;
-			}
-		case 78: { //LM_SAY_MESSAGE_OBJ
-				char character;
-				short int messageNumber;
-
-				character = *(actorScriptPtr++);
-				messageNumber = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-
-				addOverlayObject(4, messageNumber, 0, 0, character, 1, 2);
-
-				freezeTime();
-				setVoxFileAtDigit(messageNumber);
-				unfreezeTime();
-
-				break;
-			}
-		case 79: { //LM_FULL_POINT
-				twinsen->life = 50;
-				magicPoint = magicLevel * 20;
-				break;
-			}
-		case 80: { //LM_BETA
-				short int newAngle;
-
-				newAngle = READ_LE_S16(actorScriptPtr);
-				actorScriptPtr += 2;
-				lactor->angle = newAngle;
-				clearRealAngle(lactor);
-				break;
-			}
-		case 81: { //LM_GRM_OFF
-				if (currentGrid2 != -1) {
-					useAnotherGrm = -1;
-					currentGrid2 = -1;
-					createCube();
-					fullRedraw(1);
+			int eax;
+			int ecx;
+			overlayObjectListStruct *edi;
+			int oldNumCoin;
+
+			short int cost;
+
+			cost = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+
+			oldNumCoin = numCoin;
+			numCoin -= cost;
+			if (numCoin < 0)
+				numCoin = 0;
+
+			addOverlayObject(0, 3, 10, 30, 0, 0, 3); // display the coin
+
+			eax = 0;
+			ecx = 0;
+			edi = overlayObjectList;
+
+			while (eax < 10) {
+				if (edi->field_0 != -1 && edi->type == 2) {
+					edi->field_0 = BoundRegleTrois(edi->followedActor, edi->field_0, 100, edi->timeToDie - lba_time - 50);
+					edi->followedActor = numCoin;
+					edi->timeToDie = lba_time + 150;
+					ecx = 1;
 					break;
 				}
+				edi++;
+				eax++;
 			}
-		case 82: { //LM_FADE_PAL_RED
-				printf("fade pal red\n");
-				break;
-			}
-		case 83: { //LM_FADE_ALARM_RED
-				printf("fade alarm red\n");
-				break;
-			}
-		case 84: { //LM_FADE_ALARM_PAL
-				printf("fade alarm pal\n");
-				break;
-			}
-		case 85: { //LM_FADE_RED_PAL
-				printf("fade red pal\n");
-				break;
-			}
-		case 86: { //LM_FADE_RED_ALARM
-				printf("fade red alarm\n");
-				break;
-			}
-		case 87: { //LM_FADE_PAL_ALARM
-				printf("fade pal alarm\n");
-				break;
-			}
-		case 88: { //LM_EXPLODE_OBJ
-				actorScriptPtr++;
-				printf("Ignoring opcode 88 in runActorScript\n");
-				break;
-			}
-		case 89: { //LM_BULLE_ON
-				showTalkVar = 1;
-				break;
-			}
-		case 90: { //LM_BULLE_OFF
-				showTalkVar = 0;
-				break;
-			}
-		case 91: { //LM_ASK_CHOICE_OBJ
-				unsigned char currentTalkingActor;
-				short int choiceNumber;
 
-				freezeTime();
-				currentTalkingActor = *(actorScriptPtr++);
-				TestRestoreModeSVGA(1);
+			if (!ecx) {
+				addOverlayObject(2, oldNumCoin, 60, 40, numCoin, ecx, 3);
+			}
 
-				if (showTalkVar) {
-					//DrawBulle(currentTalkingActor);
-				}
+			break;
 
-				TestCoulDial(actors[currentTalkingActor].talkColor);
+		}
+		case 41: {
+			OPbreak = -1;
+			lactor->positionInActorScript = -1;
+			break;
+		}
+		case 42: { // stopTrack
+			lactor->pausedTrackPtr = lactor->currentLabelPtr;
+			lactor->positionInMoveScript = -1;
+			break;
+		}
+		case 43: { // resumeTrack
+			lactor->positionInMoveScript = lactor->pausedTrackPtr;
+			break;
+		}
+		case 44: {
+			int temp;
+			int textNum;
 
-				choiceNumber = READ_LE_S16(actorScriptPtr);
+			freezeTime();
+			TestRestoreModeSVGA(1);
+
+			temp = *(actorScriptPtr++);
+
+			/*
+			   if(showTalkVar)
+			   {
+			   DrawBulle(temp);
+			   }
+			 */
+
+			TestCoulDial(actors[temp].talkColor);
+
+			textNum = READ_LE_S16(actorScriptPtr);
+
+			printTextFullScreen(textNum);
+
+			actorScriptPtr += 2;
+
+			unfreezeTime();
+
+			fullRedraw(1);
+
+			//                             waitForKey();
+
+			break;
+		}
+
+		case 45: {
+			chapter++;
+			break;
+		}
+		case 46: {
+			int temp;
+
+			freezeTime();
+			TestRestoreModeSVGA(1);
+
+			temp = *(actorScriptPtr++);
+			foundObject(temp);
+
+			unfreezeTime();
+			fullRedraw(1);
+			break;
+		}
+		case 47: {
+			lactor->angle = 0x300;
+			lactor->X = lactor->lastX - READ_LE_S16(actorScriptPtr);
+			lactor->dynamicFlagsBF.isMoving = 0;
+			lactor->speed = 0;
+			actorScriptPtr += 2;
+			break;
+		}
+		case 48: {
+			lactor->angle = 0x100;
+			lactor->X = lactor->lastX + READ_LE_S16(actorScriptPtr);
+			lactor->dynamicFlagsBF.isMoving = 0;
+			lactor->speed = 0;
+			actorScriptPtr += 2;
+			break;
+		}
+		case 49: {
+			lactor->angle = 0x200;
+			lactor->Z = lactor->lastY - READ_LE_S16(actorScriptPtr);
+			lactor->dynamicFlagsBF.isMoving = 0;
+			lactor->speed = 0;
+			actorScriptPtr += 2;
+			break;
+		}
+		case 50: {
+			lactor->angle = 0;
+			lactor->Z = lactor->lastY + READ_LE_S16(actorScriptPtr);
+			lactor->dynamicFlagsBF.isMoving = 0;
+			lactor->speed = 0;
+			actorScriptPtr += 2;
+			break;
+		}
+		case 51: {
+			char temp;
+
+			if (lactor->canGiveBonus)
+				giveBonus(lactor);
+
+			temp = *(actorScriptPtr++);
+
+			if (temp != 0)
+				lactor->gaveBonus = 1;
+
+			break;
+		}
+		case 52: {
+			twinsenPositionModeInNewCube = 2;
+			needChangeRoom = *(actorScriptPtr++);
+			break;
+		}
+		case 53: { // OBJ_COL
+			if (*(actorScriptPtr++) != 0) {
+				lactor->staticFlagsBF.computeCollisionWithObj = 1;
+			} else {
+				lactor->staticFlagsBF.computeCollisionWithObj = 0;
+			}
+			break;
+		}
+		case 54: { // BRICK_COL
+			char temp;
+
+			temp = *(actorScriptPtr++);
+
+			lactor->staticFlagsBF.computeCollisionWithBricks = 0;
+			lactor->staticFlagsBF.isDead = 0;
+
+			if (temp == 1) {
+				lactor->staticFlagsBF.computeCollisionWithBricks = 1;
+			} else if (temp == 2) {
+				lactor->staticFlagsBF.computeCollisionWithBricks = 1;
+				lactor->staticFlagsBF.isDead = 1;
+			}
+			break;
+		}
+		case 55: {
+			manipActor(lactor);
+			if (doCalc()) {
+				actorScriptPtr = lactor->actorScript + READ_LE_S16(actorScriptPtr);
+			} else {
 				actorScriptPtr += 2;
+			}
+			break;
+		}
+		case 56: { // INVISIBLE
+			lactor->staticFlagsBF.noDisplay = *(actorScriptPtr++);
+			break;
+		}
+		case 57: {
+			char temp;
 
-				processInGameMenu(choiceNumber);
+			temp = *(actorScriptPtr++);
 
-				numOfOptionsInChoice = 0;
+			if (temp != 0) {
+				printf("Enter zoom\n");
+				if (drawInGameTransBox == 0) {
+					/*
+					   if(zoomMode!=0)
+					   {
+					   FadeToBlack(menuPal);
+					   SetBackPal();
+					   lockPalette=1;
+					   }
+					 */
+				}
+			} else {
+				printf("Exit zoom\n");
+				if (drawInGameTransBox != 0) {
+					//                                                      FadeToBlack(menuPal);
+					SetBackPal();
+					lockPalette = 1;
+					requestBackgroundRedraw = 1;
+				}
+			}
+			break;
+		}
+		case 58: {
+			manipActorResult = *(actorScriptPtr++);  // position flag number
 
-				unfreezeTime();
+			destX = flagData[manipActorResult].x;
+			destZ = flagData[manipActorResult].z;
+			destY = flagData[manipActorResult].y;
+
+			lactor->X = destX;
+			lactor->Z = destZ;
+			lactor->Y = destY;
+			break;
+		}
+		case 59: {
+			magicLevel = *(actorScriptPtr++);
+			magicPoint = magicLevel * 20;
+			break;
+		}
+		case 60: {
+			magicPoint = *(actorScriptPtr++);
+			if (magicPoint < 0)
+				magicPoint = 0;
+
+			break;
+		}
+		case 61: {
+			unsigned char temp1;
+			char temp2;
+
+			temp1 = *(actorScriptPtr++);
+			temp2 = *(actorScriptPtr++);
+
+			actors[temp1].life = temp2;
+			break;
+		}
+		case 62: { // LM_SUB_LIFE_POINT_OBJ
+			unsigned char localActorNumber;
+			char subLife;
+
+			localActorNumber = *(actorScriptPtr++);
+			subLife = *(actorScriptPtr++);
+
+			actors[localActorNumber].life -= subLife;
+
+			if (actors[localActorNumber].life < 0)
+				actors[localActorNumber].life = 0;
+
+		}
+		case 63: { //LM_HIT_OBJ
+			unsigned char tempActorNumber;
+			char temp;
+
+			tempActorNumber = *(actorScriptPtr++);
+			temp = *(actorScriptPtr++);
+			HitObj(actorNumber, tempActorNumber, temp, actors[tempActorNumber].angle);
+			break;
+		}
+		case 64: { //LM_PLAY_FLA
+			int length = strlen((char *)actorScriptPtr);
+			playFla((char *)actorScriptPtr);
+			actorScriptPtr += length + 1;
+			break;
+		}
+		case 65: { //LM_PLAY_MIDI
+			playMusic(*(actorScriptPtr++));
+			break;
+		}
+		case 66: { //LM_INC_CLOVER_BOX
+			if (numCloverBox < 10)
+				numCloverBox++;
+
+			break;
+		}
+		case 67: { //LM_SET_USED_INVENTORY
+			int entryTemp;
+
+			entryTemp = *(actorScriptPtr++);
+
+			if (entryTemp < 24)
+				itemUsed[entryTemp] = 1;
+
+			break;
+		}
+		case 68: { //LM_ADD_CHOICE
+			inGameMenuData[numOfOptionsInChoice++] = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			break;
+		}
+		case 69: { //LM_ASK_CHOICE
+			short int choiceNum;
+
+			freezeTime();
+			TestRestoreModeSVGA(1);
+
+			if (showTalkVar) {
+				//DrawBulle(actorNumber);
+			}
+
+			TestCoulDial(lactor->talkColor);
+
+			choiceNum = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+
+			processInGameMenu(choiceNum);
+
+			numOfOptionsInChoice = 0;
+
+			unfreezeTime();
+
+			fullRedraw(1);
+
+			//waitForKey();
+			break;
+		}
+		case 70: { //LM_BIG_MESSAGE
+			int textNumber;
+
+			freezeTime();
+			TestRestoreModeSVGA(1);
+			newGame2();
+
+			/*
+			 * if(showTalkVar) { DrawBulle(actorNumber); }
+			 */
+
+			TestCoulDial(lactor->talkColor);
+
+			textNumber = READ_LE_S16(actorScriptPtr);
+
+			printTextFullScreen(textNumber);
+
+			actorScriptPtr += 2;
+
+			newGame4();
+
+			fullRedraw(1);
+
+			unfreezeTime();
+
+			// waitForKey();
+			break;
+		}
+
+		case 71: { //LM_INIT_PINGOUIN
+			byte newActor;
+			newActor = *(actorScriptPtr++);
+			actors[newActor].dynamicFlagsBF.isDead = 1;
+			currentPingouin = newActor;
+			actors[newActor].costumeIndex = -1;
+			actors[newActor].zone = -1;
+			break;
+		}
+		case 72: { //LM_SET_HOLO_POS
+			char position;
+
+			position = *(actorScriptPtr++);
+
+			//setHolomapPosition(*(actorScriptPtr++));
+
+			if (vars[0]) {
+				addOverlayObject(3, 0, 0, 0, 0, 0, 3);
+			}
+
+			break;
+		}
+		case 73: { //LM_CLR_HOLO_POS
+			char position;
+
+			position = *(actorScriptPtr++);
+
+			printf("Clear holomap position %d\n", position);
+			break;
+		}
+		case 74: { //LM_ADD_FUEL
+			fuel += *(actorScriptPtr++);
+			if (fuel > 100) {
+				fuel = 100;
+			}
+			break;
+		}
+		case 75: { //LM_SUB_FUEL
+			fuel -= *(actorScriptPtr++);
+			if (fuel < 0) {
+				fuel = 0;
+			}
+			break;
+		}
+		case 76: { //LM_SET_GRM
+			currentGrid2 = *(actorScriptPtr++);
+			IncrustGrm(currentGrid2);
+			break;
+		}
+		case 77: { //LM_SAY_MESSAGE
+			short int messageNumber;
+
+			messageNumber = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+
+			addOverlayObject(4, messageNumber, 0, 0, actorNumber, 1, 2);
+
+			freezeTime();
+			setVoxFileAtDigit(messageNumber);
+			unfreezeTime();
+
+			break;
+		}
+		case 78: { //LM_SAY_MESSAGE_OBJ
+			char character;
+			short int messageNumber;
+
+			character = *(actorScriptPtr++);
+			messageNumber = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+
+			addOverlayObject(4, messageNumber, 0, 0, character, 1, 2);
+
+			freezeTime();
+			setVoxFileAtDigit(messageNumber);
+			unfreezeTime();
+
+			break;
+		}
+		case 79: { //LM_FULL_POINT
+			twinsen->life = 50;
+			magicPoint = magicLevel * 20;
+			break;
+		}
+		case 80: { //LM_BETA
+			short int newAngle;
+
+			newAngle = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+			lactor->angle = newAngle;
+			clearRealAngle(lactor);
+			break;
+		}
+		case 81: { //LM_GRM_OFF
+			if (currentGrid2 != -1) {
+				useAnotherGrm = -1;
+				currentGrid2 = -1;
+				createCube();
 				fullRedraw(1);
-				//waitForKey();
 				break;
 			}
+		}
+		case 82: { //LM_FADE_PAL_RED
+			printf("fade pal red\n");
+			break;
+		}
+		case 83: { //LM_FADE_ALARM_RED
+			printf("fade alarm red\n");
+			break;
+		}
+		case 84: { //LM_FADE_ALARM_PAL
+			printf("fade alarm pal\n");
+			break;
+		}
+		case 85: { //LM_FADE_RED_PAL
+			printf("fade red pal\n");
+			break;
+		}
+		case 86: { //LM_FADE_RED_ALARM
+			printf("fade red alarm\n");
+			break;
+		}
+		case 87: { //LM_FADE_PAL_ALARM
+			printf("fade pal alarm\n");
+			break;
+		}
+		case 88: { //LM_EXPLODE_OBJ
+			actorScriptPtr++;
+			printf("Ignoring opcode 88 in runActorScript\n");
+			break;
+		}
+		case 89: { //LM_BULLE_ON
+			showTalkVar = 1;
+			break;
+		}
+		case 90: { //LM_BULLE_OFF
+			showTalkVar = 0;
+			break;
+		}
+		case 91: { //LM_ASK_CHOICE_OBJ
+			unsigned char currentTalkingActor;
+			short int choiceNumber;
+
+			freezeTime();
+			currentTalkingActor = *(actorScriptPtr++);
+			TestRestoreModeSVGA(1);
+
+			if (showTalkVar) {
+				//DrawBulle(currentTalkingActor);
+			}
+
+			TestCoulDial(actors[currentTalkingActor].talkColor);
+
+			choiceNumber = READ_LE_S16(actorScriptPtr);
+			actorScriptPtr += 2;
+
+			processInGameMenu(choiceNumber);
+
+			numOfOptionsInChoice = 0;
+
+			unfreezeTime();
+			fullRedraw(1);
+			//waitForKey();
+			break;
+		}
 		case 92: { //LM_SET_DARK_PAL
-				freezeTime();
-				Load_HQR("ress.hqr", (byte*)palette, 24);
-				convertPalToRGBA(palette, paletteRGBA);
-				if (!lockPalette) {
-					os_setPalette(paletteRGBA);
-				}
-				useAlternatePalette = 1;
-				unfreezeTime();
-				break;
+			freezeTime();
+			Load_HQR("ress.hqr", (byte *)palette, 24);
+			convertPalToRGBA(palette, paletteRGBA);
+			if (!lockPalette) {
+				os_setPalette(paletteRGBA);
 			}
+			useAlternatePalette = 1;
+			unfreezeTime();
+			break;
+		}
 		case 93: { //LM_SET_NORMAL_PAL
-				useAlternatePalette = 0;
-				if (!lockPalette) {
-					os_setPalette(menuPalRGBA);
-				}
-				break;
-			}
-		case 94: { //LM_MESSAGE_SENDELL
-				int backupFlag;
-
-				freezeTime();
-				TestRestoreModeSVGA(1);
-				FadeToBlack((char*) paletteRGBA);
-				Load_HQR("ress.hqr", workVideoBuffer, 25);
-				CopyScreen(workVideoBuffer, frontVideoBuffer);
-				Load_HQR("ress.hqr", (byte *) & palette, 26);
-				convertPalToRGBA(palette, paletteRGBA);
-				os_flip(frontVideoBuffer);
-				FadeToPal((char*)paletteRGBA);
-				newGame2();
-				TestCoulDial(15);
-				newGameVar4 = 0;
-				backupFlag = flagDisplayText;
-				flagDisplayText = 1;
-				printTextFullScreen(6);
-				newGameVar4 = 1;
-				newGame4();
-				FadeToBlack((char*)paletteRGBA);
-				Cls();
+			useAlternatePalette = 0;
+			if (!lockPalette) {
 				os_setPalette(menuPalRGBA);
-				flagDisplayText = backupFlag;
-
-				while (!os_isPressed(KEY_CONTTEXT)) ;
-
-				unfreezeTime();
-				break;
-
 			}
-		case 95: // LM_ANIM_SET
-			{ // play new anim, no transition
-				lactor->anim = -1;
-				lactor->previousAnimIndex = -1;
-				InitAnim(*(actorScriptPtr++), 0, 0, actorNumber);
-				break;
-			}
+			break;
+		}
+		case 94: { //LM_MESSAGE_SENDELL
+			int backupFlag;
+
+			freezeTime();
+			TestRestoreModeSVGA(1);
+			FadeToBlack((char *) paletteRGBA);
+			Load_HQR("ress.hqr", workVideoBuffer, 25);
+			CopyScreen(workVideoBuffer, frontVideoBuffer);
+			Load_HQR("ress.hqr", (byte *) & palette, 26);
+			convertPalToRGBA(palette, paletteRGBA);
+			os_flip(frontVideoBuffer);
+			FadeToPal((char *)paletteRGBA);
+			newGame2();
+			TestCoulDial(15);
+			newGameVar4 = 0;
+			backupFlag = flagDisplayText;
+			flagDisplayText = 1;
+			printTextFullScreen(6);
+			newGameVar4 = 1;
+			newGame4();
+			FadeToBlack((char *)paletteRGBA);
+			Cls();
+			os_setPalette(menuPalRGBA);
+			flagDisplayText = backupFlag;
+
+			while (!os_isPressed(KEY_CONTTEXT)) ;
+
+			unfreezeTime();
+			break;
+
+		}
+		case 95: { // LM_ANIM_SET
+			// play new anim, no transition
+			lactor->anim = -1;
+			lactor->previousAnimIndex = -1;
+			InitAnim(*(actorScriptPtr++), 0, 0, actorNumber);
+			break;
+		}
 		case 96: { // LM_HOLOMAP_TRAJ
-				holomapTraj = *(actorScriptPtr++);
-				break;
-			}
+			holomapTraj = *(actorScriptPtr++);
+			break;
+		}
 		case 97: { // LM_GAME_OVER
-				OPbreak = -1;
-				twinsen->dynamicFlagsBF.animEnded = 1;
-				twinsen->life = 0;
-				numClover = 0;
-				break;
-			}
+			OPbreak = -1;
+			twinsen->dynamicFlagsBF.animEnded = 1;
+			twinsen->life = 0;
+			numClover = 0;
+			break;
+		}
 		case 98: { // LM_THE_END
-				OPbreak = -1;
-				numClover = 0;
-				twinsen->life = 50;
-				magicPoint = 80;
-				currentRoom = 113;
-				comportementHero = startupComportementHeroInCube;
-				newTwinsenX = -1;
-				twinsen->angle = startupAngleInCube;
-				SaveGame();
-				break;
-			}
+			OPbreak = -1;
+			numClover = 0;
+			twinsen->life = 50;
+			magicPoint = 80;
+			currentRoom = 113;
+			comportementHero = startupComportementHeroInCube;
+			newTwinsenX = -1;
+			twinsen->angle = startupAngleInCube;
+			SaveGame();
+			break;
+		}
 		case 99: { // LM_MIDI_OFF
-				printf("Stop music!\n");
-				break;
-			}
+			printf("Stop music!\n");
+			break;
+		}
 		case 100: {
-				int temp;
+			int temp;
 
-				temp = *(actorScriptPtr++);
-				playMusic(temp);
-				break;
-			}
+			temp = *(actorScriptPtr++);
+			playMusic(temp);
+			break;
+		}
 		case 101: { //LM_PROJ_ISO
-				configureOrthoProjection(311, 240);
-				setOnlyCameraAngle(0, 0, 0);
-				setSomething3(0, 0, 0);
-				SetLightVector(reinitVar1, reinitVar2, 0);
-				break;
-			}
+			configureOrthoProjection(311, 240);
+			setOnlyCameraAngle(0, 0, 0);
+			setSomething3(0, 0, 0);
+			SetLightVector(reinitVar1, reinitVar2, 0);
+			break;
+		}
 
 		case 102: //LM_PROJ_3D
 			Cls();
@@ -1004,33 +999,33 @@ void runActorScript(short int actorNumber)
 			InitDial(1);
 			break;
 		case 103: {
-				int temp;
-				int esi;
-				int edi;
+			int temp;
+			int esi;
+			int edi;
 
-				if (drawVar1 < 440) {
-					temp = READ_LE_S16(actorScriptPtr);
+			if (drawVar1 < 440) {
+				temp = READ_LE_S16(actorScriptPtr);
 #ifndef US_IMG
-					if (!temp)
-						temp = 16;
+				if (!temp)
+					temp = 16;
 #endif
 
-					GetMultiText(temp, string);
+				GetMultiText(temp, string);
 
-					actorScriptPtr += 2;
+				actorScriptPtr += 2;
 
-					esi = edi = SizeFont(string);
+				esi = edi = SizeFont(string);
 
-					CoulFont(15);
+				CoulFont(15);
 
-					Font(0, drawVar1, string);
+				Font(0, drawVar1, string);
 
-					if (esi > 639)
-						edi = 639;
+				if (esi > 639)
+					edi = 639;
 
-					os_copyBlockPhys(0, drawVar1, edi, drawVar1 + 40);
-					drawVar1 += 40;
-				}
+				os_copyBlockPhys(0, drawVar1, edi, drawVar1 + 40);
+				drawVar1 += 40;
+			}
 
 			break;
 		}
@@ -1043,15 +1038,15 @@ void runActorScript(short int actorNumber)
 			OPbreak = -1;
 			break;
 		default: {
-				printf("Unhandled actorscript opcode %d\n", opcode);
-				exit(1);
-				break;
-			}
+			printf("Unhandled actorscript opcode %d\n", opcode);
+			exit(1);
+			break;
+		}
 		}
 	}
 }
 
-void manipActor(actor * lactor) {
+void manipActor(actor *lactor) {
 	unsigned char opcode;
 	unsigned char *localScriptPtr;
 	actor *lactor2;
@@ -1108,41 +1103,41 @@ void manipActor(actor * lactor) {
 		manipActorResult = cubeFlags[*(actorScriptPtr++)];
 		break;
 	case 12: {
-			short int angle;
-			int newActor;
+		short int angle;
+		int newActor;
 
-			angle = 0;    // todo: not supposed to have that
+		angle = 0;    // todo: not supposed to have that
 
-			newActor = *actorScriptPtr;
-			lactor2 = &actors[newActor];
-			manipActorVar1 = 1;
-			actorScriptPtr = localScriptPtr;
-			if (!(lactor2->dynamicFlagsBF.isDead)) {
-				if (lactor2->Z - lactor->Z < 1500) {
-					angle = GetAngle(lactor->X, lactor->Z, lactor2->X, lactor2->Z);
-					if (DoTrackVar1 > 32000)
-						DoTrackVar1 = 32000;
-				} else {
+		newActor = *actorScriptPtr;
+		lactor2 = &actors[newActor];
+		manipActorVar1 = 1;
+		actorScriptPtr = localScriptPtr;
+		if (!(lactor2->dynamicFlagsBF.isDead)) {
+			if (lactor2->Z - lactor->Z < 1500) {
+				angle = GetAngle(lactor->X, lactor->Z, lactor2->X, lactor2->Z);
+				if (DoTrackVar1 > 32000)
 					DoTrackVar1 = 32000;
-				}
-
-				if (!newActor) {
-					int newAngle;
-
-					newAngle = (lactor->angle + 0x480) - (angle + 0x400);
-					newAngle &= 0x3FF;
-
-					if (newAngle >= 0x100) {
-						manipActorResult = 32000;
-					} else {
-						manipActorResult = DoTrackVar1;
-					}
-				}
 			} else {
-				manipActorResult = 32000;
+				DoTrackVar1 = 32000;
 			}
-			break;
+
+			if (!newActor) {
+				int newAngle;
+
+				newAngle = (lactor->angle + 0x480) - (angle + 0x400);
+				newAngle &= 0x3FF;
+
+				if (newAngle >= 0x100) {
+					manipActorResult = 32000;
+				} else {
+					manipActorResult = DoTrackVar1;
+				}
+			}
+		} else {
+			manipActorResult = 32000;
 		}
+		break;
+	}
 	case 13:
 		manipActorResult = lactor->hitBy;
 		break;
@@ -1185,8 +1180,8 @@ void manipActor(actor * lactor) {
 		actorScriptPtr = localScriptPtr;
 		if (!(lactor2->dynamicFlagsBF.isDead)) {
 			manipActorResult =
-				distance3d(lactor->X, lactor->Z, lactor->Y, lactor2->X, lactor2->Z,
-						   lactor2->Y);
+			    distance3d(lactor->X, lactor->Z, lactor->Y, lactor2->X, lactor2->Z,
+			               lactor2->Y);
 
 			if (manipActorResult > 32000)
 				manipActorResult = 32000;
@@ -1195,28 +1190,28 @@ void manipActor(actor * lactor) {
 		}
 		break;
 	case 25: {
-			int temp;
+		int temp;
 
-			temp = *actorScriptPtr;
-			actorScriptPtr = localScriptPtr;
-			if (vars[70] == 0) {
-				if (temp == selectedInventoryObj) {
+		temp = *actorScriptPtr;
+		actorScriptPtr = localScriptPtr;
+		if (vars[70] == 0) {
+			if (temp == selectedInventoryObj) {
+				manipActorResult = 1;
+			} else {
+				if (itemUsed[temp] == 1 && vars[temp] == 1) {
 					manipActorResult = 1;
 				} else {
-					if (itemUsed[temp] == 1 && vars[temp] == 1) {
-						manipActorResult = 1;
-					} else {
-						manipActorResult = 0;
-					}
+					manipActorResult = 0;
 				}
-
-				if (manipActorResult == 1)
-					addOverlayObject(3, temp, 0, 0, 0, 0, 3);
-			} else {
-				manipActorResult = 0;
 			}
-			break;
+
+			if (manipActorResult == 1)
+				addOverlayObject(3, temp, 0, 0, 0, 0, 3);
+		} else {
+			manipActorResult = 0;
 		}
+		break;
+	}
 	case 26:
 		manipActorVar1 = 1;
 		manipActorResult = inGameMenuAnswer;
@@ -1240,8 +1235,7 @@ void manipActor(actor * lactor) {
 	}
 }
 
-int doCalc(void)
-{
+int doCalc(void) {
 	unsigned char *localActorScript = actorScriptPtr;
 	unsigned char opcode;
 	int opcode2 = -1;
@@ -1250,8 +1244,7 @@ int doCalc(void)
 
 	opcode = *(localActorScript++);
 
-	switch (manipActorVar1)
-	{
+	switch (manipActorVar1) {
 	case 0:
 		opcode2 = *(localActorScript++);
 		break;
@@ -1264,8 +1257,7 @@ int doCalc(void)
 		exit(1);
 	}
 
-	switch (opcode)
-	{
+	switch (opcode) {
 	case 0:
 		if (localManipActorResult == opcode2)
 			result = 1;

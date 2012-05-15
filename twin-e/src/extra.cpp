@@ -108,7 +108,7 @@ short int magicPoint;
 short int numCoin;
 short int numKey;
 
-void makeMagicBallBounce(extraListStruct* pExtra, int X, int Y, int Z) {
+void makeMagicBallBounce(extraListStruct *pExtra, int X, int Y, int Z) {
 	if (WorldColBrick(X, pExtra->Z, Z)) {
 		pExtra->field_10 = -pExtra->field_10;
 	}
@@ -145,7 +145,7 @@ void reinitExtraObjectList(void) {
 int ThrowExtra(int actorNum, int X, int Y, int Z, int sprite, int var2, int var3, int var4, int var5, int strength) {
 	int i;
 
-	for (i = 0;i < 50;i++) {
+	for (i = 0; i < 50; i++) {
 		if (extraList[i].field_0 == -1) {
 			extraList[i].field_0 = sprite;
 			extraList[i].field_14 = 0x210C;
@@ -173,7 +173,7 @@ void InitSpecial(int var0, int var1, int var2, int var3) {
 
 	flag = 0x8000 + var3;
 
-	for (i = 0;i < 50;i++) {
+	for (i = 0; i < 50; i++) {
 		if (extraList[i].field_0 == -1) {
 			extraList[i].field_0 = flag;
 			extraList[i].field_20 = 0;
@@ -192,25 +192,24 @@ void InitSpecial(int var0, int var1, int var2, int var3) {
 				extraList[i].field_1C = 100;
 
 				return;
-			} else
-				if (var3 == 1) {
-					extraList[i].field_14 = var3;
+			} else if (var3 == 1) {
+				extraList[i].field_14 = var3;
 
-					extraList[i].X = var0;
-					extraList[i].Z = var1;
-					extraList[i].Y = var2;
+				extraList[i].X = var0;
+				extraList[i].Z = var1;
+				extraList[i].Y = var2;
 
-					extraList[i].field_1E = 0;
-					extraList[i].time = lba_time;
-					extraList[i].field_1C = 5;
+				extraList[i].field_1E = 0;
+				extraList[i].time = lba_time;
+				extraList[i].field_1C = 5;
 
-					return;
-				}
+				return;
+			}
 		}
 	}
 }
 
-void InitFly(extraListStruct* extraEntry, int var1, int var2, int var3, int var4) {
+void InitFly(extraListStruct *extraEntry, int var1, int var2, int var3, int var4) {
 	extraEntry->field_14 |= 2;
 
 	extraEntry->field_8 = extraEntry->X;
@@ -231,7 +230,7 @@ void InitFly(extraListStruct* extraEntry, int var1, int var2, int var3, int var4
 }
 
 void AffSpecial(int extraNum, int X, int Y) { //line object only
-	extraListStruct* extraEntry = &extraList[extraNum];
+	extraListStruct *extraEntry = &extraList[extraNum];
 
 	int extraType = extraEntry->field_0 & 0x7FFF;
 
@@ -255,7 +254,7 @@ void AffSpecial(int extraNum, int X, int Y) { //line object only
 int ExtraBonus(int X, int Y, int Z, int param, int angle, int type, int param2) {
 	int i;
 
-	for (i = 0;i < 50;i++) {
+	for (i = 0; i < 50; i++) {
 		if (extraList[i].field_0 == -1) {
 			extraList[i].field_0 = type;
 			extraList[i].field_14 = 0x4071; // old value: 0x4030
@@ -286,7 +285,7 @@ int ExtraBonus(int X, int Y, int Z, int param, int angle, int type, int param2) 
 	return(-1);
 }
 
-void Aff2DShape(short int* extraData, int X, int Y, int param0, int time, int param1) {
+void Aff2DShape(short int *extraData, int X, int Y, int param0, int time, int param1) {
 	short int currentExtraData;
 	short int var_8;
 	short int temp1;
@@ -386,7 +385,7 @@ void specialLoop(void) {
 	int var_40;
 	int var_30;
 
-	for (i = 0;i < 50;i++) {
+	for (i = 0; i < 50; i++) {
 		if (extraList[i].field_0 != -1) {
 			if (extraList[i].field_14 & 1) { //remove after time
 				if (extraList[i].field_1C + extraList[i].time <= lba_time) { // time passed
@@ -610,9 +609,9 @@ void specialLoop(void) {
 				}
 
 				if (var_30) {
-					short int* ptr;
+					short int *ptr;
 
-					ptr = (short int*)(spriteActorData + extraList[i].field_0 * 16 + 8);
+					ptr = (short int *)(spriteActorData + extraList[i].field_0 * 16 + 8);
 					extraList[i].Z = (getPosVar2 << 8) + 0x100 - *(ptr);
 					extraList[i].field_14 &= 0xFFED;
 					continue;
@@ -668,7 +667,7 @@ void specialLoop(void) {
 	}
 }
 
-int ExtraCheckObjCol(extraListStruct* extra, int param) {
+int ExtraCheckObjCol(extraListStruct *extra, int param) {
 	int X1;
 	int X2;
 	int Z1;
@@ -685,9 +684,9 @@ int ExtraCheckObjCol(extraListStruct* extra, int param) {
 
 	int i;
 
-	short int* ptr;
+	short int *ptr;
 
-	ptr = (short int*)(spriteActorData + extra->field_0 * 16 + 4);
+	ptr = (short int *)(spriteActorData + extra->field_0 * 16 + 4);
 
 	X1 = *(ptr++) + extra->X;
 	X2 = *(ptr++) + extra->X;
@@ -698,7 +697,7 @@ int ExtraCheckObjCol(extraListStruct* extra, int param) {
 	Y1 = *(ptr++) + extra->Y;
 	Y2 = *(ptr++) + extra->Y;
 
-	for (i = 0;i < numActorInRoom;i++) {
+	for (i = 0; i < numActorInRoom; i++) {
 		if (actors[i].costumeIndex != -1 && i != param) {
 			aX1 = actors[i].X + actors[i].boudingBox.X.bottomLeft;
 			aX2 = actors[i].X + actors[i].boudingBox.X.topRight;
@@ -750,7 +749,7 @@ int FullWorldColBrick(int currentX, int currentZ, int currentY, int oldX, int ol
 int ExtraSearch(int actorNum, int X, int Y, int Z, int spriteIdx, int targetActor, int maxSpeed, int param4) {
 	int i;
 
-	for (i = 0;i < 50;i++) {
+	for (i = 0; i < 50; i++) {
 		if (extraList[i].field_0 == -1) {
 			extraList[i].field_0 = spriteIdx;
 			extraList[i].field_14 = 0x80;
@@ -778,25 +777,25 @@ void ThrowMagicBall(int X, int Z, int Y, int param1, int angle, int param2, int 
 	switch (magicLevel) {
 	case 0:
 	case 1: {
-			ballSprite = 1;
-			ballStrength = 4;
-			break;
-		}
+		ballSprite = 1;
+		ballStrength = 4;
+		break;
+	}
 	case 2: {
-			ballSprite = 42;
-			ballStrength = 6;
-			break;
-		}
+		ballSprite = 42;
+		ballStrength = 6;
+		break;
+	}
 	case 3: {
-			ballSprite = 43;
-			ballStrength = 8;
-			break;
-		}
+		ballSprite = 43;
+		ballStrength = 8;
+		break;
+	}
 	case 4: {
-			ballSprite = 13;
-			ballStrength = 10;
-			break;
-		}
+		ballSprite = 13;
+		ballStrength = 10;
+		break;
+	}
 	}
 
 	magicBallNumBounce = ((magicPoint - 1) / 20) + 1;
@@ -811,34 +810,34 @@ void ThrowMagicBall(int X, int Z, int Y, int param1, int angle, int param2, int 
 
 	switch (magicBallNumBounce) {
 	case 0: {
-			magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
-			break;
-		}
+		magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
+		break;
+	}
 	case 1: {
-			magicBallParam = 4;
-			magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
-			break;
-		}
+		magicBallParam = 4;
+		magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
+		break;
+	}
 	case 2:
 	case 3:
 	case 4: {
-			magicBallNumBounce = 1;
-			magicBallParam = 4;
-			magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
-			break;
-		}
+		magicBallNumBounce = 1;
+		magicBallParam = 4;
+		magicBallIdx = ThrowExtra(0, X, Z, Y, ballSprite, param1, angle, param2, param3, ballStrength);
+		break;
+	}
 	case 5: {
-			printf("Unimplemented magic ball aim for key\n");
-			exit(1);
-			break;
-		}
+		printf("Unimplemented magic ball aim for key\n");
+		exit(1);
+		break;
+	}
 	}
 
 	if (magicPoint > 0)
 		magicPoint--;
 }
 
-void giveBonus(actor * lactor) {
+void giveBonus(actor *lactor) {
 	int i;
 	char extraTable[8];
 	int numOfExtra = 0;

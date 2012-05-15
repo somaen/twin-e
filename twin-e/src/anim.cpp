@@ -28,8 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "anim.h"
 
-typedef struct
-{
+typedef struct {
 	short int bodyFlag;     // 2
 	short int unk0;         // 2
 	short int unk1;         // 2
@@ -161,10 +160,9 @@ int SetInterAnimObjet(int animState, char *animData, char *body, animTimerData *
 	if (!ebx) {
 		ebx = keyFramePtr;
 		ebp = keyFrameLength;
-	}
-    else {
+	} else {
 		assert_ptr(ebx);
-    }
+	}
 
 	lastKeyFramePtr = ebx;
 
@@ -233,28 +231,28 @@ int SetInterAnimObjet(int animState, char *animData, char *body, animTimerData *
 				animOpcode = PatchType(&edi);
 
 				switch (animOpcode) {
-				case 0: {	// allow global rotate
-						PatchInterAngle(&edi, eax, keyFrameLength);
-						PatchInterAngle(&edi, eax, keyFrameLength);
-						PatchInterAngle(&edi, eax, keyFrameLength);
-						break;
-					}
-				case 1: {	// dissallow global rotate
-						PatchInterStep(&edi, eax, keyFrameLength);
-						PatchInterStep(&edi, eax, keyFrameLength);
-						PatchInterStep(&edi, eax, keyFrameLength);
-						break;
-					}
-				case 2: {	// dissallow global rotate + hide
-						PatchInterStep(&edi, eax, keyFrameLength);
-						PatchInterStep(&edi, eax, keyFrameLength);
-						PatchInterStep(&edi, eax, keyFrameLength);
-						break;
-					}
+				case 0: {   // allow global rotate
+					PatchInterAngle(&edi, eax, keyFrameLength);
+					PatchInterAngle(&edi, eax, keyFrameLength);
+					PatchInterAngle(&edi, eax, keyFrameLength);
+					break;
+				}
+				case 1: {   // dissallow global rotate
+					PatchInterStep(&edi, eax, keyFrameLength);
+					PatchInterStep(&edi, eax, keyFrameLength);
+					PatchInterStep(&edi, eax, keyFrameLength);
+					break;
+				}
+				case 2: {   // dissallow global rotate + hide
+					PatchInterStep(&edi, eax, keyFrameLength);
+					PatchInterStep(&edi, eax, keyFrameLength);
+					PatchInterStep(&edi, eax, keyFrameLength);
+					break;
+				}
 				default: {
-						printf("Unsupported rotaton mode %d in SetInterAnimObjet!\n", animOpcode);
-						exit(1);
-					}
+					printf("Unsupported rotaton mode %d in SetInterAnimObjet!\n", animOpcode);
+					exit(1);
+				}
 				}
 
 				edi += 30;
@@ -283,7 +281,7 @@ void loadGfxSub(unsigned char *bodyPtr) {
 
 	bodyHeader = (bodyHeaderStruct *) bodyPtr;
 
-	if (!(bodyHeader->bodyFlag & 2)) {	// no animation applicable
+	if (!(bodyHeader->bodyFlag & 2)) {  // no animation applicable
 		return;
 	}
 
@@ -345,8 +343,8 @@ int InitAnim(char newAnim, short int arg_4, unsigned char arg_8, short int actor
 	if (arg_4 == 4)
 		arg_4 = 2;
 
-	if (lactor->previousAnimIndex == -1) {	// if no previous animation
-		setAnimAtKeyFrame(0, HQR_Get(HQR_Anims, animIndex), bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);	// set animation directly to first keyFrame
+	if (lactor->previousAnimIndex == -1) {  // if no previous animation
+		setAnimAtKeyFrame(0, HQR_Get(HQR_Anims, animIndex), bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);  // set animation directly to first keyFrame
 	} else { // interpolation between animations
 		bufAni2 += StockInterAnim((char *) bufAni2, (char *) bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
 		if (bufAni1 + 4488 > bufAni2)
@@ -375,7 +373,7 @@ int InitAnim(char newAnim, short int arg_4, unsigned char arg_8, short int actor
 	return (1);
 }
 
-int StockInterAnim(char *lBufAnim, char *lBody, animTimerData *animTimerDataPtr) {	// copy the next keyFrame from a different buffer
+int StockInterAnim(char *lBufAnim, char *lBody, animTimerData *animTimerDataPtr) {  // copy the next keyFrame from a different buffer
 	int temp;
 	char *ptr;
 	int *edi;

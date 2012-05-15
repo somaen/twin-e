@@ -30,7 +30,7 @@ void GetShadow(int X, int Z, int Y) {
 	int tempX;
 	int tempZ;
 	int tempY;
-	unsigned char* ptr;
+	unsigned char *ptr;
 	char shadowVar;
 
 	tempX = (X + 0x100) >> 9;
@@ -40,7 +40,7 @@ void GetShadow(int X, int Z, int Y) {
 	ptr = bufCube + tempZ * 2 + tempX * 25 * 2 + (tempY << 6) * 25 * 2;
 
 	while (tempZ) { // search down until either ground is found or lower border of the cube is reached
-		if (*(short int*)ptr) // found the ground
+		if (*(short int *)ptr) // found the ground
 			break;
 
 		tempZ--;
@@ -58,11 +58,11 @@ void GetShadow(int X, int Z, int Y) {
 	processActorY = Y;
 
 	if (*ptr) {
-		unsigned char* tempPtr;
+		unsigned char *tempPtr;
 
 		tempPtr = zbufferSub1(*(ptr++) - 1) + 3;
 
-		shadowVar = *(tempPtr + *(ptr) * 4);
+		shadowVar = *(tempPtr + * (ptr) * 4);
 
 		ReajustPos(shadowVar);
 	}

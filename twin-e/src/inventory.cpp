@@ -39,8 +39,7 @@ char currentSelectedObjectInInventory;
 
 short int fuel;
 
-void Inventory(void)
-{
+void Inventory(void) {
 	int previouslySelectedObject;
 
 	int localReinitVar1 = reinitVar1;
@@ -72,17 +71,16 @@ void Inventory(void)
 	TestCoulDial(4);
 	InitDialWindow();
 
-	while (!os_isPressed(KEY_SKIP))
-	{
+	while (!os_isPressed(KEY_SKIP)) {
 		previouslySelectedObject = currentSelectedObjectInInventory;
 
 		if (os_isPressed(KEY_INVENT_QUIT))
 			break;
 
 		if (!os_isPressed(KEY_INVENT_RIGHT)
-				&& !os_isPressed(KEY_INVENT_LEFT)
-				&& !os_isPressed(KEY_INVENT_UP)
-				&& !os_isPressed(KEY_INVENT_DOWN))
+		        && !os_isPressed(KEY_INVENT_LEFT)
+		        && !os_isPressed(KEY_INVENT_UP)
+		        && !os_isPressed(KEY_INVENT_DOWN))
 			canPress = 1;
 
 		if (os_isPressed(KEY_INVENT_DOWN) && canPress) {
@@ -149,8 +147,7 @@ void Inventory(void)
 			bx = printText10();
 		}
 
-		if (os_isPressed(KEY_INVENT_SHOW))
-		{
+		if (os_isPressed(KEY_INVENT_SHOW)) {
 			if (bx == 2) {
 				SecondInitDialWindow();
 				bx = 0;
@@ -189,7 +186,7 @@ void Inventory(void)
 }
 
 void SecondInitDialWindow(void) {
-	blitRectangle(dialogueBoxLeft, dialogueBoxTop, dialogueBoxRight, dialogueBoxBottom, (char*)workVideoBuffer, dialogueBoxLeft, dialogueBoxTop, (char*)frontVideoBuffer);
+	blitRectangle(dialogueBoxLeft, dialogueBoxTop, dialogueBoxRight, dialogueBoxBottom, (char *)workVideoBuffer, dialogueBoxLeft, dialogueBoxTop, (char *)frontVideoBuffer);
 	os_copyBlockPhys(dialogueBoxLeft, dialogueBoxTop, dialogueBoxRight, dialogueBoxBottom);
 	printText8Var3 = 0;
 }
@@ -210,7 +207,7 @@ void DrawListInventory() {
 	Rect(110, 18, 188, 311, 75);
 	os_copyBlockPhys(17, 10, 622, 320);
 
-	for (object = 0;object < 28;object++) {
+	for (object = 0; object < 28; object++) {
 		DrawOneInventory(object);
 	}
 
@@ -231,12 +228,12 @@ void DrawOneInventory(int objectNumber) {
 		Box(left, top, right, bottom, 0);
 
 	if (vars[objectNumber] && !vars[70] && objectNumber <= 27) {
-		char* objectPtr;
+		char *objectPtr;
 
-		objectPtr = (char*)HQR_Get(HQR_Inventory, objectNumber);
+		objectPtr = (char *)HQR_Get(HQR_Inventory, objectNumber);
 
 		if (HQR_Flag)
-			loadGfxSub((unsigned char*)objectPtr);
+			loadGfxSub((unsigned char *)objectPtr);
 
 		objectRotation[objectNumber] += 8;
 

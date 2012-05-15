@@ -16,8 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-typedef struct
-{
+typedef struct {
 #ifdef USE_FLOAT
 	float x;
 	float y;
@@ -29,8 +28,7 @@ typedef struct
 #endif
 } pointTab;
 
-typedef struct
-{
+typedef struct {
 	short int data1;
 	short int data2;
 	short int data3;
@@ -47,15 +45,13 @@ typedef struct
 	short int field_24;
 } pointEntry;
 
-typedef struct
-{
+typedef struct {
 	short int depth;
 	short int renderType;
 	unsigned char *dataPtr;
 } renderTabEntry;
 
-typedef struct
-{
+typedef struct {
 	int data;
 	short int x1;
 	short int y1;
@@ -63,8 +59,7 @@ typedef struct
 	short int y2;
 } lineCoordinates;
 
-typedef struct
-{
+typedef struct {
 	int data;
 	short int p1;
 	short int p2;
@@ -87,11 +82,11 @@ typedef struct {
 	short int y;
 } computedVertex;
 
-void RotList(unsigned char *esi, int ecx, pointTab * dest, int *eax);
-void TransRotList(unsigned char *esi, int ecx, pointTab * dest, int *eax);
-void TranslateGroupe(int edx, int ecx, int ebx, pointEntry * esi);
+void RotList(unsigned char *esi, int ecx, pointTab *dest, int *eax);
+void TransRotList(unsigned char *esi, int ecx, pointTab *dest, int *eax);
+void TranslateGroupe(int edx, int ecx, int ebx, pointEntry *esi);
 void TranslateGroupeS2(short int ax, short int bx, short int cx);
-void loadPart(int edx, int ecx, int ebx, unsigned char * ptr);
+void loadPart(int edx, int ecx, int ebx, unsigned char *ptr);
 int AffObjetIso(int X, int Y, int Z, int angleX, int angleY, int angleZ, unsigned char *costumePtr);
 void SetLightVector(int a, int b, int c);
 int renderAnimatedModel(unsigned char *costumePtr);

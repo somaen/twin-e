@@ -20,15 +20,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define COSTUME_H
 
 typedef struct {
-       short int bottomLeft;
-       short int topRight;
+	short int bottomLeft;
+	short int topRight;
 } MDL_BoundingBoxPoint;
 
-typedef struct
-{
-       MDL_BoundingBoxPoint X;
-       MDL_BoundingBoxPoint Y;
-       MDL_BoundingBoxPoint Z;
+typedef struct {
+	MDL_BoundingBoxPoint X;
+	MDL_BoundingBoxPoint Y;
+	MDL_BoundingBoxPoint Z;
 } MDL_BoundingBox;
 
 void LoadFicPerso(void);

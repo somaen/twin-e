@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-void SetFont(byte * font, int param1, int param2);
+void SetFont(byte *font, int param1, int param2);
 void Font(int X, int Y, char *string);
 void drawCharacter(int X, int Y, unsigned char caractere);
 

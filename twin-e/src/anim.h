@@ -19,8 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef ANIM_H
 #define ANIM_H
 
-typedef struct
-{
+typedef struct {
 	short int from;
 	short int to;
 	short int numOfStep;
@@ -28,7 +27,7 @@ typedef struct
 } time;
 
 typedef struct {
-	char* ptr;
+	char *ptr;
 	int time;
 } animTimerData;
 

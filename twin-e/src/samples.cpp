@@ -28,8 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Mix_Chunk *sample = NULL;
 
-void playSample(int sampleNum, int repeat)
-{
+void playSample(int sampleNum, int repeat) {
 	int sz;
 	unsigned char *ptr;
 	SDL_RWops *rw;
@@ -41,7 +40,7 @@ void playSample(int sampleNum, int repeat)
 
 	Load_HQR("samples.hqr", ptr, sampleNum);
 
-	if (ptr[0] != 'C')                                                                                                                                      
+	if (ptr[0] != 'C')
 		ptr[0] = 'C';
 
 	rw = SDL_RWFromMem(ptr, sz);
@@ -52,8 +51,7 @@ void playSample(int sampleNum, int repeat)
 	free(ptr);
 }
 
-void playSampleFla(int sampleNum, int repeat)
-{
+void playSampleFla(int sampleNum, int repeat) {
 	int sz;
 	unsigned char *ptr;
 	SDL_RWops *rw;
@@ -65,7 +63,7 @@ void playSampleFla(int sampleNum, int repeat)
 
 	Load_HQR("fla/flasamp.hqr", ptr, sampleNum);
 
-	if (ptr[0] != 'C')                                                                                                                                      
+	if (ptr[0] != 'C')
 		ptr[0] = 'C';
 
 	rw = SDL_RWFromMem(ptr, sz);
@@ -76,16 +74,14 @@ void playSampleFla(int sampleNum, int repeat)
 	free(ptr);
 }
 
-void stopSampleFla(void)
-{
+void stopSampleFla(void) {
 	printf("Stopping samples\n");
 	Mix_HaltChannel(-1);
 	Mix_FreeChunk(sample);
 	sample = NULL;
 }
 
-void soundInit()
-{
+void soundInit() {
 	const int audio_buffers = 512;
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, audio_buffers);
@@ -96,29 +92,28 @@ Mix_Music *music = NULL;
 
 void playMidi(int musicNum) {
 	char filename[MAX_PATH];
-	FILE* fhandle;
-	char* temp;
+	FILE *fhandle;
+	char *temp;
 
 	sprintf(filename, "midi/%02d.midi", musicNum);
 
 	fhandle = fopen(filename, "r");
 
-	if (!fhandle)
-	{
+	if (!fhandle) {
 		mkdir("midi", 0777);
 		fhandle = fopen(filename, "w");
 
-		temp = (char*)HQR_Get(HQR_Midi, musicNum);
+		temp = (char *)HQR_Get(HQR_Midi, musicNum);
 		fwrite(temp, Size_HQR(HQR_Midi->fileName, musicNum), 1, fhandle);
 	}
-    fclose(fhandle);
+	fclose(fhandle);
 
-/*	music = Mix_LoadMUS(filename);
+	/*  music = Mix_LoadMUS(filename);
 
-	if (music == NULL)
-		printf("Mix_LoadMUS(\"%s\"): %s\n", filename, Mix_GetError());
+	    if (music == NULL)
+	        printf("Mix_LoadMUS(\"%s\"): %s\n", filename, Mix_GetError());
 
-	Mix_PlayMusic(music, -1);*/
+	    Mix_PlayMusic(music, -1);*/
 }
 
 void pauseSound() {

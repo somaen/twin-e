@@ -29,9 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 char playerName[30];
 
 char LoadGame(void) {
-	FILE* fileHandle;
+	FILE *fileHandle;
 	unsigned char data;
-	char* namePtr;
+	char *namePtr;
 
 	fileHandle = fopen("SAVE.LBA", "r");
 
@@ -43,7 +43,7 @@ char LoadGame(void) {
 	fread(&data, sizeof(unsigned char), 1, fileHandle);
 
 	while (data) {
-	    fread(&data, sizeof(unsigned char), 1, fileHandle);
+		fread(&data, sizeof(unsigned char), 1, fileHandle);
 		*(namePtr++) = data;
 	}
 
@@ -82,7 +82,7 @@ char LoadGame(void) {
 }
 
 void SaveGame(void) {
-	FILE* fHandle;
+	FILE *fHandle;
 	char temp;
 
 	fHandle = fopen("SAVE.LBA", "wb+");

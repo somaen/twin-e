@@ -25,13 +25,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "anim.h"
 
 #define distance2d(x1, y1, x2, y2) \
-    (int) sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
+	(int) sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
 
 #define distance3d(x1, y1, z1, x2, y2, z2) \
-    (int) sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1))
+	(int) sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1))
 
-typedef struct
-{
+typedef struct {
 	int body;
 	int anim;
 	int field_2;
@@ -47,16 +46,16 @@ typedef struct
 	int field_14;
 	int talkColor;
 	int costumeIndex;
-	int X;		/* \ */
-	int Y;		/* |----coordiantes */
-	int Z;		/* / */
+	int X;      /* \ */
+	int Y;      /* |----coordiantes */
+	int Z;      /* / */
 	int field_20;
 	int field_22;
 	int field_24;
 
 	MDL_BoundingBox boudingBox;
 
-	int angle;	// rotation ?
+	int angle;  // rotation ?
 	int speed;
 	time time;
 	int comportement;
@@ -123,7 +122,7 @@ typedef struct
 	int lastY;
 	int previousAnimIndex;
 	int doorStatus;
-	int animPosition;	// animPosition
+	int animPosition;   // animPosition
 	int field_78;
 
 	unsigned char *moveScript;

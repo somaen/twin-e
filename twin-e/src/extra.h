@@ -16,8 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-typedef struct
-{
+typedef struct {
 	short int field_0;
 	short int X;
 	short int Y;
@@ -45,14 +44,14 @@ int FullWorldColBrick(int currentX, int currentZ, int currentY, int oldX, int ol
 void specialLoop(void);
 int ThrowExtra(int actorNum, int X, int Y, int Z, int sprite, int var2, int var3, int var4, int var5, int strength);
 void InitSpecial(int var0, int var1, int var2, int var3);
-void InitFly(extraListStruct* extraEntry, int var1, int var2, int var3, int var4);
+void InitFly(extraListStruct *extraEntry, int var1, int var2, int var3, int var4);
 void AffSpecial(int extraNum, int X, int Y);
-void Aff2DShape(short int* extraData, int X, int Y, int param0, int time, int param1);
+void Aff2DShape(short int *extraData, int X, int Y, int param0, int time, int param1);
 int ExtraBonus(int X, int Y, int Z, int param, int angle, int type, int param2);
-int ExtraCheckObjCol(extraListStruct* extra, int param);
+int ExtraCheckObjCol(extraListStruct *extra, int param);
 void ThrowMagicBall(int X, int Z, int Y, int param1, int angle, int param2, int param4);
 int ExtraSearch(int actorNum, int X, int Z, int Y, int spriteIdx, int targetActor, int maxSpeed, int param4);
-void giveBonus(actor * lactor);
+void giveBonus(actor *lactor);
 
 extern extraListStruct extraList[50];
 extern short int magicBallIdx;

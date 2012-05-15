@@ -55,10 +55,10 @@ void DoTrack(int actorNumber) {
 
 		switch (currentOpcode) {
 		case 0: { // stop
-				continueMove = 0;
-				lactor->positionInMoveScript = -1;
-				break;
-			}
+			continueMove = 0;
+			lactor->positionInMoveScript = -1;
+			break;
+		}
 		case 2:
 			InitBody(*scriptPtr, actorNumber);
 			lactor->positionInMoveScript++;
@@ -72,28 +72,28 @@ void DoTrack(int actorNumber) {
 			}
 			break;
 		case 4: { // GOTO_POINT
-				lactor->positionInMoveScript++;
-				manipActorResult = *scriptPtr;
+			lactor->positionInMoveScript++;
+			manipActorResult = *scriptPtr;
 
-				destX = flagData[manipActorResult].x;
-				destY = flagData[manipActorResult].y;
-				destZ = flagData[manipActorResult].z;
+			destX = flagData[manipActorResult].x;
+			destY = flagData[manipActorResult].y;
+			destZ = flagData[manipActorResult].z;
 
-				newAngle = GetAngle(lactor->X, lactor->Z, destX, destZ);
+			newAngle = GetAngle(lactor->X, lactor->Z, destX, destZ);
 
-				if (lactor->staticFlagsBF.isSpriteActor) {
-					lactor->angle = newAngle;
-				} else {
-					ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->time);
-				}
-
-				if (DoTrackVar1 > 500) {
-					continueMove = 0;
-					lactor->positionInMoveScript -= 2;
-				}
-
-				break;
+			if (lactor->staticFlagsBF.isSpriteActor) {
+				lactor->angle = newAngle;
+			} else {
+				ManualRealAngle(lactor->angle, newAngle, lactor->speed, &lactor->time);
 			}
+
+			if (DoTrackVar1 > 500) {
+				continueMove = 0;
+				lactor->positionInMoveScript -= 2;
+			}
+
+			break;
+		}
 		case 5:
 			if (!lactor->dynamicFlagsBF.animEnded) {
 				continueMove = 0;
@@ -104,20 +104,20 @@ void DoTrack(int actorNumber) {
 			}
 			break;
 		case 7: { // set angle
-				lactor->positionInMoveScript += 2;
-				if (!(lactor->staticFlagsBF.isSpriteActor)) {
-					manipActorResult = READ_LE_S16(scriptPtr);
-					if (lactor->time.numOfStep == 0) {
-						ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, timePtr);
-					}
-
-					if (lactor->angle != manipActorResult) {
-						continueMove = 0;
-						lactor->positionInMoveScript -= 3;
-					}
+			lactor->positionInMoveScript += 2;
+			if (!(lactor->staticFlagsBF.isSpriteActor)) {
+				manipActorResult = READ_LE_S16(scriptPtr);
+				if (lactor->time.numOfStep == 0) {
+					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, timePtr);
 				}
-				break;
+
+				if (lactor->angle != manipActorResult) {
+					continueMove = 0;
+					lactor->positionInMoveScript -= 3;
+				}
 			}
+			break;
+		}
 
 		case 8: // warp to flag
 			lactor->positionInMoveScript++;
@@ -244,38 +244,38 @@ void DoTrack(int actorNumber) {
 			}
 			break;
 		case 18: { // wait
-				lactor->positionInMoveScript += 5;
+			lactor->positionInMoveScript += 5;
 
-				if (READ_LE_S32(scriptPtr + 1) == 0) {
-					WRITE_LE_S32(scriptPtr + 1, lba_time + *(unsigned char *) scriptPtr * 50);
-				}
-
-				if (lba_time < READ_LE_S32(scriptPtr + 1)) {
-					continueMove = 0;
-					lactor->positionInMoveScript -= 6;
-				} else {
-					WRITE_LE_S32(scriptPtr + 1, 0);
-				}
-				break;
+			if (READ_LE_S32(scriptPtr + 1) == 0) {
+				WRITE_LE_S32(scriptPtr + 1, lba_time + * (unsigned char *) scriptPtr * 50);
 			}
+
+			if (lba_time < READ_LE_S32(scriptPtr + 1)) {
+				continueMove = 0;
+				lactor->positionInMoveScript -= 6;
+			} else {
+				WRITE_LE_S32(scriptPtr + 1, 0);
+			}
+			break;
+		}
 		case 19: {
-				InitBody(-1, actorNumber);
-				break;
-			}
+			InitBody(-1, actorNumber);
+			break;
+		}
 		case 20: {
-				short int beta;
+			short int beta;
 
-				beta = READ_LE_S16(scriptPtr);
-				lactor->positionInMoveScript += 2;
+			beta = READ_LE_S16(scriptPtr);
+			lactor->positionInMoveScript += 2;
 
-				lactor->angle = beta;
+			lactor->angle = beta;
 
-				if (lactor->staticFlagsBF.isSpriteActor) {
-					clearRealAngle(lactor);
-				}
-
-				break;
+			if (lactor->staticFlagsBF.isSpriteActor) {
+				clearRealAngle(lactor);
 			}
+
+			break;
+		}
 		case 21:
 		case 22:
 		case 23:
@@ -307,28 +307,28 @@ void DoTrack(int actorNumber) {
 			}
 			break;
 		case 25: { // TM_CLOSE
-				if (lactor->staticFlagsBF.isSpriteActor && lactor->staticFlagsBF.isUsingClipping) {
-					lactor->dynamicFlagsBF.isMoving = 1;
-					lactor->doorStatus = 0;
-					lactor->speed = -1000;
-					setActorAngle(0, -1000, 50, timePtr);
-				}
-				break;
+			if (lactor->staticFlagsBF.isSpriteActor && lactor->staticFlagsBF.isUsingClipping) {
+				lactor->dynamicFlagsBF.isMoving = 1;
+				lactor->doorStatus = 0;
+				lactor->speed = -1000;
+				setActorAngle(0, -1000, 50, timePtr);
 			}
+			break;
+		}
 		case 26: { // TM_WAIT_DOOR
-				if (lactor->staticFlagsBF.isSpriteActor && lactor->staticFlagsBF.isUsingClipping) {
-					if (lactor->speed) {
-						continueMove = 0;
-						lactor->positionInMoveScript--;
-					}
+			if (lactor->staticFlagsBF.isSpriteActor && lactor->staticFlagsBF.isUsingClipping) {
+				if (lactor->speed) {
+					continueMove = 0;
+					lactor->positionInMoveScript--;
 				}
-				break;
 			}
+			break;
+		}
 		case 27: {
-				printf("skipping actor move opcode 27\n");
-				lactor->positionInMoveScript += 2;
-				break;
-			}
+			printf("skipping actor move opcode 27\n");
+			lactor->positionInMoveScript += 2;
+			break;
+		}
 
 		case 28:
 			HQ_3D_MixSample(READ_LE_S16(scriptPtr), 0x1000, 0, lactor->X, lactor->Z, lactor->Y);
@@ -339,69 +339,69 @@ void DoTrack(int actorNumber) {
 			lactor->positionInMoveScript += 2;
 			break;
 		case 31: {
-				moveVar1 = READ_LE_S16(scriptPtr);
-				lactor->positionInMoveScript += 2;
-				break;
-			}
+			moveVar1 = READ_LE_S16(scriptPtr);
+			lactor->positionInMoveScript += 2;
+			break;
+		}
 		case 32: {
-				printf("skipping actor move opcode 31 (playSound at moveVar1)\n");
-				lactor->positionInMoveScript += 2;
-				break;
-			}
+			printf("skipping actor move opcode 31 (playSound at moveVar1)\n");
+			lactor->positionInMoveScript += 2;
+			break;
+		}
 		case 33: { // look at twinsen
-				lactor->positionInMoveScript += 2;
-				if (!(lactor->staticFlagsBF.isSpriteActor)) {
-					manipActorResult = READ_LE_S16(scriptPtr);
-					if (manipActorResult == -1 && lactor->time.numOfStep == 0) {
-						manipActorResult = GetAngle(lactor->X, lactor->Z, twinsen->X, twinsen->Z);
-						ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
-						WRITE_LE_S16(scriptPtr, manipActorResult);
-					}
-
-					if (lactor->angle != manipActorResult) {
-						continueMove = 0;
-						lactor->positionInMoveScript -= 3;
-					} else {
-						clearRealAngle(lactor);
-						WRITE_LE_S16(scriptPtr, -1);
-					}
+			lactor->positionInMoveScript += 2;
+			if (!(lactor->staticFlagsBF.isSpriteActor)) {
+				manipActorResult = READ_LE_S16(scriptPtr);
+				if (manipActorResult == -1 && lactor->time.numOfStep == 0) {
+					manipActorResult = GetAngle(lactor->X, lactor->Z, twinsen->X, twinsen->Z);
+					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
+					WRITE_LE_S16(scriptPtr, manipActorResult);
 				}
-				break;
+
+				if (lactor->angle != manipActorResult) {
+					continueMove = 0;
+					lactor->positionInMoveScript -= 3;
+				} else {
+					clearRealAngle(lactor);
+					WRITE_LE_S16(scriptPtr, -1);
+				}
 			}
+			break;
+		}
 		case 34: { // angle random
-				int var_10;
+			int var_10;
 
-				lactor->positionInMoveScript += 4 ;
-				if (!(lactor->staticFlagsBF.isSpriteActor)) {
-					manipActorResult = READ_LE_S16(scriptPtr + 2);
+			lactor->positionInMoveScript += 4 ;
+			if (!(lactor->staticFlagsBF.isSpriteActor)) {
+				manipActorResult = READ_LE_S16(scriptPtr + 2);
 
-					if (manipActorResult == -1  && lactor->time.numOfStep == 0) {
-						if (rand()&1) {
-							manipActorResult = READ_LE_S16(scriptPtr);
-							var_10 = lactor->angle + 0x100 + (abs(manipActorResult) >> 1);
+				if (manipActorResult == -1  && lactor->time.numOfStep == 0) {
+					if (rand() & 1) {
+						manipActorResult = READ_LE_S16(scriptPtr);
+						var_10 = lactor->angle + 0x100 + (abs(manipActorResult) >> 1);
 
-							manipActorResult = (var_10 - (rand() % manipActorResult)) & 0x3FF;
-						} else {
-							manipActorResult = READ_LE_S16(scriptPtr);
-							var_10 = lactor->angle - 0x100 + (abs(manipActorResult) >> 1);
-
-							manipActorResult = (var_10 - (rand() % manipActorResult)) & 0x3FF;
-						}
-
-						ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
-						WRITE_LE_S16(scriptPtr + 2, manipActorResult);
-					}
-
-					if (lactor->angle != manipActorResult) {
-						continueMove = 0;
-						lactor->positionInMoveScript -= 5;
+						manipActorResult = (var_10 - (rand() % manipActorResult)) & 0x3FF;
 					} else {
-						clearRealAngle(lactor);
-						WRITE_LE_S16(scriptPtr + 2, -1);
+						manipActorResult = READ_LE_S16(scriptPtr);
+						var_10 = lactor->angle - 0x100 + (abs(manipActorResult) >> 1);
+
+						manipActorResult = (var_10 - (rand() % manipActorResult)) & 0x3FF;
 					}
+
+					ManualRealAngle(lactor->angle, manipActorResult, lactor->speed, &lactor->time);
+					WRITE_LE_S16(scriptPtr + 2, manipActorResult);
 				}
-				break;
+
+				if (lactor->angle != manipActorResult) {
+					continueMove = 0;
+					lactor->positionInMoveScript -= 5;
+				} else {
+					clearRealAngle(lactor);
+					WRITE_LE_S16(scriptPtr + 2, -1);
+				}
 			}
+			break;
+		}
 		default:
 			printf("Unsupported move opcode %d\n", currentOpcode);
 			exit(1);

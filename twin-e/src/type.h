@@ -54,33 +54,33 @@ typedef unsigned char u8;
 FORCEINLINE uint16 READ_LE_U16(void *ptr) {
 #ifdef BIG_ENDIAN
 	printf("ARGH\n");
-	return (((byte*)ptr)[0] << 8) | ((byte*)ptr)[1];
+	return (((byte *)ptr)[0] << 8) | ((byte *)ptr)[1];
 #else
-	return (((byte*)ptr)[1] << 8) | ((byte*)ptr)[0];
+	return (((byte *)ptr)[1] << 8) | ((byte *)ptr)[0];
 #endif
 }
 
 FORCEINLINE int16 READ_LE_S16(void *ptr) {
 #ifdef BIG_ENDIAN
-	return (((byte*)ptr)[0] << 8) | ((byte*)ptr)[1];
+	return (((byte *)ptr)[0] << 8) | ((byte *)ptr)[1];
 #else
-	return (((byte*)ptr)[1] << 8) | ((byte*)ptr)[0];
+	return (((byte *)ptr)[1] << 8) | ((byte *)ptr)[0];
 #endif
 }
 
 FORCEINLINE uint32 READ_LE_U32(void *ptr) {
 #ifdef BIG_ENDIAN
-	return (((byte*)ptr)[0] << 24) | (((byte*)ptr)[1] << 16) | (((byte*)ptr)[2] << 8) | ((byte*)ptr)[3];
+	return (((byte *)ptr)[0] << 24) | (((byte *)ptr)[1] << 16) | (((byte *)ptr)[2] << 8) | ((byte *)ptr)[3];
 #else
-	return (((byte*)ptr)[3] << 24) | (((byte*)ptr)[2] << 16) | (((byte*)ptr)[1] << 8) | ((byte*)ptr)[0];
+	return (((byte *)ptr)[3] << 24) | (((byte *)ptr)[2] << 16) | (((byte *)ptr)[1] << 8) | ((byte *)ptr)[0];
 #endif
 }
 
 FORCEINLINE int32 READ_LE_S32(void *ptr) {
 #ifdef BIG_ENDIAN
-	return (((byte*)ptr)[0] << 24) | (((byte*)ptr)[1] << 16) | (((byte*)ptr)[2] << 8) | ((byte*)ptr)[3];
+	return (((byte *)ptr)[0] << 24) | (((byte *)ptr)[1] << 16) | (((byte *)ptr)[2] << 8) | ((byte *)ptr)[3];
 #else
-	return (((byte*)ptr)[3] << 24) | (((byte*)ptr)[2] << 16) | (((byte*)ptr)[1] << 8) | ((byte*)ptr)[0];
+	return (((byte *)ptr)[3] << 24) | (((byte *)ptr)[2] << 16) | (((byte *)ptr)[1] << 8) | ((byte *)ptr)[0];
 #endif
 }
 
@@ -91,8 +91,8 @@ FORCEINLINE void WRITE_LE_U16(void *ptr, uint16 value) {
 	val1 = (unsigned char)((value >> 8) & 0xFF);
 	val0 = (unsigned char)((value) & 0xFF);
 
-	((byte*)ptr)[0] = val0;
-	((byte*)ptr)[1] = val1;
+	((byte *)ptr)[0] = val0;
+	((byte *)ptr)[1] = val1;
 }
 
 FORCEINLINE void WRITE_LE_S16(void *ptr, int16 value) {
@@ -102,8 +102,8 @@ FORCEINLINE void WRITE_LE_S16(void *ptr, int16 value) {
 	val1 = (unsigned char)((value >> 8) & 0xFF);
 	val0 = (unsigned char)((value) & 0xFF);
 
-	((byte*)ptr)[0] = val0;
-	((byte*)ptr)[1] = val1;
+	((byte *)ptr)[0] = val0;
+	((byte *)ptr)[1] = val1;
 }
 
 FORCEINLINE void WRITE_LE_U32(void *ptr, uint32 value) {
@@ -117,10 +117,10 @@ FORCEINLINE void WRITE_LE_U32(void *ptr, uint32 value) {
 	val1 = (unsigned char)((value >> 8) & 0xFF);
 	val0 = (unsigned char)((value) & 0xFF);
 
-	((byte*)ptr)[0] = val0;
-	((byte*)ptr)[1] = val1;
-	((byte*)ptr)[2] = val2;
-	((byte*)ptr)[3] = val3;
+	((byte *)ptr)[0] = val0;
+	((byte *)ptr)[1] = val1;
+	((byte *)ptr)[2] = val2;
+	((byte *)ptr)[3] = val3;
 }
 
 FORCEINLINE void WRITE_LE_S32(void *ptr, int32 value) {
@@ -134,10 +134,10 @@ FORCEINLINE void WRITE_LE_S32(void *ptr, int32 value) {
 	val1 = (unsigned char)((value >> 8) & 0xFF);
 	val0 = (unsigned char)((value) & 0xFF);
 
-	((byte*)ptr)[0] = val0;
-	((byte*)ptr)[1] = val1;
-	((byte*)ptr)[2] = val2;
-	((byte*)ptr)[3] = val3;
+	((byte *)ptr)[0] = val0;
+	((byte *)ptr)[1] = val1;
+	((byte *)ptr)[2] = val2;
+	((byte *)ptr)[3] = val3;
 }
 
 #endif

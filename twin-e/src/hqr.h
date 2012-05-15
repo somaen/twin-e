@@ -35,8 +35,8 @@ typedef struct hqr_entry_s {
 	unsigned char *ptr;
 
 	/* preloaded data */
-	unsigned char** ptrArray;
-	int* sizeArray;
+	unsigned char **ptrArray;
+	int *sizeArray;
 
 } hqr_entry;
 
@@ -50,18 +50,18 @@ typedef struct subHqr_s {
 extern short int HQR_Flag;
 extern volatile int lba_time;
 
-void HQR_Destroy_Ressource(hqr_entry* resource);
+void HQR_Destroy_Ressource(hqr_entry *resource);
 int Load_HQR(char *resourceName, unsigned char *ptr, int imageNumber);
-hqr_entry* HQR_Init_Ressource(char *fileName, int sizeOfBuffer, int numOfEntriesInBuffer);
-int HQR_RemoveEntryFromHQR(hqr_entry * hqrPtr, int var);
-unsigned char *HQR_Get(hqr_entry * hqrPtr, short int arg_4);
+hqr_entry *HQR_Init_Ressource(char *fileName, int sizeOfBuffer, int numOfEntriesInBuffer);
+int HQR_RemoveEntryFromHQR(hqr_entry *hqrPtr, int var);
+unsigned char *HQR_Get(hqr_entry *hqrPtr, short int arg_4);
 int Size_HQR(char *fileName, int index);
-int HQRM_Load(char *fileName, short int arg_4, unsigned char ** ptr);
-void HQR_Reset_Ressource(hqr_entry * ptr);
+int HQRM_Load(char *fileName, short int arg_4, unsigned char **ptr);
+void HQR_Reset_Ressource(hqr_entry *ptr);
 void HQR_Expand(int decompressedSize, unsigned char *destination, unsigned char *source);
 int HQR_GetNumEntry(/*char* fileName*/);
-hqr_entry* HQR_Init_RessourcePreload(char *resourceName);
-unsigned char *HQR_GetCopy(hqr_entry * hqrPtr, short int arg_4);
+hqr_entry *HQR_Init_RessourcePreload(char *resourceName);
+unsigned char *HQR_GetCopy(hqr_entry *hqrPtr, short int arg_4);
 
 extern hqr_entry *HQR_Fic;
 extern hqr_entry *HQR_Inventory;

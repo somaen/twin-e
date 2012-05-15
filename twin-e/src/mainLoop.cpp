@@ -128,26 +128,21 @@ int mainLoopInteration(void) {
 	int temp;
 
 	currentTime = lba_time;
-	for (;;)
-	{
+	for (;;) {
 		if (needChangeRoom != -1)
 			ChangeCube();
 
-		if (lockPalette == 0)
-		{
+		if (lockPalette == 0) {
 			/* Starting inputs */
 
 			/* Open the menu */
-			if (os_isPressed(KEY_MENU) && twinsen->life > 0 && twinsen->costumeIndex != -1 && !twinsen->staticFlagsBF.noDisplay)
-			{
+			if (os_isPressed(KEY_MENU) && twinsen->life > 0 && twinsen->costumeIndex != -1 && !twinsen->staticFlagsBF.noDisplay) {
 				TestRestoreModeSVGA(1);
 				freezeTime();
 				if (!makeGiveUpMenu()) {
 					unfreezeTime();
 					fullRedraw(1);
-				}
-				else
-				{
+				} else {
 					unfreezeTime();
 					fullRedraw(1);
 					freezeTime();
@@ -159,8 +154,7 @@ int mainLoopInteration(void) {
 			}
 
 			/* Open the options menu */
-			if (os_isPressed(KEY_OPTIONSMENU))
-			{
+			if (os_isPressed(KEY_OPTIONSMENU)) {
 				temp = languageCD1;
 				freezeTime();
 				TestRestoreModeSVGA(1);
@@ -182,21 +176,19 @@ int mainLoopInteration(void) {
 
 			selectedInventoryObj = -1;
 			/* Open the inventory menu */
-			if (os_isPressed(KEY_INVENTORY) && twinsen->costumeIndex != -1 && twinsen->comportement == 1)
-			{
+			if (os_isPressed(KEY_INVENTORY) && twinsen->costumeIndex != -1 && twinsen->comportement == 1) {
 				freezeTime();
 				TestRestoreModeSVGA(1);
 				Inventory();
 
 				/* Process selected objects */
-				switch (selectedInventoryObj)
-				{
-				/* holomap */
+				switch (selectedInventoryObj) {
+					/* holomap */
 				case holomap:
 					//processHolomap();
 					lockPalette = 1;
 					break;
-				/* magic ball */
+					/* magic ball */
 				case ball:
 					if (usingSword == 1)
 						InitBody(0, 0);
@@ -204,10 +196,9 @@ int mainLoopInteration(void) {
 					usingSword = 0;
 
 					break;
-				/* funfrock's saber */
+					/* funfrock's saber */
 				case saber:
-					if (twinsen->body == 2)
-					{
+					if (twinsen->body == 2) {
 						if (comportementHero == 4)
 							SetComportement(0);
 
@@ -217,22 +208,21 @@ int mainLoopInteration(void) {
 						usingSword = 1;
 					}
 					break;
-				/* bù book */
+					/* bù book */
 				case book:
 					break;
-				/* proto-pack */
+					/* proto-pack */
 				case protopack:
 					break;
-				/* meca penguin */
+					/* meca penguin */
 				case penguin:
 					break;
-				/* bonuses list */
+					/* bonuses list */
 				case bonusesList:
 					break;
-				/* clover leaf */
+					/* clover leaf */
 				case clover:
-					if (twinsen->life < 50 && numClover > 0)
-					{
+					if (twinsen->life < 50 && numClover > 0) {
 						twinsen->life = 50;
 						magicPoint = magicLevel * 20;
 
@@ -248,8 +238,7 @@ int mainLoopInteration(void) {
 			}
 
 			/* Open behavior menu */
-			if (os_isPressed(KEY_CHBEHAVIOR) && twinsen->costumeIndex != -1 && twinsen->comportement == 1)
-			{
+			if (os_isPressed(KEY_CHBEHAVIOR) && twinsen->costumeIndex != -1 && twinsen->comportement == 1) {
 				freezeTime();
 				TestRestoreModeSVGA(1);
 				processComportementMenu();
@@ -268,12 +257,11 @@ int mainLoopInteration(void) {
 			else if (os_isPressed(KEY_BEHAVIOR_3))
 				behavior = 3;
 
-			if (behavior != -1 && twinsen->costumeIndex != -1 && twinsen->comportement == MOVE_MANUAL && behavior != comportementHero)
-			{
+			if (behavior != -1 && twinsen->costumeIndex != -1 && twinsen->comportement == MOVE_MANUAL && behavior != comportementHero) {
 				TestRestoreModeSVGA(1);
 
 				if (cptime != 0) { // clear if have something already writed in the screen
-					blitRectangle(5, 446, 350, 479, (char*)workVideoBuffer, 5, 446, (char*)frontVideoBuffer);
+					blitRectangle(5, 446, 350, 479, (char *)workVideoBuffer, 5, 446, (char *)frontVideoBuffer);
 					os_copyBlockPhys(5, 446, 350, 479);
 				}
 
@@ -291,10 +279,9 @@ int mainLoopInteration(void) {
 			}
 
 			/* Enable protopack */
-			if (os_isPressed(KEY_ACTION_PROTOPACK) && vars[protopack])
-			{
+			if (os_isPressed(KEY_ACTION_PROTOPACK) && vars[protopack]) {
 				if (cptime != 0) { // clear if have something already writed in the screen
-					blitRectangle(5, 446, 350, 479, (char*)workVideoBuffer, 5, 446, (char*)frontVideoBuffer);
+					blitRectangle(5, 446, 350, 479, (char *)workVideoBuffer, 5, 446, (char *)frontVideoBuffer);
 					os_copyBlockPhys(5, 446, 350, 479);
 				}
 
@@ -318,9 +305,8 @@ int mainLoopInteration(void) {
 			}
 
 			/* Show the behavior text for 100 ms long */
-			if ((lba_time - cptime) > 100 && cptime)
-			{
-				blitRectangle(5, 446, 350, 479, (char*)workVideoBuffer, 5, 446, (char*)frontVideoBuffer);
+			if ((lba_time - cptime) > 100 && cptime) {
+				blitRectangle(5, 446, 350, 479, (char *)workVideoBuffer, 5, 446, (char *)frontVideoBuffer);
 				os_copyBlockPhys(5, 446, 350, 479);
 				cptime = 0;
 			}
@@ -330,8 +316,7 @@ int mainLoopInteration(void) {
 				os_fullScreen();
 
 			/* Recenter the screen */
-			if (os_isPressed(KEY_RECENTER) && disableScreenRecenter == 0)
-			{
+			if (os_isPressed(KEY_RECENTER) && disableScreenRecenter == 0) {
 				newCameraX = actors[currentlyFollowedActor].X >> 9;
 				newCameraZ = actors[currentlyFollowedActor].Y >> 8;
 				newCameraY = actors[currentlyFollowedActor].Z >> 9;
@@ -339,8 +324,7 @@ int mainLoopInteration(void) {
 			}
 
 			/* Draw the holomap */
-			if (os_isPressed(KEY_ACTION_HOLOMAP) && vars[holomap] == 1 && vars[70] == 0)
-			{
+			if (os_isPressed(KEY_ACTION_HOLOMAP) && vars[holomap] == 1 && vars[70] == 0) {
 				freezeTime();
 				TestRestoreModeSVGA(1);
 				//processHolomap();
@@ -349,12 +333,10 @@ int mainLoopInteration(void) {
 				fullRedraw(1);
 			}
 
-			if (os_isPressed(KEY_PAUSE))
-			{
+			if (os_isPressed(KEY_PAUSE)) {
 				pauseSound();
 				freezeTime();
-				if (!drawInGameTransBox)
-				{
+				if (!drawInGameTransBox) {
 					printf("Game in Pause...\n");
 					CoulFont(15);
 					Font(5, 446, "Pause"); // Don't have an entry in the Text Bank
@@ -388,22 +370,18 @@ int mainLoopInteration(void) {
 
 		/* Actors process wheel */
 
-		for (i = 0; i < numActorInRoom; i++)
-		{
+		for (i = 0; i < numActorInRoom; i++) {
 			if (actors[i].dynamicFlagsBF.isDead && i != 0)
 				continue;
 
 			/* Just killed */
-			if (actors[i].life == 0)
-			{
+			if (actors[i].life == 0) {
 				/* If it's twinsen */
 				if (i == 0) {
 					InitAnim(ANIM_landDeath, 4, 0, 0); /* Play twinsen death anim */
 					actors[i].comportement = 0;
 					actors[i].life = -1;
-				}
-				else
-				{
+				} else {
 					HQ_3D_MixSample(37, rand() % 2000 + 3096, 1, actors[i].X, actors[i].Y, actors[i].Z);
 
 					if (i == currentPingouin) {
@@ -436,14 +414,11 @@ int mainLoopInteration(void) {
 				runActorScript(i);
 
 			/* Already dead */
-			if (actors[i].life <= 0)
-			{
+			if (actors[i].life <= 0) {
 				/* If it's twinsen and he has finished the die animation */
-				if (i == 0 && actors[i].dynamicFlagsBF.animEnded)
-				{
+				if (i == 0 && actors[i].dynamicFlagsBF.animEnded) {
 					/* If twinsen has clovers, use one of them */
-					if (numClover > 0)
-					{
+					if (numClover > 0) {
 						twinsen->X = newTwinsenX;
 						twinsen->Y = newTwinsenZ;
 						twinsen->Z = newTwinsenY;
@@ -464,18 +439,14 @@ int mainLoopInteration(void) {
 						numClover--;
 					}
 					/* Else, GAME OVER */
-					else
-					{
+					else {
 						/* TODO: play Game Over anim. Model 20 in Ress file */
 						os_quit();
 					}
-				}
-				else if (i == 0) {
+				} else if (i == 0) {
 					checkCarrier(i);
 					actors[i].dynamicFlagsBF.isDead = 1;
-				}
-				else
-				{
+				} else {
 					checkCarrier(i);
 					actors[i].costumeIndex = -1;
 					actors[i].zone = -1;
@@ -485,11 +456,10 @@ int mainLoopInteration(void) {
 		}
 
 		/* Recenter the screen */
-		if (!disableScreenRecenter)
-		{
-			projectPositionOnScreen(actors[currentlyFollowedActor].X - (newCameraX << 9), 
-									actors[currentlyFollowedActor].Y - (newCameraZ << 8),
-									actors[currentlyFollowedActor].Z - (newCameraY << 9));
+		if (!disableScreenRecenter) {
+			projectPositionOnScreen(actors[currentlyFollowedActor].X - (newCameraX << 9),
+			                        actors[currentlyFollowedActor].Y - (newCameraZ << 8),
+			                        actors[currentlyFollowedActor].Z - (newCameraY << 9));
 
 			if (projectedPositionX < 80 || projectedPositionX > 539 || projectedPositionY < 80 || projectedPositionY > 429) {
 				newCameraX = ((actors[currentlyFollowedActor].X + 0x100) >> 9) + (((actors[currentlyFollowedActor].X + 0x100) >> 9) - newCameraX) / 2;
@@ -519,8 +489,7 @@ int mainLoopInteration(void) {
 	return 0;
 }
 
-void reinitAll(int save)
-{
+void reinitAll(int save) {
 	UnSetClip();
 	reinitVar1 = 896;
 	reinitVar2 = 950;
@@ -548,8 +517,7 @@ void reinitAll(int save)
 	comportementHero = 0;
 	startupComportementHeroInCube = 0;
 
-	if (save == -1)
-	{
+	if (save == -1) {
 		LoadGame();
 		if (newTwinsenX == -1)
 			twinsenPositionModeInNewCube = 0;
@@ -560,16 +528,14 @@ void reinitAll(int save)
 	 */
 }
 
-void reinitAll1(void)
-{
+void reinitAll1(void) {
 	configureOrthoProjection(311, 240);
 	setOnlyCameraAngle(0, 0, 0);
 	setSomething3(0, 0, 0);
 	SetLightVector(reinitVar1, reinitVar2, 0);
 }
 
-void TestRestoreModeSVGA(int arg_0)
-{
+void TestRestoreModeSVGA(int arg_0) {
 	if (!drawInGameTransBox)
 		return;
 
@@ -584,8 +550,7 @@ void TestRestoreModeSVGA(int arg_0)
 		fullRedraw(1);
 }
 
-void waitRetrace(void)
-{
+void waitRetrace(void) {
 #ifdef WIN32
 	int temp = os_getTicks();
 
@@ -593,24 +558,21 @@ void waitRetrace(void)
 #endif
 }
 
-void freezeTime(void)
-{
+void freezeTime(void) {
 	if (!time1)
 		time3 = lba_time;
 
 	time1++;
 }
 
-void unfreezeTime(void)
-{
+void unfreezeTime(void) {
 	--time1;
 
 	if (time1 == 0)
 		lba_time = time3;
 }
 
-int makeGiveUpMenu(void)
-{
+int makeGiveUpMenu(void) {
 	int saveLangue;
 	int temp;
 
@@ -634,8 +596,7 @@ int makeGiveUpMenu(void)
 	return (0);
 }
 
-void reinitVars(void)
-{
+void reinitVars(void) {
 	int i;
 
 	for (i = 0; i < 10; i++)
@@ -688,7 +649,7 @@ void reinitAll3(void) {
 }
 
 void DrawObj3D(short int arg_0, short int arg_4, short int arg_8, short int arg_C,
-			   short int arg_10, short int arg_14, unsigned char *costumePtr) {
+               short int arg_10, short int arg_14, unsigned char *costumePtr) {
 	int var_4;
 	int temp1;
 	int temp2;
@@ -705,8 +666,7 @@ void DrawObj3D(short int arg_0, short int arg_4, short int arg_8, short int arg_
 	configureOrthoProjection(temp2, temp1);
 	SetClip(arg_0, arg_4, var_4, arg_C);
 
-	if (arg_14 == -1)
-	{
+	if (arg_14 == -1) {
 		temp = getRealAngle(&timeVar);
 		if (timeVar.numOfStep == 0)
 			setActorAngleSafe(temp, temp - 256, 50, &timeVar);
@@ -741,14 +701,14 @@ void Box(int left, int top, int right, int bottom, unsigned char e) {
 	int x, y;
 
 	if (left > textWindowRight
-			|| right < textWindowLeft
-			|| top > textWindowBottom
-			|| bottom < textWindowTop) {
+	        || right < textWindowLeft
+	        || top > textWindowBottom
+	        || bottom < textWindowTop) {
 		printf("WTF ? Box outside text window !\n");
 		return;
 	}
 
-	ptr = frontVideoBuffer + WINDOW_X*top;
+	ptr = frontVideoBuffer + WINDOW_X * top;
 
 	for (y = top; y < bottom; y++) {
 		for (x = left; x < right; x++)
@@ -767,8 +727,7 @@ void DoDir(int actorNum) {
 		return;
 
 	/* If actor is falling, it can just rotate */
-	if (lactor->dynamicFlagsBF.isFalling)
-	{
+	if (lactor->dynamicFlagsBF.isFalling) {
 		short int tempAngle = 0;
 
 		if (lactor->comportement != 1)
@@ -781,24 +740,20 @@ void DoDir(int actorNum) {
 			tempAngle = -0x100;
 
 		ManualRealAngle(lactor->angle, lactor->angle + tempAngle, lactor->speed, &lactor->time);
-	}
-	else
-	{
+	} else {
 		/* If it's not a sprite */
 		if (!lactor->staticFlagsBF.isSpriteActor)
 			if (lactor->comportement != ATHLETIC)
 				lactor->angle = getRealAngle(&lactor->time);
 
-		switch (lactor->comportement)
-		{
-		/* Doesn't move */
+		switch (lactor->comportement) {
+			/* Doesn't move */
 		case NO_MOVE:
 			break;
-		/* Move manually (controlled) */
+			/* Move manually (controlled) */
 		case 1:
 			/* If it's twinsen */
-			if (actorNum == 0)
-			{
+			if (actorNum == 0) {
 				action = 0;
 
 				/* Use action (even if behavior is not normal) */
@@ -808,10 +763,8 @@ void DoDir(int actorNum) {
 				}
 
 				/* If action key is pressed */
-				if (os_isPressed(KEY_CHAR_ACTION))
-				{
-					switch (comportementHero)
-					{
+				if (os_isPressed(KEY_CHAR_ACTION)) {
+					switch (comportementHero) {
 					case NORMAL:
 						/* Just do the action */
 						action = 1;
@@ -822,35 +775,30 @@ void DoDir(int actorNum) {
 						break;
 					case AGRESSIVE:
 						/* If agressivity is set automatical */
-						if (autoAgressivity)
-						{
+						if (autoAgressivity) {
 							twinsenMoved = 1;
 
 							lactor->angle = getRealAngle(&lactor->time);
 
 							/* If twinsen is not already doing something */
-							if (lactor->anim == ANIM_static)
-							{
+							if (lactor->anim == ANIM_static) {
 								/* Choose a random knock */
-								switch (rand() % 3)
-								{
+								switch (rand() % 3) {
 								case 0:
-										InitAnim(ANIM_kick, 1, 0, actorNum);
-										break;
+									InitAnim(ANIM_kick, 1, 0, actorNum);
+									break;
 								case 1:
-										InitAnim(ANIM_rightPunch, 1, 0, actorNum);
-										break;
+									InitAnim(ANIM_rightPunch, 1, 0, actorNum);
+									break;
 								case 2:
-										InitAnim(ANIM_leftPunch, 1, 0, actorNum);
-										break;
+									InitAnim(ANIM_leftPunch, 1, 0, actorNum);
+									break;
 								default:
-										printf("Bad random in agressivity !\n");
-										break;
+									printf("Bad random in agressivity !\n");
+									break;
 								}
 							}
-						}
-						else
-						{
+						} else {
 							if (os_isPressed(KEY_CHAR_ATTACK_RPUNCH))
 								InitAnim(ANIM_rightPunch, 1, 0, actorNum);
 
@@ -869,11 +817,9 @@ void DoDir(int actorNum) {
 				}
 
 				/* If the weapon key is pressed and inventory is not open */
-				if (os_isPressed(KEY_CHAR_USEWEAPON) && !vars[70])
-				{
+				if (os_isPressed(KEY_CHAR_USEWEAPON) && !vars[70]) {
 					/* If twinsen is using the saber and he has it */
-					if (usingSword && vars[saber])
-					{
+					if (usingSword && vars[saber]) {
 						/* Make Twinsen wear tunique + saber */
 						if (lactor->body != 2)
 							InitBody(2, 0);
@@ -884,8 +830,7 @@ void DoDir(int actorNum) {
 						lactor->angle = getRealAngle(&lactor->time);
 					}
 					/* Else, if he has the magic ball */
-					else if (vars[ball])
-					{
+					else if (vars[ball]) {
 						/* If the magic ball is not thrown */
 						if (magicBallIdx == -1)
 							InitAnim(ANIM_throwBall, 1, 0, actorNum);
@@ -899,22 +844,20 @@ void DoDir(int actorNum) {
 
 			/* If no action key is pressed, or no action is made */
 			if ((!os_isPressed(KEY_CHAR_ACTION) && !os_isPressed(KEY_CHAR_ACTION_2)
-						&& !os_isPressed(KEY_CHAR_USEWEAPON)) || action != 0)
-			{
+			        && !os_isPressed(KEY_CHAR_USEWEAPON)) || action != 0) {
 				short int tempAngle;
 
 				/* If previous key is not pressed, forward is not pressed and twinsen moved, then stay static */
 				if ((!os_isPressed(twinsenKey) && twinsenMoved && !os_isPressed(KEY_CHAR_FORWARD) && !os_isPressed(KEY_CHAR_BACKWARD))
-						|| (!os_isPressed(KEY_CHAR_FORWARD) && !os_isPressed(KEY_CHAR_BACKWARD)
-							&& !os_isPressed(KEY_CHAR_LEFT) && !os_isPressed(KEY_CHAR_RIGHT)))
+				        || (!os_isPressed(KEY_CHAR_FORWARD) && !os_isPressed(KEY_CHAR_BACKWARD)
+				            && !os_isPressed(KEY_CHAR_LEFT) && !os_isPressed(KEY_CHAR_RIGHT)))
 					InitAnim(ANIM_static, 0, 255, actorNum);
 
 				twinsenMoved = 0;
 				twinsenWalked = 0;
 
 				/* Walk forward */
-				if (os_isPressed(KEY_CHAR_FORWARD))
-				{
+				if (os_isPressed(KEY_CHAR_FORWARD)) {
 					if (!climbing)
 						InitAnim(ANIM_walk, 0, 255, actorNum);
 					twinsenMoved = 1;
@@ -923,8 +866,7 @@ void DoDir(int actorNum) {
 				}
 
 				/* Walk backward */
-				if (os_isPressed(KEY_CHAR_BACKWARD))
-				{
+				if (os_isPressed(KEY_CHAR_BACKWARD)) {
 					InitAnim(ANIM_walkBackward, 0, 255, actorNum);
 					twinsenMoved = 1;
 					twinsenWalked = 1;
@@ -932,51 +874,49 @@ void DoDir(int actorNum) {
 				}
 
 				/* Turn left (counterclockwise) */
-				if (os_isPressed(KEY_CHAR_LEFT) && !os_isPressed(KEY_CHAR_RIGHT))
-				{
-					if (!twinsenWalked) 
+				if (os_isPressed(KEY_CHAR_LEFT) && !os_isPressed(KEY_CHAR_RIGHT)) {
+					if (!twinsenWalked)
 						InitAnim(ANIM_turnLeft, 0, 255, actorNum);
 					else if (!lactor->dynamicFlagsBF.isRotationByAnim)
-						lactor->angle =	getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->time);
 					tempAngle = 0x100;
 					twinsenMoved = 1;
 					twinsenKey = KEY_CHAR_LEFT;
 				}
 
 				/* Turn right (clockwise) */
-				if (os_isPressed(KEY_CHAR_RIGHT) && !os_isPressed(KEY_CHAR_LEFT))
-				{
+				if (os_isPressed(KEY_CHAR_RIGHT) && !os_isPressed(KEY_CHAR_LEFT)) {
 					if (!twinsenWalked)
 						InitAnim(ANIM_turnRight, 0, 255, actorNum);
 					else if (!lactor->dynamicFlagsBF.isRotationByAnim)
-							lactor->angle = getRealAngle(&lactor->time);
+						lactor->angle = getRealAngle(&lactor->time);
 					tempAngle = -0x100;
 					twinsenMoved = 1;
 					twinsenKey = KEY_CHAR_RIGHT;
 				}
 
 				ManualRealAngle(lactor->angle, lactor->angle + tempAngle,
-								lactor->speed, &lactor->time);
+				                lactor->speed, &lactor->time);
 			}
 			break;
-		/* Follows an other actor */
+			/* Follows an other actor */
 		case MOVE_FOLLOW: {
-				int tempAngle;
+			int tempAngle;
 
-				/* If the followed actor doesn't exist */
-				assert(lactor->followedActor != -1);
+			/* If the followed actor doesn't exist */
+			assert(lactor->followedActor != -1);
 
-				/* Get the angle between the current actor's position and the followed actor's one */
-				tempAngle = GetAngle(lactor->X, lactor->Z, actors[lactor->followedActor].X, actors[lactor->followedActor].Z);
+			/* Get the angle between the current actor's position and the followed actor's one */
+			tempAngle = GetAngle(lactor->X, lactor->Z, actors[lactor->followedActor].X, actors[lactor->followedActor].Z);
 
-				/* If it's a sprite, just change the angle variable */
-				if (lactor->staticFlagsBF.isSpriteActor)
-					lactor->angle = tempAngle;
-				/* Else, use ManualRealAngle */
-				else
-					ManualRealAngle(lactor->angle, tempAngle, lactor->speed, &lactor->time);
-				break;
-			}
+			/* If it's a sprite, just change the angle variable */
+			if (lactor->staticFlagsBF.isSpriteActor)
+				lactor->angle = tempAngle;
+			/* Else, use ManualRealAngle */
+			else
+				ManualRealAngle(lactor->angle, tempAngle, lactor->speed, &lactor->time);
+			break;
+		}
 
 		/* ?? */
 		case MOVE_TRACK:
@@ -990,18 +930,16 @@ void DoDir(int actorNum) {
 		case MOVE_TRACK_ATTACK:
 			printf("!!!! MOVE_TRACK_ATTACK\n");
 			break;
-		/* Exactly at the same position than the followed actor */
+			/* Exactly at the same position than the followed actor */
 		case MOVE_SAME_XZ:
 			lactor->X = actors[lactor->followedActor].X;
 			lactor->Z = actors[lactor->followedActor].Z;
 			break;
-		/* Moves randomly (TODO: decode) */
+			/* Moves randomly (TODO: decode) */
 		case MOVE_RANDOM:
 			printf("!!!! MOVE_RANDOM\n");
-			if (!lactor->dynamicFlagsBF.isRotationByAnim)
-			{
-				if (lactor->field_3 & 0x80)
-				{
+			if (!lactor->dynamicFlagsBF.isRotationByAnim) {
+				if (lactor->field_3 & 0x80) {
 					ManualRealAngle(lactor->angle, (((rand() & 0x100) + (lactor->angle - 0x100)) & 0x3FF), lactor ->speed, &lactor->time);
 
 					lactor->cropLeft = rand() % 300 + lba_time + 300;
@@ -1150,7 +1088,7 @@ void DoAnim(int actorNum) {
 			int keyFramePassed;
 			animPtr = (char *) HQR_Get(HQR_Anims, lactor->previousAnimIndex);
 
-			keyFramePassed = SetInterDepObjet(lactor->animPosition, animPtr, (char*)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
+			keyFramePassed = SetInterDepObjet(lactor->animPosition, animPtr, (char *)bodyPtrTab[lactor->costumeIndex], &lactor->animTimerData);
 
 			if (processActorVar5)
 				lactor->dynamicFlagsBF.isRotationByAnim = 1;
@@ -1236,7 +1174,7 @@ void DoAnim(int actorNum) {
 
 	if (lactor->dynamicFlagsBF.isFalling) { // if falling, then no modification...
 		processActorX = processActorVar2;
-		processActorZ = processActorVar3 - (256.0/5.0); // apply fall speed
+		processActorZ = processActorVar3 - (256.0 / 5.0); // apply fall speed
 		processActorY = processActorVar4;
 	}
 
@@ -1482,73 +1420,73 @@ void ReajustPos(int param) {
 	if (param >= 6 && param <= 13) {
 		switch (param) {
 		case 6: {
-				if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
-					param = 2;
-				} else {
-					param = 3;
-				}
-				break;
+			if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
+				param = 2;
+			} else {
+				param = 3;
 			}
+			break;
+		}
 		case 7: {
-				if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
-					param = 4;
-				} else {
-					param = 5;
-				}
-				break;
+			if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
+				param = 4;
+			} else {
+				param = 5;
 			}
+			break;
+		}
 		case 8: {
-				if ((512 - (processActorX - getPosVar1)) <= (processActorY - getPosVar3)) {
-					param = 2;
-				} else {
-					param = 4;
-				}
-				break;
+			if ((512 - (processActorX - getPosVar1)) <= (processActorY - getPosVar3)) {
+				param = 2;
+			} else {
+				param = 4;
 			}
+			break;
+		}
 		case 9: {
-				if ((512 - (processActorX - getPosVar1)) <= (processActorY - getPosVar3)) {
-					param = 3;
-				} else {
-					param = 5;
-				}
-				break;
+			if ((512 - (processActorX - getPosVar1)) <= (processActorY - getPosVar3)) {
+				param = 3;
+			} else {
+				param = 5;
 			}
+			break;
+		}
 		case 10: {
-				if ((processActorX - getPosVar1) >= (processActorY - getPosVar3)) {
-					param = 3;
-				} else {
-					param = 2;
-				}
-				break;
+			if ((processActorX - getPosVar1) >= (processActorY - getPosVar3)) {
+				param = 3;
+			} else {
+				param = 2;
 			}
+			break;
+		}
 		case 11: {
-				if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
-					param = 5;
-				} else {
-					param = 4;
-				}
-				break;
+			if ((processActorY - getPosVar3) <= (processActorX - getPosVar1)) {
+				param = 5;
+			} else {
+				param = 4;
 			}
+			break;
+		}
 		case 12: {
-				if ((512 - processActorX - getPosVar1) <= (processActorY - getPosVar3)) {
-					param = 4;
-				} else {
-					param = 2;
-				}
-				break;
+			if ((512 - processActorX - getPosVar1) <= (processActorY - getPosVar3)) {
+				param = 4;
+			} else {
+				param = 2;
 			}
+			break;
+		}
 		case 13: {
-				if ((512 - processActorX - getPosVar1) <= (processActorY - getPosVar3)) {
-					param = 5;
-				} else {
-					param = 3;
-				}
-				break;
+			if ((512 - processActorX - getPosVar1) <= (processActorY - getPosVar3)) {
+				param = 5;
+			} else {
+				param = 3;
 			}
+			break;
+		}
 		default: {
-				printf("collision %d\n", param);
-				//      exit(1);
-			}
+			printf("collision %d\n", param);
+			//      exit(1);
+		}
 		}
 	}
 
@@ -1556,29 +1494,29 @@ void ReajustPos(int param) {
 		switch (param) {
 			//****************** slope collisions *****************//
 		case 2: {
-				processActorZ =
-					localGetPosVar2 + BoundRegleTrois(0, 0x100, 0x200,
-													  processActorX - localGetPosVar1);
-				break;
-			}
+			processActorZ =
+			    localGetPosVar2 + BoundRegleTrois(0, 0x100, 0x200,
+			                                      processActorX - localGetPosVar1);
+			break;
+		}
 		case 3: {
-				processActorZ =
-					localGetPosVar2 + BoundRegleTrois(0, 0x100, 0x200,
-													  processActorY - localGetPosVar3);
-				break;
-			}
+			processActorZ =
+			    localGetPosVar2 + BoundRegleTrois(0, 0x100, 0x200,
+			                                      processActorY - localGetPosVar3);
+			break;
+		}
 		case 4: {
-				processActorZ =
-					localGetPosVar2 + BoundRegleTrois(0x100, 0, 0x200,
-													  processActorY - localGetPosVar3);
-				break;
-			}
+			processActorZ =
+			    localGetPosVar2 + BoundRegleTrois(0x100, 0, 0x200,
+			                                      processActorY - localGetPosVar3);
+			break;
+		}
 		case 5: {
-				processActorZ =
-					localGetPosVar2 + BoundRegleTrois(0x100, 0, 0x200,
-													  processActorX - localGetPosVar1);
-				return;
-			}
+			processActorZ =
+			    localGetPosVar2 + BoundRegleTrois(0x100, 0, 0x200,
+			                                      processActorX - localGetPosVar1);
+			return;
+		}
 		}
 	}
 
@@ -1606,7 +1544,7 @@ int CheckObjCol(int actorNum) {
 	int currentlyTestedActor = 0;
 	int var_60;
 
-	actor* lactor;
+	actor *lactor;
 	lactor = &actors[actorNum];
 
 	X1 = processActorX + lactor->boudingBox.X.bottomLeft;
@@ -1622,7 +1560,7 @@ int CheckObjCol(int actorNum) {
 
 	while (currentlyTestedActor < numActorInRoom) {
 		if (currentlyTestedActor != actorNum && actors[currentlyTestedActor].costumeIndex != -1 && !(lactor->staticFlagsBF.isDead) && actors[currentlyTestedActor].standOn != actorNum) { // is actor valid (not self and defined)
-			actor* lactor2;
+			actor *lactor2;
 
 			int X1_2;
 			int X2_2;
@@ -1642,7 +1580,7 @@ int CheckObjCol(int actorNum) {
 			Y1_2 = lactor2->Z + lactor2->boudingBox.Z.bottomLeft;
 			Y2_2 = lactor2->Z + lactor2->boudingBox.Z.topRight;
 
-			if (X1<X2_2 && X2>X1_2 && Z1<Z2_2 && Z2>Z1_2 && Y1<Y2_2 && Y2>Y1_2) {
+			if (X1 < X2_2 && X2 > X1_2 && Z1 < Z2_2 && Z2 > Z1_2 && Y1 < Y2_2 && Y2 > Y1_2) {
 
 				lactor->collision = currentlyTestedActor;
 
@@ -1734,9 +1672,9 @@ lab12AC5:
 		Y1 = destZ + processActorY + lactor->boudingBox.Z.bottomLeft;
 		Y2 = destZ + processActorY + lactor->boudingBox.Z.topRight;
 
-		for (i = 0;i < numActorInRoom;i++) {
+		for (i = 0; i < numActorInRoom; i++) {
 			if (i != actorNum && actors[i].costumeIndex != -1 && !(actors[i].staticFlagsBF.noDisplay) && actors[i].standOn != actorNum) { // is actor valid (not self and defined)
-				actor* lactor2;
+				actor *lactor2;
 
 				int X1_2;
 				int X2_2;
@@ -1756,7 +1694,7 @@ lab12AC5:
 				Y1_2 = lactor2->Z + lactor2->boudingBox.Z.bottomLeft;
 				Y2_2 = lactor2->Z + lactor2->boudingBox.Z.topRight;
 
-				if (X1<X2_2 && X2>X1_2 && Z1<Z2_2 && Z2>Z1_2 && Y1<Y2_2 && Y2>Y1_2) {
+				if (X1 < X2_2 && X2 > X1_2 && Z1 < Z2_2 && Z2 > Z1_2 && Y1 < Y2_2 && Y2 > Y1_2) {
 					HitObj(actorNum, i, lactor->field_66, lactor->angle + 0x200);
 					lactor->dynamicFlagsBF.bUnk0002 = 0;
 				}
@@ -1849,7 +1787,7 @@ int WorldColBrickFull(int var0, int var1, int var2, int var3) {
 
 		j = getPosVar2;
 
-		for (i = 0;i < edx;i++) { // search from bottom to top
+		for (i = 0; i < edx; i++) { // search from bottom to top
 			if (j > 24) { // check if we are not out of the cube
 				return(al);
 			}
@@ -1874,7 +1812,7 @@ int WorldColBrickFull(int var0, int var1, int var2, int var3) {
 
 		j = getPosVar2;
 
-		for (i = 0;i < edx;i++) {
+		for (i = 0; i < edx; i++) {
 			if (j > 24) {
 				return(al);
 			}
@@ -2023,7 +1961,7 @@ int CheckZvOnZv(int var0, int var1) { // is actor still standing on object ?
 
 void HitObj(int actorAttacking, int actorAttacked, int param, int angle) {
 //    actor* pActorAttacking = &actors[actorAttacking];
-	actor* pActorAttacked = &actors[actorAttacked];
+	actor *pActorAttacked = &actors[actorAttacked];
 
 	if (pActorAttacked->life <= 0)
 		return;

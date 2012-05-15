@@ -36,15 +36,15 @@ hqr_entry *HQR_Anims;
 hqr_entry *HQR_Samples;
 hqr_entry *HQR_Midi;
 
-hqr_entry* HQR_Init_Ressource(char* fileName, int sizeOfBuffer, int numOfEntriesInBuffer) {
+hqr_entry *HQR_Init_Ressource(char *fileName, int sizeOfBuffer, int numOfEntriesInBuffer) {
 	hqr_entry *hqr_ptr;
 	unsigned char *dataPtr;
 
 	if (!streamReader_open(&fileReader, fileName, 1)) {
-        printf("HQR: ERROR: file '%s' does not exist !\n", fileName);
+		printf("HQR: ERROR: file '%s' does not exist !\n", fileName);
 		return NULL;
-    }
-    streamReader_close(&fileReader);
+	}
+	streamReader_close(&fileReader);
 
 	hqr_ptr = malloc(numOfEntriesInBuffer * sizeof(subHqr) + sizeof(hqr_entry));
 	dataPtr = malloc(sizeOfBuffer + 500); /* TODO: why 500 ? */
@@ -65,7 +65,7 @@ hqr_entry* HQR_Init_Ressource(char* fileName, int sizeOfBuffer, int numOfEntries
 	return hqr_ptr;
 }
 
-int Load_HQR(char *resourceName, unsigned char* ptr, int imageNumber) {
+int Load_HQR(char *resourceName, unsigned char *ptr, int imageNumber) {
 	unsigned int headerSize;
 	unsigned int offToImage;
 	unsigned int dataSize;
@@ -98,7 +98,7 @@ int Load_HQR(char *resourceName, unsigned char* ptr, int imageNumber) {
 	if (mode <= 0) {
 		streamReader_get(&fileReader, ptr, dataSize);
 	} else if (mode == 1) {
-		unsigned char* compressedDataPtr;
+		unsigned char *compressedDataPtr;
 
 		compressedDataPtr = malloc(compressedSize + 500);
 
@@ -113,7 +113,7 @@ int Load_HQR(char *resourceName, unsigned char* ptr, int imageNumber) {
 	return (dataSize);
 }
 
-subHqr *findSubHqr(int arg_0, int arg_4, subHqr * arg_8) {
+subHqr *findSubHqr(int arg_0, int arg_4, subHqr *arg_8) {
 	subHqr *temp;
 	int i;
 
@@ -133,7 +133,7 @@ subHqr *findSubHqr(int arg_0, int arg_4, subHqr * arg_8) {
 
 }
 
-unsigned char *HQR_Get(hqr_entry * hqrPtr, short int arg_4) {
+unsigned char *HQR_Get(hqr_entry *hqrPtr, short int arg_4) {
 	unsigned int headerSize;
 	unsigned int offToData;
 	unsigned int dataSize;
@@ -217,11 +217,10 @@ unsigned char *HQR_Get(hqr_entry * hqrPtr, short int arg_4) {
 
 	if (mode <= 0) {  // uncompressed
 		streamReader_get(&fileReader, ptr, dataSize);
-	} else
-		if (mode == 1) { // compressed
-			streamReader_get(&fileReader, ptr + dataSize - compressedSize + 500, compressedSize);
-			HQR_Expand(dataSize, ptr, (ptr + dataSize - compressedSize + 500));
-		}
+	} else if (mode == 1) { // compressed
+		streamReader_get(&fileReader, ptr + dataSize - compressedSize + 500, compressedSize);
+		HQR_Expand(dataSize, ptr, (ptr + dataSize - compressedSize + 500));
+	}
 
 	streamReader_close(&fileReader);
 
@@ -239,8 +238,8 @@ unsigned char *HQR_Get(hqr_entry * hqrPtr, short int arg_4) {
 	return (ptr);
 }
 
-unsigned char *HQR_GetCopy(hqr_entry * hqrPtr, short int arg_4) {
-	unsigned char* newPtr;
+unsigned char *HQR_GetCopy(hqr_entry *hqrPtr, short int arg_4) {
+	unsigned char *newPtr;
 
 	if (hqrPtr->preloadedResource) {
 		newPtr = malloc(hqrPtr->sizeArray[arg_4]);
@@ -251,12 +250,12 @@ unsigned char *HQR_GetCopy(hqr_entry * hqrPtr, short int arg_4) {
 	return NULL;
 }
 
-void HQR_Reset_Ressource(hqr_entry * ptr) {
+void HQR_Reset_Ressource(hqr_entry *ptr) {
 	ptr->remainingSize = ptr->size1;
 	ptr->numCurrentlyUsedEntries = 0;
 }
 
-int HQR_RemoveEntryFromHQR(hqr_entry * hqrPtr, int var) {
+int HQR_RemoveEntryFromHQR(hqr_entry *hqrPtr, int var) {
 	subHqr *subPtr;
 
 	int lvar;
@@ -296,7 +295,7 @@ int HQR_RemoveEntryFromHQR(hqr_entry * hqrPtr, int var) {
 	return (retVal);
 }
 
-int HQRM_Load(char *fileName, short int arg_4, unsigned char ** ptr) { // recheck
+int HQRM_Load(char *fileName, short int arg_4, unsigned char **ptr) {  // recheck
 	unsigned int headerSize;
 	unsigned int offToData;
 	unsigned int dataSize;
@@ -341,7 +340,7 @@ int HQRM_Load(char *fileName, short int arg_4, unsigned char ** ptr) { // rechec
 
 		streamReader_get(&fileReader, temp, compressedSize);
 		HQR_Expand(dataSize, *ptr, temp);
-        free(temp);
+		free(temp);
 	}
 
 	streamReader_close(&fileReader);

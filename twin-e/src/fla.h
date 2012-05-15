@@ -16,8 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-typedef struct FLAheader
-{
+typedef struct FLAheader {
 	char version[6];
 	int numOfFrames;
 	char speed;
@@ -26,8 +25,7 @@ typedef struct FLAheader
 	short int var3;
 } FLAheader;
 
-typedef struct
-{
+typedef struct {
 	short int sampleNum;
 	short int freq;
 	short int repeat;
@@ -36,18 +34,17 @@ typedef struct
 	unsigned char y;
 } flaSample;
 
-typedef struct
-{
+typedef struct {
 	char videoSize;
 	char dummy;
 	int frameVar0;
 } frameData;
 
 void playFla(char *flaName);
-int initFla(char* file);
+int initFla(char *file);
 void drawNextFrameFla();
-void drawFrame(char* ptr, int width, int height);
-void updateFrame(char* ptr, int width);
+void drawFrame(char *ptr, int width, int height);
+void updateFrame(char *ptr, int width);
 
-extern char flaBuffer[320*200];
+extern char flaBuffer[320 * 200];
 

@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct streamReader {
 #ifdef PCLIKE
-	FILE* fileHandle;
+	FILE *fileHandle;
 #else
 	// DC
 	GDFS fileHandle;
@@ -47,12 +47,12 @@ struct streamReader {
 
 typedef struct streamReader streamReader;
 
-char streamReader_open(streamReader* pThis, const char* fileName, int fatal);
-void streamReader_close(streamReader* pThis);
-void streamReader_feedBuffer(streamReader* pThis);
+char streamReader_open(streamReader *pThis, const char *fileName, int fatal);
+void streamReader_close(streamReader *pThis);
+void streamReader_feedBuffer(streamReader *pThis);
 
-void streamReader_get(streamReader* pThis, void* destPtr, uint32 size);
-void streamReader_seek(streamReader* pThis, uint32 seekPosition);
+void streamReader_get(streamReader *pThis, void *destPtr, uint32 size);
+void streamReader_seek(streamReader *pThis, uint32 seekPosition);
 
 #endif // _STREAMREADER_
 
