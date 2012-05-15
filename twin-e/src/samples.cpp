@@ -113,12 +113,12 @@ void playMidi(int musicNum) {
 	}
     fclose(fhandle);
 
-	music = Mix_LoadMUS(filename);
+/*	music = Mix_LoadMUS(filename);
 
 	if (music == NULL)
 		printf("Mix_LoadMUS(\"%s\"): %s\n", filename, Mix_GetError());
 
-	Mix_PlayMusic(music, -1);
+	Mix_PlayMusic(music, -1);*/
 }
 
 void pauseSound() {
